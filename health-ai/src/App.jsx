@@ -132,8 +132,8 @@ export default function App() {
 
       {/* Chat area */}
       <div className="chat-area" ref={chatRef}>
-        {/* Identifier bar - only on screen 1 */}
-        {step === STEPS.INITIAL_CHAT && (
+        {/* Identifier bar - visible until results scroll content up */}
+        {step < STEPS.RESULTS && (
           <div className="identifier-bar">
             <div className="identifier-avatar">M</div>
             <span className="identifier-name">Michael</span>
