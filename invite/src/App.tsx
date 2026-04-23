@@ -45,9 +45,13 @@ function App() {
             </div>
           </div>
 
-          <p className="text-sm font-mono tracking-[0.2em] uppercase text-white/60 mb-4">
-            Nirvana presents
-          </p>
+          <div className="mb-4">
+            <img
+              src="/nirvana-logo.svg"
+              alt="Nirvana"
+              className="h-5 mx-auto opacity-60"
+            />
+          </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight text-white leading-[1.1]">
             Healthcare AI
