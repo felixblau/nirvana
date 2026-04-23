@@ -45,6 +45,7 @@ html, body, #root {
   position: relative;
   display: flex;
   flex-direction: column;
+  border: 6px solid #000;
 }
 
 .status-bar {
@@ -56,6 +57,19 @@ html, body, #root {
   font-size: 15px;
   font-weight: 600;
   flex-shrink: 0;
+  position: relative;
+}
+
+.status-bar::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 34px;
+  background: #000;
+  border-radius: 20px;
 }
 
 .status-bar-icons {
