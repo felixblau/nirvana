@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(tr '>' '\\\\n')",
+      "mcp__Figma_Dev_Mode__get_metadata",
+      "Bash(python3)"
+    ]
+  }
+}

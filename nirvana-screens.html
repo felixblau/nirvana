@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nirvana — Key Screens</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --nirvana-teal: #0F766E;
+    --nirvana-teal-light: #0D9488;
+    --nirvana-teal-bg: #F0FDFA;
+    --nirvana-teal-subtle: #CCFBF1;
+    --gpt-bg: #F9F9F9;
+    --gpt-user-bg: #2D2D2D;
+    --gpt-user-text: #FFFFFF;
+    --gpt-assistant-text: #1A1A1A;
+    --card-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.05);
+    --sheet-shadow: 0 -4px 40px rgba(0,0,0,0.15);
+    --ios-radius: 16px;
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
+  }
+
+  body {
+    background: #E8E8ED;
+    font-family: var(--font);
+    padding: 60px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 80px;
+  }
+
+  .screen-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6B7280;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .screen-description {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: #9CA3AF;
+    margin-bottom: 24px;
+    text-align: center;
+    max-width: 360px;
+  }
+
+  .screen-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* iPhone Frame */
+  .iphone-frame {
+    width: 393px;
+    height: 852px;
+    background: #FFFFFF;
+    border-radius: 52px;
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.08),
+      0 20px 60px rgba(0,0,0,0.15),
+      0 4px 20px rgba(0,0,0,0.08),
+      inset 0 0 0 1px rgba(255,255,255,0.3);
+  }
+
+  .iphone-frame::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 126px;
+    height: 36px;
+    background: #000;
+    border-radius: 0 0 20px 20px;
+    z-index: 100;
+  }
+
+  /* Status Bar */
+  .status-bar {
+    height: 54px;
+    padding: 14px 32px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 50;
+    background: var(--gpt-bg);
+  }
+
+  .status-bar.dark {
+    background: transparent;
+  }
+
+  .status-time {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #000;
+  }
+
+  .status-icons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .status-icons svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Chat Screen Base */
+  .chat-screen {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--gpt-bg);
+  }
+
+  .chat-header {
+    padding: 4px 20px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .gpt-orb {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #FF6B8A, #FF4F7A 30%, #E8457A 60%, #A855F7 100%);
+    box-shadow: 0 2px 8px rgba(255,75,122,0.3);
+  }
+
+  .chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .chat-input-area {
+    padding: 8px 16px 36px;
+    background: var(--gpt-bg);
+  }
+
+  .chat-input {
+    background: #FFFFFF;
+    border: 1px solid #E5E5E5;
+    border-radius: 24px;
+    padding: 14px 48px 14px 20px;
+    font-size: 16px;
+    color: #9CA3AF;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .chat-input .send-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Messages */
+  .msg {
+    max-width: 85%;
+    line-height: 1.5;
+    font-size: 15.5px;
+    letter-spacing: -0.01em;
+  }
+
+  .msg-user {
+    align-self: flex-end;
+    background: var(--gpt-user-bg);
+    color: var(--gpt-user-text);
+    padding: 12px 18px;
+    border-radius: 22px 22px 6px 22px;
+    font-size: 15.5px;
+  }
+
+  .msg-assistant {
+    align-self: flex-start;
+    color: var(--gpt-assistant-text);
+    padding: 4px 0;
+    font-size: 15.5px;
+    max-width: 92%;
+  }
+
+  .msg-assistant p {
+    margin-bottom: 10px;
+  }
+
+  .msg-assistant p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Loading indicator */
+  .loading-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    color: #6B7280;
+    font-size: 14px;
+  }
+
+  .loading-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #E5E7EB;
+    border-top-color: var(--nirvana-teal);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .typing-dots {
+    display: flex;
+    gap: 4px;
+    padding: 12px 4px;
+  }
+
+  .typing-dots span {
+    width: 8px;
+    height: 8px;
+    background: #C5C5C5;
+    border-radius: 50%;
+  }
+
+  .typing-dots span:nth-child(1) { opacity: 0.4; }
+  .typing-dots span:nth-child(2) { opacity: 0.6; }
+  .typing-dots span:nth-child(3) { opacity: 0.8; }
+
+  /* Overlay & Sheet */
+  .overlay-screen {
+    position: relative;
+    height: 100%;
+  }
+
+  .dimmed-bg {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 10;
+  }
+
+  .bottom-sheet {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #FFFFFF;
+    border-radius: 20px 20px 0 0;
+    z-index: 20;
+    padding-bottom: 36px;
+  }
+
+  .sheet-handle {
+    width: 40px;
+    height: 5px;
+    background: #D1D5DB;
+    border-radius: 3px;
+    margin: 10px auto 0;
+  }
+
+  .sheet-content {
+    padding: 20px 24px 0;
+  }
+
+  /* Nirvana Transaction Module */
+  .nirvana-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .nirvana-logo {
+    width: 36px;
+    height: 36px;
+    background: var(--nirvana-teal);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+  }
+
+  .nirvana-wordmark {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111;
+    letter-spacing: -0.03em;
+  }
+
+  .step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .step-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-icon.pending {
+    background: #F3F4F6;
+    border: 1.5px solid #E5E7EB;
+  }
+
+  .step-icon.active {
+    background: #F0FDFA;
+    border: 2px solid var(--nirvana-teal);
+    position: relative;
+  }
+
+  .step-icon.active::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--nirvana-teal);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  .step-icon.done {
+    background: var(--nirvana-teal);
+  }
+
+  .step-text {
+    font-size: 15.5px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .step-text.pending {
+    color: #C5C8CD;
+  }
+
+  .step-text.active {
+    color: #1A1A1A;
+  }
+
+  .step-text.done {
+    color: #1A1A1A;
+  }
+
+  .powered-by {
+    text-align: center;
+    padding: 20px 0 4px;
+    font-size: 12px;
+    color: #9CA3AF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    letter-spacing: -0.01em;
+  }
+
+  .powered-by .mini-logo {
+    width: 14px;
+    height: 14px;
+    background: var(--nirvana-teal);
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 8px;
+    font-weight: 700;
+  }
+
+  /* Checkmark SVG */
+  .checkmark {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Doctor Cards Carousel */
+  .carousel-container {
+    margin: 0 -20px;
+    padding: 0 20px;
+    overflow-x: auto;
+    display: flex;
+    gap: 12px;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+
+  .carousel-container::-webkit-scrollbar { display: none; }
+
+  .doctor-card {
+    min-width: 240px;
+    max-width: 240px;
+    background: #FFFFFF;
+    border-radius: var(--ios-radius);
+    border: 1px solid #F0F0F0;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .doctor-card-inner {
+    padding: 16px;
+  }
+
+  .doctor-avatar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .doctor-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+  }
+
+  .doctor-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+
+  .doctor-specialty {
+    font-size: 13px;
+    color: #6B7280;
+    margin-top: 1px;
+  }
+
+  .doctor-stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #6B7280;
+  }
+
+  .doctor-rating {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    color: #111;
+    font-weight: 600;
+  }
+
+  .star-icon {
+    color: #FBBF24;
+    font-size: 13px;
+  }
+
+  .doctor-reviews {
+    color: #9CA3AF;
+    font-size: 12.5px;
+  }
+
+  .doctor-distance {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .doctor-address {
+    font-size: 12.5px;
+    color: #9CA3AF;
+    margin-bottom: 12px;
+    line-height: 1.35;
+  }
+
+  .in-network-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--nirvana-teal-bg);
+    border: 1px solid #CCFBF1;
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--nirvana-teal);
+    margin-bottom: 14px;
+  }
+
+  .in-network-badge .n-glyph {
+    width: 16px;
+    height: 16px;
+    background: var(--nirvana-teal);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+  }
+
+  .book-btn {
+    width: 100%;
+    background: #111;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: -0.01em;
+  }
+
+  /* Time Slot Sheet */
+  .sheet-doctor-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #F3F4F6;
+  }
+
+  .sheet-doctor-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .sheet-doctor-name {
+    font-size: 17px;
+    font-weight: 600;
+    color: #111;
+    letter-spacing: -0.02em;
+  }
+
+  .sheet-doctor-sub {
+    font-size: 13.5px;
+    color: #6B7280;
+    margin-top: 1px;
+  }
+
+  .date-selector {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 22px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .date-selector::-webkit-scrollbar { display: none; }
+
+  .date-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 14px;
+    border: 1.5px solid #E5E7EB;
+    min-width: 62px;
+    flex-shrink: 0;
+  }
+
+  .date-pill.selected {
+    background: var(--nirvana-teal);
+    border-color: var(--nirvana-teal);
+    color: white;
+  }
+
+  .date-pill .day-name {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: #9CA3AF;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .date-pill.selected .day-name {
+    color: rgba(255,255,255,0.8);
+  }
+
+  .date-pill .day-num {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111;
+    margin-top: 2px;
+    letter-spacing: -0.02em;
+  }
+
+  .date-pill.selected .day-num {
+    color: white;
+  }
+
+  .section-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+
+  .time-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .time-slot {
+    text-align: center;
+    padding: 13px 8px;
+    border-radius: 12px;
+    border: 1.5px solid #E5E7EB;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: #374151;
+    letter-spacing: -0.01em;
+  }
+
+  .time-slot.selected {
+    background: var(--nirvana-teal);
+    border-color: var(--nirvana-teal);
+    color: white;
+    font-weight: 600;
+  }
+
+  .continue-btn {
+    width: 100%;
+    background: var(--nirvana-teal);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-size: 16.5px;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: -0.01em;
+  }
+
+  .continue-btn.dark {
+    background: #111;
+  }
+
+  /* Payment Sheet */
+  .summary-card {
+    background: #F9FAFB;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14.5px;
+    color: #374151;
+  }
+
+  .summary-row + .summary-row {
+    margin-top: 8px;
+  }
+
+  .summary-label {
+    color: #6B7280;
+    font-size: 13.5px;
+  }
+
+  .summary-value {
+    font-weight: 600;
+    color: #111;
+    font-size: 14.5px;
+    letter-spacing: -0.01em;
+  }
+
+  .cost-highlight {
+    background: var(--nirvana-teal-bg);
+    border: 1px solid #CCFBF1;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cost-label {
+    font-size: 14px;
+    color: var(--nirvana-teal);
+    font-weight: 500;
+  }
+
+  .cost-amount {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--nirvana-teal);
+    letter-spacing: -0.03em;
+  }
+
+  .payment-section {
+    margin-bottom: 16px;
+  }
+
+  .payment-section-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #9CA3AF;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+  }
+
+  .payment-row {
+    display: flex;
+    align-items: center;
+    background: #F9FAFB;
+    border-radius: 14px;
+    padding: 14px 16px;
+    gap: 14px;
+  }
+
+  .payment-row .visa-badge {
+    width: 42px;
+    height: 28px;
+    background: linear-gradient(135deg, #1A1F71, #2F54EB);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 0.05em;
+  }
+
+  .payment-info {
+    flex: 1;
+  }
+
+  .payment-name {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #111;
+    letter-spacing: -0.01em;
+  }
+
+  .payment-detail {
+    font-size: 12.5px;
+    color: #9CA3AF;
+    margin-top: 1px;
+  }
+
+  .chevron {
+    color: #D1D5DB;
+    font-size: 18px;
+  }
+
+  .address-icon {
+    width: 42px;
+    height: 42px;
+    background: #F3F4F6;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .cvv-section {
+    margin-bottom: 20px;
+  }
+
+  .cvv-input {
+    background: #FFFFFF;
+    border: 2px solid #E5E7EB;
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-size: 16px;
+    color: #9CA3AF;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cvv-input:focus-within {
+    border-color: var(--nirvana-teal);
+  }
+
+  /* Confirmation Card */
+  .confirmation-card {
+    background: #FFFFFF;
+    border-radius: var(--ios-radius);
+    border: 1.5px solid #CCFBF1;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    margin-top: 4px;
+  }
+
+  .confirmation-header {
+    background: var(--nirvana-teal);
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .confirmation-check {
+    width: 28px;
+    height: 28px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .confirmation-title {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .confirmation-body {
+    padding: 16px 18px;
+  }
+
+  .confirmation-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 6px 0;
+    font-size: 14px;
+  }
+
+  .confirmation-label {
+    color: #9CA3AF;
+    font-size: 13px;
+  }
+
+  .confirmation-value {
+    color: #111;
+    font-weight: 500;
+    font-size: 14px;
+    text-align: right;
+    letter-spacing: -0.01em;
+  }
+
+  .confirmation-divider {
+    height: 1px;
+    background: #F3F4F6;
+    margin: 6px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== SCREEN 1 ==================== -->
+<div class="screen-wrapper">
+  <div class="screen-label">Screen 1</div>
+  <div class="screen-description">GPT suggests looking up a radiologist</div>
+  <div class="iphone-frame">
+    <div class="chat-screen">
+      <!-- Status Bar -->
+      <div class="status-bar">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <svg viewBox="0 0 18 18" fill="none"><path d="M1 12.5C1 12.5 3 10 5 10C7 10 8 13 10 13C12 13 13 11 15 8.5" stroke="#000" stroke-width="1.8" stroke-linecap="round"/><rect x="1" y="3" width="3" height="12" rx="0.8" fill="none" stroke="#000" stroke-width="1.2"/><rect x="5.5" y="5" width="3" height="10" rx="0.8" fill="none" stroke="#000" stroke-width="1.2"/><rect x="10" y="3" width="3" height="12" rx="0.8" fill="none" stroke="#000" stroke-width="1.2"/><rect x="14.5" y="1" width="3" height="14" rx="0.8" fill="none" stroke="#000" stroke-width="1.2"/></svg>
+          <svg viewBox="0 0 18 12" fill="#000"><path d="M0 0h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H0V0Z" fill="none" stroke="#000" stroke-width="1.2"/><rect x="2" y="2.5" width="10" height="7" rx="1" fill="#000"/><rect x="16.5" y="4" width="1.5" height="4" rx="0.5" fill="#000"/></svg>
+        </div>
+      </div>
+
+      <!-- Chat Header -->
+      <div class="chat-header">
+        <div class="gpt-orb"></div>
+      </div>
+
+      <!-- Chat Body -->
+      <div class="chat-body">
+        <div class="msg msg-user">I've been having persistent knee pain for the past two weeks, especially when climbing stairs. It's a sharp pain on the outer side of my right knee.</div>
+
+        <div class="msg msg-assistant">
+          <p>I'm sorry to hear about your knee pain. Based on what you're describing — sharp pain on the outer side of your right knee that worsens with stair climbing — this could be related to several conditions, including iliotibial band syndrome, a lateral meniscus issue, or possible ligament strain.</p>
+          <p>To get a proper diagnosis, imaging would be really helpful. <strong>Based on your symptoms, I suggest you look up a radiologist.</strong> Would you like me to find some radiologists you can reach out to?</p>
+        </div>
+      </div>
+
+      <!-- Chat Input -->
+      <div class="chat-input-area">
+        <div class="chat-input">
+          Type your message
+          <div class="send-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13V3M8 3L3 8M8 3L13 8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 2 ==================== -->
+<div class="screen-wrapper">
+  <div class="screen-label">Screen 2</div>
+  <div class="screen-description">User says "Yes" — GPT retrieves insurance info</div>
+  <div class="iphone-frame">
+    <div class="chat-screen">
+      <div class="status-bar">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <svg viewBox="0 0 18 18" fill="none"><path d="M1 12.5C1 12.5 3 10 5 10C7 10 8 13 10 13C12 13 13 11 15 8.5" stroke="#000" stroke-width="1.8" stroke-linecap="round"/><rect x="1" y="3" width="3" height="12" rx="0.8" fill="none" stroke="#000" stroke-width="1.2"/><rect x="5.5" y="5" width="3" height="10" rx="0.8" fill="none" stroke="#000" stroke-width="1.2"/><rect x="10" y="3" width="3" height="12" rx="0.8" fill="none" stroke="#000" stroke-width="1.2"/><rect x="14.5" y="1" width="3" height="14" rx="0.8" fill="none" stroke="#000" stroke-width="1.2"/></svg>
+          <svg viewBox="0 0 18 12" fill="#000"><path d="M0 0h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H0V0Z" fill="none" stroke="#000" stroke-width="1.2"/><rect x="2" y="2.5" width="10" height="7" rx="1" fill="#000"/><rect x="16.5" y="4" width="1.5" height="4" rx="0.5" fill="#000"/></svg>
+        </div>
+      </div>
+      <div class="chat-header">
+        <div class="gpt-orb"></div>
+      </div>
+      <div class="chat-body">
+        <div class="msg msg-user" style="font-size:15px;">I've been having persistent knee pain for the past two weeks, especially when climbing stairs. It's a sharp pain on the outer side of my right knee.</div>
+        <div class="msg msg-assistant" style="font-size:14.5px;">
+          <p>I'm sorry to hear about your knee pain. Based on what you're describing, this could be related to several conditions including iliotibial band syndrome or a lateral meniscus issue.</p>
+          <p><strong>I suggest you look up a radiologist.</strong> Would you like me to find some radiologists you can reach out to?</p>
+        </div>
+        <div class="msg msg-user">Yes, that would be great!</div>
+        <div class="msg msg-assistant">
+          <div class="loading-indicator">
+            <div class="loading-spinner"></div>
+            <span>Retrieving your insurance information...</span>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <div class="chat-input">
+          Type your message
+          <div class="send-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13V3M8 3L3 8M8 3L13 8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 3 ==================== -->
+<div class="screen-wrapper">
+  <div class="screen-label">Screen 3</div>
+  <div class="screen-description">Nirvana Transaction Module — In Progress</div>
+  <div class="iphone-frame">
+    <div class="overlay-screen">
+      <!-- Dimmed background chat -->
+      <div class="chat-screen" style="filter: brightness(0.55);">
+        <div class="status-bar" style="background:transparent;">
+          <span class="status-time" style="color:#fff;">9:41</span>
+          <div class="status-icons">
+            <svg viewBox="0 0 18 18" fill="none"><rect x="1" y="3" width="3" height="12" rx="0.8" fill="none" stroke="#fff" stroke-width="1.2"/><rect x="5.5" y="5" width="3" height="10" rx="0.8" fill="none" stroke="#fff" stroke-width="1.2"/><rect x="10" y="3" width="3" height="12" rx="0.8" fill="none" stroke="#fff" stroke-width="1.2"/><rect x="14.5" y="1" width="3" height="14" rx="0.8" fill="none" stroke="#fff" stroke-width="1.2"/></svg>
+            <svg viewBox="0 0 18 12"><path d="M0 0h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H0V0Z" fill="none" stroke="#fff" stroke-width="1.2"/><rect x="2" y="2.5" width="10" height="7" rx="1" fill="#fff"/><rect x="16.5" y="4" width="1.5" height="4" rx="0.5" fill="#fff"/></svg>
+          </div>
+        </div>
+        <div class="chat-header">
+          <div class="gpt-orb"></div>
+        </div>
+        <div class="chat-body">
+          <div class="msg msg-user" style="font-size:15px;">I've been having persistent knee pain...</div>
+          <div class="msg msg-assistant" style="font-size:14px;">
+            <p>I suggest you look up a radiologist. Would you like me to find some?</p>
+          </div>
+          <div class="msg msg-user">Yes, that would be great!</div>
+        </div>
+      </div>
+
+      <!-- Bottom Sheet -->
+      <div class="bottom-sheet" style="bottom: 0;">
+        <div class="sheet-handle"></div>
+        <div class="sheet-content">
+          <div class="nirvana-header">
+            <div class="nirvana-logo">N</div>
+            <div class="nirvana-wordmark">Nirvana</div>
+          </div>
+
+          <div class="step-list">
+            <!-- Step 1: Active -->
+            <div class="step-item">
+              <div class="step-icon active"></div>
+              <span class="step-text active">Matching providers to your insurance</span>
+            </div>
+            <!-- Step 2: Pending -->
+            <div class="step-item">
+              <div class="step-icon pending"></div>
+              <span class="step-text pending">Calculating your cost</span>
+            </div>
+            <!-- Step 3: Pending -->
+            <div class="step-item">
+              <div class="step-icon pending"></div>
+              <span class="step-text pending">Checking availability across providers</span>
+            </div>
+          </div>
+
+          <div class="powered-by">
+            powered by <span class="mini-logo">N</span> <strong style="color:#6B7280;">Nirvana</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 4 ==================== -->
+<div class="screen-wrapper">
+  <div class="screen-label">Screen 4</div>
+  <div class="screen-description">Nirvana Transaction Module — Complete</div>
+  <div class="iphone-frame">
+    <div class="overlay-screen">
+      <div class="chat-screen" style="filter: brightness(0.55);">
+        <div class="status-bar" style="background:transparent;">
+          <span class="status-time" style="color:#fff;">9:41</span>
+          <div class="status-icons">
+            <svg viewBox="0 0 18 18" fill="none"><rect x="1" y="3" width="3" height="12" rx="0.8" fill="none" stroke="#fff" stroke-width="1.2"/><rect x="5.5" y="5" width="3" height="10" rx="0.8" fill="none" stroke="#fff" stroke-width="1.2"/><rect x="10" y="3" width="3" height="12" rx="0.8" fill="none" stroke="#fff" stroke-width="1.2"/><rect x="14.5" y="1" width="3" height="14" rx="0.8" fill="none" stroke="#fff" stroke-width="1.2"/></svg>
+            <svg viewBox="0 0 18 12"><path d="M0 0h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H0V0Z" fill="none" stroke="#fff" stroke-width="1.2"/><rect x="2" y="2.5" width="10" height="7" rx="1" fill="#fff"/><rect x="16.5" y="4" width="1.5" height="4" rx="0.5" fill="#fff"/></svg>
+          </div>
+        </div>
+        <div class="chat-header">
+          <div class="gpt-orb"></div>
+        </div>
+        <div class="chat-body">
+          <div class="msg msg-user" style="font-size:15px;">I've been having persistent knee pain...</div>
+          <div class="msg msg-assistant" style="font-size:14px;">
+            <p>I suggest you look up a radiologist. Would you like me to find some?</p>
+          </div>
+          <div class="msg msg-user">Yes, that would be great!</div>
+        </div>
+      </div>
+
+      <div class="bottom-sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-content">
+          <div class="nirvana-header">
+            <div class="nirvana-logo">N</div>
+            <div class="nirvana-wordmark">Nirvana</div>
+          </div>
+
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-icon done">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5L6.5 11.5L12.5 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="step-text done">Matching providers to your insurance</span>
+            </div>
+            <div class="step-item">
+              <div class="step-icon done">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5L6.5 11.5L12.5 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="step-text done">Calculating your cost</span>
+            </div>
+            <div class="step-item">
+              <div class="step-icon done">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5L6.5 11.5L12.5 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="step-text done">Checking availability across providers</span>
+            </div>
+          </div>
+
+          <div style="text-align:center; margin-top:24px; margin-bottom:4px;">
+            <div style="display:inline-flex;align-items:center;gap:8px;background:var(--nirvana-teal-bg);padding:10px 20px;border-radius:12px;">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#0F766E"/><path d="M5.5 10.5L8.5 13.5L14.5 7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span style="font-size:15px;font-weight:600;color:var(--nirvana-teal);letter-spacing:-0.02em;">All set</span>
+            </div>
+          </div>
+
+          <div class="powered-by">
+            powered by <span class="mini-logo">N</span> <strong style="color:#6B7280;">Nirvana</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 5 ==================== -->
+<div class="screen-wrapper">
+  <div class="screen-label">Screen 5</div>
+  <div class="screen-description">Radiologist results carousel with doctor cards</div>
+  <div class="iphone-frame">
+    <div class="chat-screen">
+      <div class="status-bar">
+        <span class="status-time">9:42</span>
+        <div class="status-icons">
+          <svg viewBox="0 0 18 18" fill="none"><rect x="1" y="3" width="3" height="12" rx="0.8" fill="none" stroke="#000" stroke-width="1.2"/><rect x="5.5" y="5" width="3" height="10" rx="0.8" fill="none" stroke="#000" stroke-width="1.2"/><rect x="10" y="3" width="3" height="12" rx="0.8" fill="none" stroke="#000" stroke-width="1.2"/><rect x="14.5" y="1" width="3" height="14" rx="0.8" fill="none" stroke="#000" stroke-width="1.2"/></svg>
+          <svg viewBox="0 0 18 12" fill="#000"><path d="M0 0h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H0V0Z" fill="none" stroke="#000" stroke-width="1.2"/><rect x="2" y="2.5" width="10" height="7" rx="1" fill="#000"/><rect x="16.5" y="4" width="1.5" height="4" rx="0.5" fill="#000"/></svg>
+        </div>
+      </div>
+      <div class="chat-header">
+        <div class="gpt-orb"></div>
+      </div>
+      <div class="chat-body">
+        <div class="msg msg-user" style="font-size:14.5px;">Yes, that would be great!</div>
+        <div class="msg msg-assistant">
+          <p>Here are 5 radiologists near you that accept your insurance and are available for booking via Nirvana:</p>
+        </div>
+
+        <!-- Carousel -->
+        <div class="carousel-container">
+          <!-- Card 1 -->
+          <div class="doctor-card">
+            <div class="doctor-card-inner">
+              <div class="doctor-avatar-row">
+                <div class="doctor-avatar" style="background: linear-gradient(135deg, #6366F1, #8B5CF6);">SC</div>
+                <div>
+                  <div class="doctor-name">Dr. Sarah Chen, MD</div>
+                  <div class="doctor-specialty">Radiologist</div>
+                </div>
+              </div>
+              <div class="doctor-stats">
+                <div class="doctor-rating">
+                  <span class="star-icon">&#9733;</span> 4.92
+                </div>
+                <span class="doctor-reviews">187 reviews</span>
+                <span class="doctor-distance">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1C4.067 1 2.5 2.567 2.5 4.5C2.5 7.25 6 11 6 11C6 11 9.5 7.25 9.5 4.5C9.5 2.567 7.933 1 6 1Z" fill="none" stroke="#9CA3AF" stroke-width="1.2"/><circle cx="6" cy="4.5" r="1.25" fill="#9CA3AF"/></svg>
+                  2.3 mi
+                </span>
+              </div>
+              <div class="doctor-address">425 E 61st St, New York, NY 10065</div>
+              <div class="in-network-badge">
+                <span class="n-glyph">N</span> In Network
+              </div>
+              <div class="book-btn">Book</div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="doctor-card">
+            <div class="doctor-card-inner">
+              <div class="doctor-avatar-row">
+                <div class="doctor-avatar" style="background: linear-gradient(135deg, #0891B2, #06B6D4);">MR</div>
+                <div>
+                  <div class="doctor-name">Dr. Marcus Rivera, MD</div>
+                  <div class="doctor-specialty">Radiologist</div>
+                </div>
+              </div>
+              <div class="doctor-stats">
+                <div class="doctor-rating">
+                  <span class="star-icon">&#9733;</span> 4.87
+                </div>
+                <span class="doctor-reviews">243 reviews</span>
+                <span class="doctor-distance">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1C4.067 1 2.5 2.567 2.5 4.5C2.5 7.25 6 11 6 11C6 11 9.5 7.25 9.5 4.5C9.5 2.567 7.933 1 6 1Z" fill="none" stroke="#9CA3AF" stroke-width="1.2"/><circle cx="6" cy="4.5" r="1.25" fill="#9CA3AF"/></svg>
+                  3.1 mi
+                </span>
+              </div>
+              <div class="doctor-address">1305 York Ave, New York, NY 10021</div>
+              <div class="in-network-badge">
+                <span class="n-glyph">N</span> In Network
+              </div>
+              <div class="book-btn">Book</div>
+            </div>
+          </div>
+
+          <!-- Card 3 (partial) -->
+          <div class="doctor-card">
+            <div class="doctor-card-inner">
+              <div class="doctor-avatar-row">
+                <div class="doctor-avatar" style="background: linear-gradient(135deg, #D97706, #F59E0B);">PP</div>
+                <div>
+                  <div class="doctor-name">Dr. Priya Patel, MD</div>
+                  <div class="doctor-specialty">Radiologist</div>
+                </div>
+              </div>
+              <div class="doctor-stats">
+                <div class="doctor-rating">
+                  <span class="star-icon">&#9733;</span> 4.95
+                </div>
+                <span class="doctor-reviews">156 reviews</span>
+                <span class="doctor-distance">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1C4.067 1 2.5 2.567 2.5 4.5C2.5 7.25 6 11 6 11C6 11 9.5 7.25 9.5 4.5C9.5 2.567 7.933 1 6 1Z" fill="none" stroke="#9CA3AF" stroke-width="1.2"/><circle cx="6" cy="4.5" r="1.25" fill="#9CA3AF"/></svg>
+                  4.0 mi
+                </span>
+              </div>
+              <div class="doctor-address">530 1st Ave, New York, NY 10016</div>
+              <div class="in-network-badge">
+                <span class="n-glyph">N</span> In Network
+              </div>
+              <div class="book-btn">Book</div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="doctor-card">
+            <div class="doctor-card-inner">
+              <div class="doctor-avatar-row">
+                <div class="doctor-avatar" style="background: linear-gradient(135deg, #059669, #10B981);">JO</div>
+                <div>
+                  <div class="doctor-name">Dr. James Okafor, MD</div>
+                  <div class="doctor-specialty">Radiologist</div>
+                </div>
+              </div>
+              <div class="doctor-stats">
+                <div class="doctor-rating">
+                  <span class="star-icon">&#9733;</span> 4.78
+                </div>
+                <span class="doctor-reviews">312 reviews</span>
+                <span class="doctor-distance">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1C4.067 1 2.5 2.567 2.5 4.5C2.5 7.25 6 11 6 11C6 11 9.5 7.25 9.5 4.5C9.5 2.567 7.933 1 6 1Z" fill="none" stroke="#9CA3AF" stroke-width="1.2"/><circle cx="6" cy="4.5" r="1.25" fill="#9CA3AF"/></svg>
+                  4.5 mi
+                </span>
+              </div>
+              <div class="doctor-address">161 Fort Washington Ave, NY 10032</div>
+              <div class="in-network-badge">
+                <span class="n-glyph">N</span> In Network
+              </div>
+              <div class="book-btn">Book</div>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="doctor-card">
+            <div class="doctor-card-inner">
+              <div class="doctor-avatar-row">
+                <div class="doctor-avatar" style="background: linear-gradient(135deg, #DC2626, #F43F5E);">EN</div>
+                <div>
+                  <div class="doctor-name">Dr. Emily Nakamura, MD</div>
+                  <div class="doctor-specialty">Radiologist</div>
+                </div>
+              </div>
+              <div class="doctor-stats">
+                <div class="doctor-rating">
+                  <span class="star-icon">&#9733;</span> 4.91
+                </div>
+                <span class="doctor-reviews">198 reviews</span>
+                <span class="doctor-distance">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1C4.067 1 2.5 2.567 2.5 4.5C2.5 7.25 6 11 6 11C6 11 9.5 7.25 9.5 4.5C9.5 2.567 7.933 1 6 1Z" fill="none" stroke="#9CA3AF" stroke-width="1.2"/><circle cx="6" cy="4.5" r="1.25" fill="#9CA3AF"/></svg>
+                  5.2 mi
+                </span>
+              </div>
+              <div class="doctor-address">3400 Bainbridge Ave, Bronx, NY 10467</div>
+              <div class="in-network-badge">
+                <span class="n-glyph">N</span> In Network
+              </div>
+              <div class="book-btn">Book</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <div class="chat-input">
+          Type your message
+          <div class="send-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13V3M8 3L3 8M8 3L13 8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 6 ==================== -->
+<div class="screen-wrapper">
+  <div class="screen-label">Screen 6</div>
+  <div class="screen-description">Time slot selection sheet</div>
+  <div class="iphone-frame">
+    <div class="overlay-screen">
+      <div class="chat-screen" style="filter: brightness(0.55);">
+        <div class="status-bar" style="background:transparent;">
+          <span class="status-time" style="color:#fff;">9:42</span>
+          <div class="status-icons">
+            <svg viewBox="0 0 18 18" fill="none"><rect x="1" y="3" width="3" height="12" rx="0.8" fill="none" stroke="#fff" stroke-width="1.2"/><rect x="5.5" y="5" width="3" height="10" rx="0.8" fill="none" stroke="#fff" stroke-width="1.2"/><rect x="10" y="3" width="3" height="12" rx="0.8" fill="none" stroke="#fff" stroke-width="1.2"/><rect x="14.5" y="1" width="3" height="14" rx="0.8" fill="none" stroke="#fff" stroke-width="1.2"/></svg>
+            <svg viewBox="0 0 18 12"><path d="M0 0h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H0V0Z" fill="none" stroke="#fff" stroke-width="1.2"/><rect x="2" y="2.5" width="10" height="7" rx="1" fill="#fff"/><rect x="16.5" y="4" width="1.5" height="4" rx="0.5" fill="#fff"/></svg>
+          </div>
+        </div>
+        <div class="chat-header"><div class="gpt-orb"></div></div>
+        <div class="chat-body">
+          <div class="msg msg-assistant" style="font-size:14px;">Here are 5 radiologists near you...</div>
+        </div>
+      </div>
+
+      <div class="bottom-sheet" style="padding-bottom:36px;">
+        <div class="sheet-handle"></div>
+        <div class="sheet-content">
+          <div class="sheet-doctor-header">
+            <div class="sheet-doctor-avatar" style="background: linear-gradient(135deg, #6366F1, #8B5CF6);">SC</div>
+            <div>
+              <div class="sheet-doctor-name">Dr. Sarah Chen, MD</div>
+              <div class="sheet-doctor-sub">Radiologist &middot; 425 E 61st St</div>
+            </div>
+          </div>
+
+          <div class="section-label">Select a date</div>
+          <div class="date-selector">
+            <div class="date-pill selected">
+              <span class="day-name">Mon</span>
+              <span class="day-num">24</span>
+            </div>
+            <div class="date-pill">
+              <span class="day-name">Tue</span>
+              <span class="day-num">25</span>
+            </div>
+            <div class="date-pill">
+              <span class="day-name">Wed</span>
+              <span class="day-num">26</span>
+            </div>
+            <div class="date-pill">
+              <span class="day-name">Thu</span>
+              <span class="day-num">27</span>
+            </div>
+            <div class="date-pill">
+              <span class="day-name">Fri</span>
+              <span class="day-num">28</span>
+            </div>
+          </div>
+
+          <div class="section-label">Available times</div>
+          <div class="time-grid">
+            <div class="time-slot">9:00 AM</div>
+            <div class="time-slot">9:30 AM</div>
+            <div class="time-slot selected">10:00 AM</div>
+            <div class="time-slot">10:30 AM</div>
+            <div class="time-slot">11:00 AM</div>
+            <div class="time-slot">11:30 AM</div>
+            <div class="time-slot">1:00 PM</div>
+            <div class="time-slot">1:30 PM</div>
+            <div class="time-slot">2:00 PM</div>
+          </div>
+
+          <div class="continue-btn" style="background:var(--nirvana-teal);">Continue</div>
+
+          <div class="powered-by">
+            powered by <span class="mini-logo">N</span> <strong style="color:#6B7280;">Nirvana</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 7 ==================== -->
+<div class="screen-wrapper">
+  <div class="screen-label">Screen 7</div>
+  <div class="screen-description">Payment & booking confirmation sheet</div>
+  <div class="iphone-frame">
+    <div class="overlay-screen">
+      <div class="chat-screen" style="filter: brightness(0.55);">
+        <div class="status-bar" style="background:transparent;">
+          <span class="status-time" style="color:#fff;">9:42</span>
+          <div class="status-icons">
+            <svg viewBox="0 0 18 18" fill="none"><rect x="1" y="3" width="3" height="12" rx="0.8" fill="none" stroke="#fff" stroke-width="1.2"/><rect x="5.5" y="5" width="3" height="10" rx="0.8" fill="none" stroke="#fff" stroke-width="1.2"/><rect x="10" y="3" width="3" height="12" rx="0.8" fill="none" stroke="#fff" stroke-width="1.2"/><rect x="14.5" y="1" width="3" height="14" rx="0.8" fill="none" stroke="#fff" stroke-width="1.2"/></svg>
+            <svg viewBox="0 0 18 12"><path d="M0 0h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H0V0Z" fill="none" stroke="#fff" stroke-width="1.2"/><rect x="2" y="2.5" width="10" height="7" rx="1" fill="#fff"/><rect x="16.5" y="4" width="1.5" height="4" rx="0.5" fill="#fff"/></svg>
+          </div>
+        </div>
+        <div class="chat-header"><div class="gpt-orb"></div></div>
+        <div class="chat-body">
+          <div class="msg msg-assistant" style="font-size:14px;">Here are 5 radiologists near you...</div>
+        </div>
+      </div>
+
+      <div class="bottom-sheet" style="padding-bottom:36px;">
+        <div class="sheet-handle"></div>
+        <div class="sheet-content">
+          <!-- Appointment Summary -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="nirvana-logo" style="width:28px;height:28px;font-size:14px;border-radius:8px;">N</div>
+              <span style="font-size:16px;font-weight:600;color:#111;letter-spacing:-0.02em;">Book Appointment</span>
+            </div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+
+          <div class="summary-card">
+            <div class="summary-row">
+              <span class="summary-label">Doctor</span>
+              <span class="summary-value">Dr. Sarah Chen, MD</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Date</span>
+              <span class="summary-value">Mon, Mar 24</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Time</span>
+              <span class="summary-value">10:00 AM</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Location</span>
+              <span class="summary-value" style="font-size:13px;">425 E 61st St, NY 10065</span>
+            </div>
+          </div>
+
+          <div class="cost-highlight">
+            <span class="cost-label">Estimated copay with insurance</span>
+            <span class="cost-amount">$45.00</span>
+          </div>
+
+          <!-- Payment Method -->
+          <div class="payment-section">
+            <div class="payment-section-label">Payment method</div>
+            <div class="payment-row">
+              <div class="visa-badge">VISA</div>
+              <div class="payment-info">
+                <div class="payment-name">Chase Sapphire</div>
+                <div class="payment-detail">&bull;&bull;&bull;&bull; 4242</div>
+              </div>
+              <span class="chevron">&rsaquo;</span>
+            </div>
+          </div>
+
+          <!-- Address -->
+          <div class="payment-section">
+            <div class="payment-section-label">Billing address</div>
+            <div class="payment-row">
+              <div class="address-icon">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 8L10 2L17 8V17C17 17.5523 16.5523 18 16 18H4C3.44772 18 3 17.5523 3 17V8Z" stroke="#374151" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 18V10H13V18" stroke="#374151" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="payment-info">
+                <div class="payment-name">Alex Thompson</div>
+                <div class="payment-detail">742 Maplewood Drive, Sunnyvale, CA 94086</div>
+              </div>
+              <span class="chevron">&rsaquo;</span>
+            </div>
+          </div>
+
+          <!-- CVV -->
+          <div class="cvv-section">
+            <div class="payment-section-label">Security code</div>
+            <div class="cvv-input">
+              <span style="color:#9CA3AF;">Enter CVV</span>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="8" width="16" height="10" rx="2" stroke="#9CA3AF" stroke-width="1.5"/><path d="M5 8V5C5 2.79086 6.79086 1 9 1H11C13.2091 1 15 2.79086 15 5V8" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="13" r="1.5" fill="#9CA3AF"/></svg>
+            </div>
+          </div>
+
+          <div class="continue-btn dark">Book Appointment &mdash; $45.00</div>
+
+          <div class="powered-by">
+            powered by <span class="mini-logo">N</span> <strong style="color:#6B7280;">Nirvana</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SCREEN 8 ==================== -->
+<div class="screen-wrapper">
+  <div class="screen-label">Screen 8</div>
+  <div class="screen-description">Appointment confirmed — back in chat</div>
+  <div class="iphone-frame">
+    <div class="chat-screen">
+      <div class="status-bar">
+        <span class="status-time">9:43</span>
+        <div class="status-icons">
+          <svg viewBox="0 0 18 18" fill="none"><rect x="1" y="3" width="3" height="12" rx="0.8" fill="none" stroke="#000" stroke-width="1.2"/><rect x="5.5" y="5" width="3" height="10" rx="0.8" fill="none" stroke="#000" stroke-width="1.2"/><rect x="10" y="3" width="3" height="12" rx="0.8" fill="none" stroke="#000" stroke-width="1.2"/><rect x="14.5" y="1" width="3" height="14" rx="0.8" fill="none" stroke="#000" stroke-width="1.2"/></svg>
+          <svg viewBox="0 0 18 12" fill="#000"><path d="M0 0h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H0V0Z" fill="none" stroke="#000" stroke-width="1.2"/><rect x="2" y="2.5" width="10" height="7" rx="1" fill="#000"/><rect x="16.5" y="4" width="1.5" height="4" rx="0.5" fill="#000"/></svg>
+        </div>
+      </div>
+      <div class="chat-header">
+        <div class="gpt-orb"></div>
+      </div>
+      <div class="chat-body">
+        <div class="msg msg-user" style="font-size:14.5px;">Yes, that would be great!</div>
+
+        <div class="msg msg-assistant" style="max-width:100%;">
+          <p>Your appointment has been booked! Here's your confirmation:</p>
+
+          <div class="confirmation-card">
+            <div class="confirmation-header">
+              <div class="confirmation-check">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="confirmation-title">Appointment Confirmed</div>
+            </div>
+            <div class="confirmation-body">
+              <div class="confirmation-row">
+                <span class="confirmation-label">Doctor</span>
+                <span class="confirmation-value">Dr. Sarah Chen, MD</span>
+              </div>
+              <div class="confirmation-row">
+                <span class="confirmation-label">Specialty</span>
+                <span class="confirmation-value">Radiologist</span>
+              </div>
+              <div class="confirmation-divider"></div>
+              <div class="confirmation-row">
+                <span class="confirmation-label">Date</span>
+                <span class="confirmation-value">Monday, Mar 24</span>
+              </div>
+              <div class="confirmation-row">
+                <span class="confirmation-label">Time</span>
+                <span class="confirmation-value">10:00 AM</span>
+              </div>
+              <div class="confirmation-divider"></div>
+              <div class="confirmation-row">
+                <span class="confirmation-label">Location</span>
+                <span class="confirmation-value" style="font-size:13px;">425 E 61st St<br>New York, NY 10065</span>
+              </div>
+              <div class="confirmation-divider"></div>
+              <div class="confirmation-row">
+                <span class="confirmation-label">Estimated copay</span>
+                <span class="confirmation-value" style="color:var(--nirvana-teal);font-size:16px;font-weight:700;">$45.00</span>
+              </div>
+            </div>
+          </div>
+
+          <p style="margin-top:14px;">The appointment confirmation has been sent to your email as well. Is there anything else I can help you with?</p>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <div class="chat-input">
+          Type your message
+          <div class="send-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13V3M8 3L3 8M8 3L13 8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
