@@ -549,13 +549,14 @@ html, body, #root {
 }
 
 .cvv-input {
-  width: 100%;
+  width: 69px;
   height: 44px;
   border: 1px solid #ad9d92;
   border-radius: 6px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 6px;
   padding: 0 12px;
 }
 

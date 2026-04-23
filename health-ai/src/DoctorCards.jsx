@@ -60,7 +60,7 @@ export default function DoctorCards({ onBook, showTap, disabled }) {
           <div className="doctor-address">{doc.address}</div>
 
           <div className="doctor-tags">
-            <img src={`${base}assets/nirvana-glyph.png`} alt="" style={{ height: 12, width: 'auto' }} />
+            <img src={`${base}assets/nirvana-glyph.svg`} alt="" style={{ width: 10, height: 10 }} />
             <img src={`${base}assets/amazone-one.png`} alt="" style={{ height: 16, width: 'auto' }} />
             In-network
           </div>
