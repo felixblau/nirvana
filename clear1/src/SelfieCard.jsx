@@ -137,7 +137,7 @@ export default function SelfieCard() {
       <style>{`
         @keyframes glow-navy{0%,100%{box-shadow:0 0 0 0 rgba(8,18,69,0.12)}50%{box-shadow:0 0 0 5px rgba(8,18,69,0.18)}}
       `}</style>
-      <div style={{ border: `2px solid ${T.navy}`, borderRadius: r.lg + 4, background: T.white, animation: "glow-navy 2.5s ease-in-out infinite" }}>
+      <div style={{ border: `2px solid ${T.navy}`, borderRadius: r.lg + 4, background: T.white, animation: "glow-navy 2.5s ease-in-out infinite", overflow: "hidden" }}>
         <div onClick={() => setExpanded(e => !e)}
           style={{ display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", padding: 20, transition: `background ${motion}` }}
           onMouseEnter={e => e.currentTarget.style.background = T.blueWash}
