@@ -1,4 +1,4 @@
-import { useState, Suspense } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { GenerativeArtScene } from "@/components/ui/anomalous-matter-hero";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +16,18 @@ function App() {
   const [submitted, setSubmitted] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const glowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (glowRef.current) {
+        glowRef.current.style.left = `${e.clientX}px`;
+        glowRef.current.style.top = `${e.clientY}px`;
+      }
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,6 +41,17 @@ function App() {
       </Suspense>
 
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/30 z-10" />
+
+      <div
+        ref={glowRef}
+        className="pointer-events-none fixed z-30 -translate-x-1/2 -translate-y-1/2"
+        style={{
+          width: 400,
+          height: 400,
+          background: "radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%)",
+          mixBlendMode: "screen",
+        }}
+      />
 
       <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-6">
         <div

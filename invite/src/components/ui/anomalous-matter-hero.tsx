@@ -88,9 +88,9 @@ export function GenerativeArtScene() {
         void main() {
           vNormal = normal;
           vPosition = position;
-          float mouseInfluence = smoothstep(2.0, 0.0, length(position.xy - mousePos * 3.0));
+          float mouseInfluence = smoothstep(3.5, 0.0, length(position.xy - mousePos * 4.0));
           float displacement = snoise(position * 2.0 + time * 0.5) * 0.2;
-          displacement += mouseInfluence * 0.15;
+          displacement += mouseInfluence * 0.6;
           vec3 newPosition = position + normal * displacement;
           vWorldPosition = newPosition;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
@@ -109,10 +109,12 @@ export function GenerativeArtScene() {
           float fresnel = 1.0 - abs(dot(normal, vec3(0.0, 0.0, 1.0)));
           fresnel = pow(fresnel, 1.5);
           float gradient = (vWorldPosition.y + 4.0) / 8.0;
-          float mouseDist = smoothstep(2.5, 0.0, length(vWorldPosition.xy - mousePos * 3.0));
-          gradient = clamp(gradient + mouseDist * 0.3, 0.0, 1.0);
+          float mouseDist = smoothstep(3.5, 0.0, length(vWorldPosition.xy - mousePos * 4.0));
+          gradient = clamp(gradient + mouseDist * 0.2, 0.0, 1.0);
           vec3 color = mix(colorA, colorB, gradient);
-          vec3 finalColor = color * (0.3 + fresnel * 0.7 + mouseDist * 0.4);
+          vec3 baseColor = color * (0.3 + fresnel * 0.7);
+          vec3 whiteHighlight = vec3(1.0) * mouseDist * mouseDist * 1.2;
+          vec3 finalColor = baseColor + whiteHighlight;
           gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
