@@ -4,6 +4,7 @@
   "rewrites": [
     { "source": "/pt-checkin", "destination": "/pt-checkin/index.html" },
     { "source": "/clear1", "destination": "/clear1/index.html" },
-    { "source": "/amazon", "destination": "/amazon/index.html" }
+    { "source": "/amazon", "destination": "/amazon/index.html" },
+    { "source": "/wallet-e2e", "destination": "/wallet-e2e/index.html" }
   ]
 }
