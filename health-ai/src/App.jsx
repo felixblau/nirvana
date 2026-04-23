@@ -63,18 +63,20 @@ function AnimateIn({ children, delay = 0, style }) {
 }
 
 const STEPS = {
-  INITIAL: 0,
-  AI_RESPONSE: 1,
-  USER_REPLY: 2,
-  RETRIEVAL: 3,
-  PROCESSING_1: 4,
-  PROCESSING_2: 5,
-  PROCESSING_3: 6,
-  RESULTS: 7,
-  BOOKING: 8,
-  PAYMENT_EMPTY: 9,
-  PAYMENT_FILLED: 10,
-  CONFIRMATION: 11,
+  ENTER: 0,
+  INITIAL: 1,
+  AI_RESPONSE: 2,
+  USER_REPLY: 3,
+  RETRIEVAL: 4,
+  PROCESSING_1: 5,
+  PROCESSING_2: 6,
+  PROCESSING_3: 7,
+  RESULTS: 8,
+  BOOKING: 9,
+  PAYMENT_EMPTY: 10,
+  PAYMENT_FILLED: 11,
+  CONFIRMATION: 12,
+  EXIT: 13,
 }
 
 const AI_MSG_1 = "I'm sorry to hear about your knee pain. Based on what you're describing - sharp pain on the outer side of your right knee that worsens with stair climbing - this could be related to several conditions, including iliotibial band syndrome, a lateral meniscus issue, or possible ligament strain.\n\nIn this case, imaging would be really helpful. **Based on your symptoms, I suggest you consult a radiologist.** Would you like me to find some radiologists you can reach out to?"
@@ -82,6 +84,7 @@ const AI_MSG_2 = "Here are 3 radiologists near you that accept your insurance an
 const AI_MSG_3 = "Okay! Appointment is booked.\nYour appointment is with Dr. Priya Sharma, on Monday March 24 at 9:00AM. You will also shortly receive a confirmation email at **michael@dundermifflin.com**"
 
 const TIMINGS = {
+  [STEPS.ENTER]: 1200,
   [STEPS.INITIAL]: 800,
   [STEPS.USER_REPLY]: 1500,
   [STEPS.RETRIEVAL]: 2000,
@@ -93,10 +96,11 @@ const TIMINGS = {
   [STEPS.PAYMENT_EMPTY]: 2000,
   [STEPS.PAYMENT_FILLED]: 2500,
   [STEPS.CONFIRMATION]: 6000,
+  [STEPS.EXIT]: 1200,
 }
 
 export default function App() {
-  const [step, setStep] = useState(STEPS.INITIAL)
+  const [step, setStep] = useState(STEPS.ENTER)
   const [paused, setPaused] = useState(false)
   const [showTap, setShowTap] = useState(false)
   const chatRef = useRef(null)
@@ -107,9 +111,9 @@ export default function App() {
 
   const advanceStep = () => {
     setShowTap(false)
-    if (step === STEPS.CONFIRMATION) {
+    if (step === STEPS.EXIT) {
       chatRef.current?.scrollTo({ top: 0 })
-      setStep(STEPS.INITIAL)
+      setStep(STEPS.ENTER)
     } else {
       setStep(s => s + 1)
     }
@@ -145,6 +149,16 @@ export default function App() {
     }, 150)
   }, [step])
 
+  const phoneVisible = step >= STEPS.INITIAL && step <= STEPS.CONFIRMATION
+  const [phoneMounted, setPhoneMounted] = useState(false)
+  useEffect(() => {
+    if (phoneVisible) {
+      requestAnimationFrame(() => setPhoneMounted(true))
+    } else {
+      setPhoneMounted(false)
+    }
+  }, [phoneVisible])
+
   const showAiResponse = step >= STEPS.AI_RESPONSE
   const showSheet = step >= STEPS.PROCESSING_1 && step <= STEPS.PROCESSING_3
   const showResults = step >= STEPS.RESULTS
@@ -157,7 +171,16 @@ export default function App() {
   if (step === STEPS.PROCESSING_3) processingStep = 2
 
   return (
-    <div className="phone" onClick={() => setPaused(p => !p)}>
+    <div
+      className="phone"
+      onClick={() => setPaused(p => !p)}
+      style={{
+        transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+        opacity: phoneMounted ? 1 : 0,
+        transform: phoneMounted ? 'translateY(0) scale(1)' : 'translateY(120px) scale(0.95)',
+        filter: phoneMounted ? 'blur(0px)' : 'blur(12px)',
+      }}
+    >
       {/* Status bar */}
       <div className="status-bar">
         <span>9:41</span>
