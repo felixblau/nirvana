@@ -105,7 +105,7 @@ export default function QRCard() {
               </div>
             </div>
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontFamily: font, fontSize: 16, fontWeight: 600, color: T.deepPurple }}>Sandra Williams</div>
+              <div style={{ fontFamily: font, fontSize: 16, fontWeight: 600, color: T.deepPurple }}>Simon Wolf</div>
               <div style={{ fontFamily: font, fontSize: 12, color: T.warmShadow }}>BCBS PPO Blue Choice</div>
             </div>
           </div>

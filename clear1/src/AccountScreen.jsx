@@ -16,9 +16,9 @@ export default function AccountScreen({ alerts, onDismiss }) {
       <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
         <div style={{ width: 56, height: 56, borderRadius: "50%", background: T.blueWash, border: `2px solid ${T.navy}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: font, fontSize: 18, fontWeight: 600, color: T.navy, flexShrink: 0 }}>SW</div>
         <div>
-          <div style={{ fontFamily: font, fontSize: 18, fontWeight: 600, color: T.navy }}>Sandra Williams</div>
+          <div style={{ fontFamily: font, fontSize: 18, fontWeight: 600, color: T.navy }}>Simon Wolf</div>
           <div style={{ fontFamily: font, fontSize: 13, color: T.warmShadow, marginTop: 2, display: "flex", alignItems: "center", gap: 5 }}>
-            <Icon name="fa-envelope" weight="thin" size={11} />sandra.w@email.com
+            <Icon name="fa-envelope" weight="thin" size={11} />simon.w@email.com
           </div>
         </div>
       </div>

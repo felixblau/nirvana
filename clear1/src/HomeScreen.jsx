@@ -10,7 +10,7 @@ export default function HomeScreen({ alerts, onDismiss }) {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div>
           <div style={{ fontFamily: font, fontSize: 13, color: T.navy }}>Welcome back,</div>
-          <div style={{ fontFamily: font, fontSize: 28, fontWeight: 700, color: T.navy, letterSpacing: "-0.03em", lineHeight: 1.1 }}>Sandra</div>
+          <div style={{ fontFamily: font, fontSize: 28, fontWeight: 700, color: T.navy, letterSpacing: "-0.03em", lineHeight: 1.1 }}>Simon</div>
         </div>
         <div style={{ width: 42, height: 42, borderRadius: "50%", background: T.blueWash, border: `1.5px solid ${T.navy}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: font, fontSize: 13, fontWeight: 600, color: T.navy, flexShrink: 0 }}>SW</div>
       </div>
@@ -40,7 +40,7 @@ export default function HomeScreen({ alerts, onDismiss }) {
       <Card>
         <SectionLabel dark>Shared at verification</SectionLabel>
         <div style={{ marginTop: 10 }}>
-          {[["Full name","Sandra Williams"],["Date of birth","07/22/1985"],["Member ID","BCBS-772-441-09"],["Address","5412 N Kedzie Ave, Chicago IL"],["Reason for visit","Sore throat, fever"],["Insurance","BCBS PPO · Active ✓"],["Copay","$40"]].map(([k,v],i,a) => (
+          {[["Full name","Simon Wolf"],["Date of birth","07/22/1985"],["Member ID","BCBS-772-441-09"],["Address","5412 N Kedzie Ave, Chicago IL"],["Reason for visit","Sore throat, fever"],["Insurance","BCBS PPO · Active ✓"],["Copay","$40"]].map(([k,v],i,a) => (
             <div key={k} style={{ display: "flex", justifyContent: "space-between", fontFamily: font, fontSize: 13, paddingBottom: 9, marginBottom: 9, borderBottom: i < a.length-1 ? `0.5px solid ${T.divider}` : "none" }}>
               <span style={{ color: T.warmShadow }}>{k}</span>
               <span style={{ color: v.includes("✓") ? T.green : T.navy, fontWeight: v.includes("✓") ? 600 : 400, textAlign: "right", maxWidth: "55%" }}>{v}</span>
