@@ -94,7 +94,8 @@ export default function SelfieCard() {
           @keyframes scan-line{0%{top:20%}50%{top:70%}100%{top:20%}}
           @keyframes fade-in{from{opacity:0}to{opacity:1}}
         `}</style>
-        <div style={{ position: "absolute", inset: 0, zIndex: 50, background: "#111", animation: "fade-in 0.3s ease" }}>
+        <div style={{ position: "absolute", inset: 0, zIndex: 50, background: "#000", animation: "fade-in 0.3s ease" }}>
+          <img src={`${import.meta.env.BASE_URL}fakeportrait.png`} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }} />
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 92, background: "linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 100%)", zIndex: 2 }} />
           <div style={{ position: "absolute", top: 60, right: 24, zIndex: 3 }}>
             <Icon name="fa-circle-question" weight="thin" size={24} style={{ color: T.white }} />
@@ -104,11 +105,8 @@ export default function SelfieCard() {
               <span style={{ fontFamily: font, fontSize: 16, fontWeight: 600, color: T.textBlack, letterSpacing: "-0.02em", whiteSpace: "nowrap" }}>Center your face and hold still</span>
             </div>
           </div>
-          <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 280, height: 360 }}>
-            <div style={{ width: "100%", height: "100%", borderRadius: "50%", border: `3px solid rgba(255,255,255,0.8)`, position: "relative", overflow: "hidden", background: "linear-gradient(180deg, #2a2a4a 0%, #1a1a2e 50%, #222 100%)" }}>
-              <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
-                <Icon name="fa-circle-user" weight="thin" size={100} style={{ color: "rgba(255,255,255,0.2)" }} />
-              </div>
+          <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 280, height: 360, zIndex: 2 }}>
+            <div style={{ width: "100%", height: "100%", borderRadius: "50%", border: `3px solid rgba(255,255,255,0.8)`, position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", left: 0, right: 0, height: 2, background: `linear-gradient(90deg, transparent, rgba(239,247,251,0.6), transparent)`, animation: "scan-line 2s ease-in-out infinite" }} />
             </div>
           </div>
