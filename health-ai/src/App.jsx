@@ -90,7 +90,7 @@ export default function App() {
   }, [step, paused])
 
   useEffect(() => {
-    if (step <= STEPS.USER_REPLY) return
+    if (step < STEPS.RESULTS) return
     setTimeout(() => {
       endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
     }, 150)
@@ -157,8 +157,8 @@ export default function App() {
 
         {/* User reply */}
         {step >= STEPS.USER_REPLY && (
-          <AnimateIn style={{ alignSelf: 'flex-end' }}>
-            <div className="msg-user" style={{ whiteSpace: 'nowrap' }}>yes please</div>
+          <AnimateIn style={{ alignSelf: 'flex-end', display: 'inline-flex' }}>
+            <div className="msg-user" style={{ whiteSpace: 'nowrap', alignSelf: 'auto' }}>yes please</div>
           </AnimateIn>
         )}
 
