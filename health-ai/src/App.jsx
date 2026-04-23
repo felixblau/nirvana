@@ -80,6 +80,7 @@ export default function App() {
     stepTimer = setTimeout(() => {
       setShowTap(false)
       if (step === STEPS.CONFIRMATION) {
+        chatRef.current?.scrollTo({ top: 0 })
         setStep(STEPS.INITIAL_CHAT)
       } else {
         setStep(s => s + 1)
