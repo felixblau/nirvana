@@ -74,7 +74,7 @@ const AI_MSG_2 = "Here are 3 radiologists near you that accept your insurance an
 const AI_MSG_3 = "Okay! Appointment is booked.\nYour appointment is with Dr. Priya Sharma, on Monday March 24 at 9:00AM. You will also shortly receive a confirmation email at **michael@dundermifflin.com**"
 
 const TIMINGS = {
-  [STEPS.INITIAL]: 4000,
+  [STEPS.INITIAL]: 800,
   [STEPS.AI_RESPONSE]: 5000,
   [STEPS.USER_REPLY]: 1500,
   [STEPS.RETRIEVAL]: 2000,
