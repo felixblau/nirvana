@@ -58,21 +58,35 @@ const TIMINGS = {
 export default function App() {
   const [step, setStep] = useState(STEPS.INITIAL_CHAT)
   const [paused, setPaused] = useState(false)
+  const [showTap, setShowTap] = useState(false)
   const chatRef = useRef(null)
   const endRef = useRef(null)
+
+  const TAP_STEPS = new Set([STEPS.RESULTS, STEPS.BOOKING, STEPS.PAYMENT_EMPTY, STEPS.PAYMENT_FILLED])
+  const TAP_LEAD = 900
 
   useEffect(() => {
     if (paused) return
     const delay = TIMINGS[step]
     if (delay == null) return
-    const t = setTimeout(() => {
+
+    const hasTap = TAP_STEPS.has(step)
+    let tapTimer, stepTimer
+
+    if (hasTap) {
+      tapTimer = setTimeout(() => setShowTap(true), delay - TAP_LEAD)
+    }
+
+    stepTimer = setTimeout(() => {
+      setShowTap(false)
       if (step === STEPS.CONFIRMATION) {
         setStep(STEPS.INITIAL_CHAT)
       } else {
         setStep(s => s + 1)
       }
     }, delay)
-    return () => clearTimeout(t)
+
+    return () => { clearTimeout(tapTimer); clearTimeout(stepTimer) }
   }, [step, paused])
 
   useEffect(() => {
@@ -164,7 +178,7 @@ export default function App() {
               Here are 3 radiologists near you that accept your insurance and are available for booking via Nirvana:
             </div>
             <div style={{ marginTop: 12 }}>
-              <DoctorCards onBook={() => {}} />
+              <DoctorCards onBook={() => {}} showTap={showTap && step === STEPS.RESULTS} />
             </div>
           </AnimateIn>
         )}
@@ -198,8 +212,8 @@ export default function App() {
 
       {/* Sheets */}
       {showSheet && <ProcessingSheet activeStep={processingStep} />}
-      {showBooking && <BookingSheet onBook={() => {}} />}
-      {showPayment && <PaymentSheet cvvFilled={step === STEPS.PAYMENT_FILLED} onConfirm={() => {}} />}
+      {showBooking && <BookingSheet onBook={() => {}} showTap={showTap} />}
+      {showPayment && <PaymentSheet cvvFilled={step === STEPS.PAYMENT_FILLED} onConfirm={() => {}} showTap={showTap} />}
 
       {/* Pause indicator */}
       {paused && (

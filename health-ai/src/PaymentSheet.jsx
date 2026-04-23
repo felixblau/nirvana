@@ -1,6 +1,7 @@
 import { ChevronRight, LockIcon, NirvanaLogo } from './Icons'
+import TapRipple from './TapRipple'
 
-export default function PaymentSheet({ cvvFilled, onConfirm }) {
+export default function PaymentSheet({ cvvFilled, onConfirm, showTap }) {
   return (
     <div className="sheet-overlay">
       <div className="sheet">
@@ -44,17 +45,20 @@ export default function PaymentSheet({ cvvFilled, onConfirm }) {
 
         <div className="cvv-section">
           <div className="payment-section-label">CVV</div>
-          <div className="cvv-input">
+          <div className="cvv-input" style={{ position: 'relative', overflow: 'hidden' }}>
             {cvvFilled ? <span className="cvv-dots">•••</span> : null}
             <LockIcon />
+            {showTap && !cvvFilled && <TapRipple />}
           </div>
         </div>
 
         <button
           className={`book-appointment-btn ${cvvFilled ? '' : 'disabled'}`}
           onClick={cvvFilled ? onConfirm : undefined}
+          style={{ position: 'relative', overflow: 'hidden' }}
         >
           Book Appointment – $45.00
+          {showTap && cvvFilled && <TapRipple />}
         </button>
 
         <div className="sheet-footer">

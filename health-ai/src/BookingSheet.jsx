@@ -1,4 +1,5 @@
 import { NirvanaLogo } from './Icons'
+import TapRipple from './TapRipple'
 
 const DATES = [
   { day: 'MON', num: 24 },
@@ -14,7 +15,7 @@ const TIMES = [
   '1:30PM', '2:00PM', '2:30PM', '3:00PM',
 ]
 
-export default function BookingSheet({ onBook }) {
+export default function BookingSheet({ onBook, showTap }) {
   return (
     <div className="sheet-overlay">
       <div className="sheet">
@@ -51,8 +52,9 @@ export default function BookingSheet({ onBook }) {
           </div>
         </div>
 
-        <button className="book-appointment-btn" onClick={onBook}>
+        <button className="book-appointment-btn" onClick={onBook} style={{ position: 'relative', overflow: 'hidden' }}>
           Book Appointment →
+          {showTap && <TapRipple />}
         </button>
 
         <div className="sheet-footer">

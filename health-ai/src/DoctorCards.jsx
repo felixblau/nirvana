@@ -1,4 +1,5 @@
 import { StarIcon, LocationIcon, InsuranceIcon, PersonIcon, ArrowRight } from './Icons'
+import TapRipple from './TapRipple'
 
 const DOCTORS = [
   {
@@ -30,7 +31,7 @@ const DOCTORS = [
   },
 ]
 
-export default function DoctorCards({ onBook }) {
+export default function DoctorCards({ onBook, showTap }) {
   return (
     <div className="doctor-cards">
       {DOCTORS.map((doc, i) => (
@@ -60,8 +61,9 @@ export default function DoctorCards({ onBook }) {
             <InsuranceIcon /> <PersonIcon /> In-network
           </div>
 
-          <button className={`book-btn ${i === 0 ? '' : ''}`} onClick={i === 0 ? onBook : undefined}>
+          <button className={`book-btn ${i === 0 ? '' : ''}`} onClick={i === 0 ? onBook : undefined} style={{ position: 'relative', overflow: 'hidden' }}>
             Book <ArrowRight />
+            {i === 0 && showTap && <TapRipple />}
           </button>
         </div>
       ))}
