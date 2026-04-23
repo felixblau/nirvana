@@ -55,9 +55,9 @@ export default function TriagePaymentSheet({ doctor, onConfirm, onClose }) {
 
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
           <span style={{ fontFamily: font, fontSize: 13, color: T.deepPurple }}>CVV</span>
-          <div onClick={() => setCvvFilled(true)} style={{ flex: 1, height: 40, borderRadius: r.md, border: `1.5px solid ${cvvFilled ? T.deepPurple : T.warmLight}`, background: T.white, display: "flex", alignItems: "center", justifyContent: "center", gap: 6, cursor: "pointer", fontFamily: font, fontSize: 16, color: T.deepPurple, letterSpacing: 4, transition: `border-color ${motion}` }}>
+          <div onClick={() => setCvvFilled(true)} style={{ width: 80, height: 40, borderRadius: r.md, border: `1.5px solid ${cvvFilled ? T.deepPurple : T.warmLight}`, background: T.white, display: "flex", alignItems: "center", justifyContent: "center", gap: 4, cursor: "pointer", fontFamily: font, fontSize: 16, color: T.deepPurple, letterSpacing: 3, transition: `border-color ${motion}` }}>
             <CvvDots active={cvvFilled} />
-            {!cvvFilled && <Icon name="fa-lock" weight="thin" size={14} style={{ color: T.warmShadow }} />}
+            <Icon name="fa-lock" weight="thin" size={13} style={{ color: T.warmShadow }} />
           </div>
         </div>
 
