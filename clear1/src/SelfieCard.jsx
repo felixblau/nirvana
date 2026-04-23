@@ -105,7 +105,7 @@ export default function SelfieCard() {
               <span style={{ fontFamily: font, fontSize: 16, fontWeight: 600, color: T.textBlack, letterSpacing: "-0.02em", whiteSpace: "nowrap" }}>Center your face and hold still</span>
             </div>
           </div>
-          <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(calc(-50% + 3px), calc(-50% - 26px))", width: 355, height: 461, zIndex: 2 }}>
+          <div style={{ position: "absolute", top: "50%", left: 20, right: 20, transform: "translateY(calc(-50% - 26px))", aspectRatio: "355 / 461", zIndex: 2 }}>
             <div style={{ width: "100%", height: "100%", borderRadius: "50%", border: `3px solid rgba(255,255,255,0.85)`, position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", left: 0, right: 0, height: 2, background: `linear-gradient(90deg, transparent, rgba(239,247,251,0.6), transparent)`, animation: "scan-line 2s ease-in-out infinite" }} />
             </div>
@@ -115,7 +115,7 @@ export default function SelfieCard() {
               <defs>
                 <mask id="cutout">
                   <rect width="100%" height="100%" fill="white" />
-                  <ellipse cx="50.8%" cy="46.8%" rx="178" ry="231" fill="black" />
+                  <ellipse cx="50%" cy="46.8%" rx="47%" ry="30%" fill="black" />
                 </mask>
               </defs>
               <rect width="100%" height="100%" fill="rgba(0,0,0,0.35)" mask="url(#cutout)" />
