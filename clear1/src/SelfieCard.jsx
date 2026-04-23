@@ -95,7 +95,7 @@ export default function SelfieCard() {
           @keyframes fade-in{from{opacity:0}to{opacity:1}}
         `}</style>
         <div style={{ position: "absolute", inset: 0, zIndex: 50, background: "#000", animation: "fade-in 0.3s ease" }}>
-          <img src={`${import.meta.env.BASE_URL}fakeportrait.png`} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }} />
+          <img src={`${import.meta.env.BASE_URL}fakeportrait.png`} alt="" style={{ position: "absolute", top: "-23%", left: "-10%", width: "126%", height: "141%", objectFit: "cover", objectPosition: "center top" }} />
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 92, background: "linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 100%)", zIndex: 2 }} />
           <div style={{ position: "absolute", top: 60, right: 24, zIndex: 3 }}>
             <Icon name="fa-circle-question" weight="thin" size={24} style={{ color: T.white }} />
@@ -105,8 +105,8 @@ export default function SelfieCard() {
               <span style={{ fontFamily: font, fontSize: 16, fontWeight: 600, color: T.textBlack, letterSpacing: "-0.02em", whiteSpace: "nowrap" }}>Center your face and hold still</span>
             </div>
           </div>
-          <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 280, height: 360, zIndex: 2 }}>
-            <div style={{ width: "100%", height: "100%", borderRadius: "50%", border: `3px solid rgba(255,255,255,0.8)`, position: "relative", overflow: "hidden" }}>
+          <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(calc(-50% + 3px), calc(-50% - 26px))", width: 355, height: 461, zIndex: 2 }}>
+            <div style={{ width: "100%", height: "100%", borderRadius: "50%", border: `3px solid rgba(255,255,255,0.85)`, position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", left: 0, right: 0, height: 2, background: `linear-gradient(90deg, transparent, rgba(239,247,251,0.6), transparent)`, animation: "scan-line 2s ease-in-out infinite" }} />
             </div>
           </div>
@@ -115,10 +115,10 @@ export default function SelfieCard() {
               <defs>
                 <mask id="cutout">
                   <rect width="100%" height="100%" fill="white" />
-                  <ellipse cx="50%" cy="50%" rx="140" ry="180" fill="black" />
+                  <ellipse cx="50.8%" cy="46.8%" rx="178" ry="231" fill="black" />
                 </mask>
               </defs>
-              <rect width="100%" height="100%" fill="rgba(0,0,0,0.55)" mask="url(#cutout)" />
+              <rect width="100%" height="100%" fill="rgba(0,0,0,0.35)" mask="url(#cutout)" />
             </svg>
           </div>
           <div style={{ position: "absolute", bottom: 80, left: 0, right: 0, textAlign: "center", zIndex: 3 }}>
