@@ -125,10 +125,12 @@ export function DollarIcon() {
 }
 
 export function NirvanaLogo() {
+  const base = import.meta.env.BASE_URL
   return (
-    <svg className="nirvana-logo" viewBox="0 0 80 16" fill="none">
-      <text x="0" y="12" fontSize="11" fontWeight="600" fill="#9ca3af" fontFamily="-apple-system, sans-serif">nirvana</text>
-    </svg>
+    <>
+      <img src={`${base}assets/nirvana-logo.svg`} alt="Nirvana" style={{ height: 11, width: 'auto', opacity: 0.5 }} />
+      <img src={`${base}assets/amazone-one.png`} alt="Amazon One" style={{ height: 20, width: 'auto', opacity: 0.5 }} />
+    </>
   )
 }
 
