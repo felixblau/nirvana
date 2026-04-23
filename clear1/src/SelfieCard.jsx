@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { T, font, r, motion } from "./theme.js";
 import Icon from "./icons.jsx";
 
@@ -134,41 +134,45 @@ export default function SelfieCard() {
 
   return (
     <>
-      <style>{`@keyframes glow-navy{0%,100%{box-shadow:0 0 0 0 rgba(8,18,69,0.12)}50%{box-shadow:0 0 0 5px rgba(8,18,69,0.18)}}`}</style>
+      <style>{`
+        @keyframes glow-navy{0%,100%{box-shadow:0 0 0 0 rgba(8,18,69,0.12)}50%{box-shadow:0 0 0 5px rgba(8,18,69,0.18)}}
+      `}</style>
       <div style={{ border: `2px solid ${T.navy}`, borderRadius: r.lg + 4, background: T.white, animation: "glow-navy 2.5s ease-in-out infinite" }}>
         <div onClick={() => setExpanded(e => !e)}
-          style={{ display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", padding: 20, borderRadius: `${r.lg + 4}px ${r.lg + 4}px ${expanded ? 0 : r.lg + 4}px ${expanded ? 0 : r.lg + 4}px`, transition: `background ${motion}` }}
+          style={{ display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", padding: 20, transition: `background ${motion}` }}
           onMouseEnter={e => e.currentTarget.style.background = T.blueWash}
           onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
           <div>
             <div style={{ fontFamily: font, fontSize: 15, fontWeight: 600, color: T.navy }}>Ready to check in?</div>
             <div style={{ fontFamily: font, fontSize: 12, color: T.navy, marginTop: 3 }}>Dr. Sarah Patel · Today 10:30 AM</div>
           </div>
-          <Icon name={expanded ? "fa-chevron-down" : "fa-chevron-right"} weight="thin" size={16} style={{ color: T.navy, flexShrink: 0, marginLeft: 8 }} />
+          <Icon name={expanded ? "fa-chevron-down" : "fa-chevron-right"} weight="thin" size={16} style={{ color: T.navy, flexShrink: 0, marginLeft: 8, transition: `transform 0.35s ease` }} />
         </div>
-        {expanded && (
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16, padding: "16px 20px 20px", borderTop: `0.5px solid ${T.divider}` }}>
-            <div style={{ width: "100%", height: 140, borderRadius: r.lg, overflow: "hidden", position: "relative", background: `linear-gradient(135deg, ${T.blueWash} 0%, #dbeaf4 100%)` }}>
-              <img src={`${import.meta.env.BASE_URL}selfie-hero.png`} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        <div style={{ display: "grid", gridTemplateRows: expanded ? "1fr" : "0fr", transition: "grid-template-rows 0.35s ease" }}>
+          <div style={{ overflow: "hidden" }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16, padding: "16px 20px 20px", borderTop: `0.5px solid ${T.divider}` }}>
+              <div style={{ width: "100%", height: 140, borderRadius: r.lg, overflow: "hidden", position: "relative", background: `linear-gradient(135deg, ${T.blueWash} 0%, #dbeaf4 100%)` }}>
+                <img src={`${import.meta.env.BASE_URL}selfie-hero.png`} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
+              <div style={{ textAlign: "left", width: "100%" }}>
+                <div style={{ fontFamily: font, fontSize: 24, fontWeight: 700, color: T.textBlack, letterSpacing: "-0.03em" }}>Take a selfie</div>
+              </div>
+              <div style={{ background: T.blueWash, borderRadius: r.md, padding: 16, width: "100%", display: "flex", alignItems: "center", gap: 12 }}>
+                <Icon name="fa-circle-info" weight="thin" size={20} style={{ color: T.textBlack, flexShrink: 0 }} />
+                <span style={{ fontFamily: font, fontSize: 14, color: T.textBlack, letterSpacing: "-0.02em" }}>Remove any glasses and hats</span>
+              </div>
+              <div style={{ fontFamily: font, fontSize: 12, color: T.textGray, lineHeight: 1.5, letterSpacing: "-0.02em" }}>
+                By tapping "Continue" you consent to CLEAR collecting your biometric information to verify your identity, as explained in{" "}
+                <span style={{ color: T.link }}>CLEAR's Member Terms</span> and{" "}
+                <span style={{ color: T.link }}>Privacy Policy</span>.
+              </div>
+              <button onClick={() => setStep("capture")}
+                style={{ width: "100%", height: 56, background: T.navy, color: T.white, border: "none", borderRadius: r.pill, fontFamily: font, fontSize: 18, fontWeight: 600, cursor: "pointer", letterSpacing: "-0.02em" }}>
+                Continue
+              </button>
             </div>
-            <div style={{ textAlign: "left", width: "100%" }}>
-              <div style={{ fontFamily: font, fontSize: 24, fontWeight: 700, color: T.textBlack, letterSpacing: "-0.03em" }}>Take a selfie</div>
-            </div>
-            <div style={{ background: T.blueWash, borderRadius: r.md, padding: 16, width: "100%", display: "flex", alignItems: "center", gap: 12 }}>
-              <Icon name="fa-circle-info" weight="thin" size={20} style={{ color: T.textBlack, flexShrink: 0 }} />
-              <span style={{ fontFamily: font, fontSize: 14, color: T.textBlack, letterSpacing: "-0.02em" }}>Remove any glasses and hats</span>
-            </div>
-            <div style={{ fontFamily: font, fontSize: 12, color: T.textGray, lineHeight: 1.5, letterSpacing: "-0.02em" }}>
-              By tapping "Continue" you consent to CLEAR collecting your biometric information to verify your identity, as explained in{" "}
-              <span style={{ color: T.link }}>CLEAR's Member Terms</span> and{" "}
-              <span style={{ color: T.link }}>Privacy Policy</span>.
-            </div>
-            <button onClick={() => setStep("capture")}
-              style={{ width: "100%", height: 56, background: T.navy, color: T.white, border: "none", borderRadius: r.pill, fontFamily: font, fontSize: 18, fontWeight: 600, cursor: "pointer", letterSpacing: "-0.02em" }}>
-              Continue
-            </button>
           </div>
-        )}
+        </div>
       </div>
     </>
   );
