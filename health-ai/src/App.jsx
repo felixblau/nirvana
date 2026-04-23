@@ -28,24 +28,22 @@ function AnimateIn({ children, delay = 0, style }) {
 }
 
 const STEPS = {
-  EMPTY: 0,
-  USER_MSG: 1,
-  AI_RESPONSE: 2,
-  USER_REPLY: 3,
-  RETRIEVAL: 4,
-  PROCESSING_1: 5,
-  PROCESSING_2: 6,
-  PROCESSING_3: 7,
-  RESULTS: 8,
-  BOOKING: 9,
-  PAYMENT_EMPTY: 10,
-  PAYMENT_FILLED: 11,
-  CONFIRMATION: 12,
+  INITIAL: 0,
+  AI_RESPONSE: 1,
+  USER_REPLY: 2,
+  RETRIEVAL: 3,
+  PROCESSING_1: 4,
+  PROCESSING_2: 5,
+  PROCESSING_3: 6,
+  RESULTS: 7,
+  BOOKING: 8,
+  PAYMENT_EMPTY: 9,
+  PAYMENT_FILLED: 10,
+  CONFIRMATION: 11,
 }
 
 const TIMINGS = {
-  [STEPS.EMPTY]: 4000,
-  [STEPS.USER_MSG]: 3000,
+  [STEPS.INITIAL]: 4000,
   [STEPS.AI_RESPONSE]: 4000,
   [STEPS.USER_REPLY]: 1500,
   [STEPS.RETRIEVAL]: 2000,
@@ -60,7 +58,7 @@ const TIMINGS = {
 }
 
 export default function App() {
-  const [step, setStep] = useState(STEPS.EMPTY)
+  const [step, setStep] = useState(STEPS.INITIAL)
   const [paused, setPaused] = useState(false)
   const [showTap, setShowTap] = useState(false)
   const chatRef = useRef(null)
@@ -85,7 +83,7 @@ export default function App() {
       setShowTap(false)
       if (step === STEPS.CONFIRMATION) {
         chatRef.current?.scrollTo({ top: 0 })
-        setStep(STEPS.EMPTY)
+        setStep(STEPS.INITIAL)
       } else {
         setStep(s => s + 1)
       }
@@ -101,7 +99,6 @@ export default function App() {
     }, 150)
   }, [step])
 
-  const showUserMsg = step >= STEPS.USER_MSG
   const showAiResponse = step >= STEPS.AI_RESPONSE
   const showSheet = step >= STEPS.PROCESSING_1 && step <= STEPS.PROCESSING_3
   const showResults = step >= STEPS.RESULTS
@@ -150,14 +147,10 @@ export default function App() {
           </div>
         )}
 
-        {/* User query */}
-        {showUserMsg && (
-          <AnimateIn style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <div className="msg-user">
-              I've been having persistent knee pain for the past two weeks, especially when climbing stairs. It's a sharp pain on the outer side of my right knee.
-            </div>
-          </AnimateIn>
-        )}
+        {/* User query — always visible */}
+        <div className="msg-user">
+          I've been having persistent knee pain for the past two weeks, especially when climbing stairs. It's a sharp pain on the outer side of my right knee.
+        </div>
 
         {/* AI response */}
         {showAiResponse && (
