@@ -56,7 +56,10 @@ export default function App() {
   }, [step, paused])
 
   useEffect(() => {
-    chatRef.current?.scrollTo({ top: chatRef.current.scrollHeight, behavior: 'smooth' })
+    const t = setTimeout(() => {
+      chatRef.current?.scrollTo({ top: chatRef.current.scrollHeight, behavior: 'smooth' })
+    }, 100)
+    return () => clearTimeout(t)
   }, [step])
 
   const showSheet = step >= STEPS.PROCESSING_1 && step <= STEPS.PROCESSING_3
