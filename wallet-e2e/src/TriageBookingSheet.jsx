@@ -21,8 +21,8 @@ export default function TriageBookingSheet({ doctor, onBook, onClose }) {
   const [selTime, setSelTime] = useState(0);
 
   return (
-    <div onClick={onClose} style={{ position: "absolute", inset: 0, background: "rgba(44,31,69,0.35)", zIndex: 10, display: "flex", alignItems: "flex-end" }}>
-      <div onClick={e => e.stopPropagation()} style={{ background: T.white, borderRadius: `${r.lg + 8}px ${r.lg + 8}px 0 0`, width: "100%", padding: "16px 20px 20px", maxHeight: "85%" }}>
+    <div onClick={onClose} style={{ position: "absolute", inset: 0, background: "rgba(44,31,69,0.35)", zIndex: 10, display: "flex", alignItems: "flex-end", animation: "fade-in 0.25s ease" }}>
+      <div onClick={e => e.stopPropagation()} style={{ background: T.white, borderRadius: `${r.lg + 8}px ${r.lg + 8}px 0 0`, width: "100%", padding: "16px 20px 20px", maxHeight: "85%", animation: "sheet-up 0.35s cubic-bezier(0.16, 1, 0.3, 1)" }}>
         <div style={{ width: 36, height: 4, background: T.warmLight, borderRadius: 2, margin: "0 auto 16px" }} />
 
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>

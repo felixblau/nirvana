@@ -10,7 +10,7 @@ const VISITS = [
   { date: "Sep 22, 2024", loc: "MEC – Ashland Ave",   type: "Annual physical", copay: "$0",  docs: ["Physical summary", "Lab panel results"] },
 ];
 
-const TYPE_ICONS = { "Ear infection": "fa-stethoscope", "X-ray – wrist": "fa-x-ray", "Strep test": "fa-flask", "Annual physical": "fa-person-running" };
+const TYPE_ICONS = { "Ear infection": "fa-stethoscope", "X-ray – wrist": "fa-x-ray", "Strep test": "fa-flask", "Annual physical": "fa-person-running", "Radiology consult": "fa-x-ray" };
 
 function VisitCard({ v, isOpen, toggle }) {
   return (
@@ -48,9 +48,12 @@ function VisitCard({ v, isOpen, toggle }) {
   );
 }
 
-export default function VisitsScreen() {
+export default function VisitsScreen({ bookedVisit }) {
   const [expanded, setExpanded] = useState(null);
   const toggle = d => setExpanded(expanded === d ? null : d);
+
+  const allVisits = bookedVisit ? [bookedVisit, ...VISITS] : VISITS;
+  const years = [...new Set(allVisits.map(v => v.date.match(/\d{4}/)?.[0]).filter(Boolean))].sort((a, b) => b - a);
 
   return (
     <div style={{ flex: 1, overflowY: "auto", padding: "20px 20px 12px", display: "flex", flexDirection: "column", gap: 16 }}>
@@ -58,12 +61,12 @@ export default function VisitsScreen() {
         <div style={{ fontFamily: font, fontSize: 22, fontWeight: 600, color: T.deepPurple }}>My visits</div>
         <div style={{ fontFamily: font, fontSize: 13, color: T.warmShadow, marginTop: 2 }}>Tap a visit to view documents</div>
       </div>
-      {["2025", "2024"].map(year => (
+      {years.map(year => (
         <div key={year}>
           <SectionLabel dark>{year}</SectionLabel>
           <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
-            {VISITS.filter(v => v.date.includes(year)).map(v => (
-              <VisitCard key={v.date} v={v} isOpen={expanded === v.date} toggle={() => toggle(v.date)} />
+            {allVisits.filter(v => v.date.includes(year)).map(v => (
+              <VisitCard key={v.date + v.type} v={v} isOpen={expanded === v.date} toggle={() => toggle(v.date)} />
             ))}
           </div>
         </div>

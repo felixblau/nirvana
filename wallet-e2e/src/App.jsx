@@ -30,6 +30,7 @@ export default function App() {
   const [pendingId, setPendingId] = useState(null);
   useFontAwesome();
 
+  const [bookedVisit, setBookedVisit] = useState(null);
   const visibleAlerts = ALL_ALERTS.filter(a => !dismissed.includes(a.id));
 
   function dismissAlert(id, title) {
@@ -46,8 +47,8 @@ export default function App() {
 
   const screens = {
     home: <HomeScreen alerts={visibleAlerts} onDismiss={dismissAlert} />,
-    triage: <TriageScreen />,
-    visits: <VisitsScreen />,
+    triage: <TriageScreen onNavigate={setTab} onBookVisit={setBookedVisit} />,
+    visits: <VisitsScreen bookedVisit={bookedVisit} />,
     coverage: <CoverageScreen />,
     account: <AccountScreen alerts={visibleAlerts} onDismiss={dismissAlert} />,
   };

@@ -91,8 +91,8 @@ function ProcessingOverlay({ step }) {
     { label: "Checking availability", icon: "fa-calendar" },
   ];
   return (
-    <div style={{ position: "absolute", inset: 0, background: "rgba(44,31,69,0.35)", zIndex: 10, display: "flex", alignItems: "flex-end" }}>
-      <div style={{ background: T.white, borderRadius: `${r.lg + 8}px ${r.lg + 8}px 0 0`, width: "100%", padding: "20px 24px 24px" }}>
+    <div style={{ position: "absolute", inset: 0, background: "rgba(44,31,69,0.35)", zIndex: 10, display: "flex", alignItems: "flex-end", animation: "fade-in 0.25s ease" }}>
+      <div style={{ background: T.white, borderRadius: `${r.lg + 8}px ${r.lg + 8}px 0 0`, width: "100%", padding: "20px 24px 24px", animation: "sheet-up 0.35s cubic-bezier(0.16, 1, 0.3, 1)" }}>
         <div style={{ width: 36, height: 4, background: T.warmLight, borderRadius: 2, margin: "0 auto 20px" }} />
         {steps.map((s, i) => {
           const state = i < step ? "done" : i === step ? "active" : "pending";
@@ -112,7 +112,7 @@ function ProcessingOverlay({ step }) {
   );
 }
 
-export default function TriageScreen() {
+export default function TriageScreen({ onNavigate, onBookVisit }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
@@ -183,6 +183,9 @@ export default function TriageScreen() {
     const doc = paymentDoctor;
     setPaymentDoctor(null);
     setConfirmed(true);
+    const today = new Date();
+    const dateStr = today.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    onBookVisit?.({ date: dateStr, loc: doc.address, type: "Radiology consult", copay: "$45", docs: [], doctorName: doc.name });
     setMessages(m => [...m, { role: "ai", text: `Appointment booked! You're seeing **${doc.name}** on Monday, March 24 at 9:00 AM.\n\nA confirmation has been sent to **sandra.w@email.com**. You can view it in your Visits tab.`, typewrite: true }]);
   }
 
@@ -194,10 +197,7 @@ export default function TriageScreen() {
         <div style={{ width: 32, height: 32, borderRadius: "50%", background: T.lilacLight, display: "flex", alignItems: "center", justifyContent: "center" }}>
           <Icon name="fa-sparkles" weight="solid" size={14} style={{ color: T.vibrantPurple }} />
         </div>
-        <div>
-          <div style={{ fontFamily: font, fontSize: 15, fontWeight: 600, color: T.deepPurple }}>Triage AI</div>
-          <div style={{ fontFamily: font, fontSize: 11, color: T.warmShadow }}>Describe your symptoms to get started</div>
-        </div>
+        <div style={{ fontFamily: font, fontSize: 15, fontWeight: 600, color: T.deepPurple }}>Triage AI</div>
       </div>
 
       <div ref={chatRef} style={{ flex: 1, overflowY: "auto", padding: "16px 16px 8px", display: "flex", flexDirection: "column", gap: 12 }}>
@@ -238,9 +238,10 @@ export default function TriageScreen() {
 
         {confirmed && (
           <AnimateIn>
-            <div style={{ background: T.greenLight, border: `1px solid #b8dec9`, borderRadius: r.lg, padding: "12px 16px", display: "flex", alignItems: "center", gap: 10 }}>
+            <div onClick={() => onNavigate("visits")} style={{ background: T.greenLight, border: `1px solid #b8dec9`, borderRadius: r.lg, padding: "12px 16px", display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
               <Icon name="fa-circle-check" weight="solid" size={16} style={{ color: T.green }} />
-              <span style={{ fontFamily: font, fontSize: 13, color: T.green, fontWeight: 500 }}>Appointment confirmed</span>
+              <span style={{ fontFamily: font, fontSize: 13, color: T.green, fontWeight: 500, flex: 1 }}>Appointment confirmed</span>
+              <Icon name="fa-chevron-right" weight="thin" size={12} style={{ color: T.green }} />
             </div>
           </AnimateIn>
         )}
@@ -250,7 +251,7 @@ export default function TriageScreen() {
             {[0, 1, 2].map(i => (
               <div key={i} style={{ width: 7, height: 7, borderRadius: "50%", background: T.lilac, animation: `typing-dot 1s ease-in-out ${i * 0.15}s infinite` }} />
             ))}
-            <style>{`@keyframes typing-dot{0%,100%{opacity:0.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}`}</style>
+            <style>{`@keyframes typing-dot{0%,100%{opacity:0.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}@keyframes sheet-up{from{transform:translateY(100%)}to{transform:translateY(0)}}@keyframes fade-in{from{opacity:0}to{opacity:1}}`}</style>
           </div>
         )}
 
