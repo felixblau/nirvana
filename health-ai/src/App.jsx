@@ -84,7 +84,7 @@ const AI_MSG_2 = "Here are 3 radiologists near you that accept your insurance an
 const AI_MSG_3 = "Okay! Appointment is booked.\nYour appointment is with Dr. Priya Sharma, on Monday March 24 at 9:00AM. You will also shortly receive a confirmation email at **michael@dundermifflin.com**"
 
 const TIMINGS = {
-  [STEPS.ENTER]: 1200,
+  [STEPS.ENTER]: 2200,
   [STEPS.INITIAL]: 800,
   [STEPS.USER_REPLY]: 1500,
   [STEPS.RETRIEVAL]: 2000,
@@ -96,7 +96,7 @@ const TIMINGS = {
   [STEPS.PAYMENT_EMPTY]: 2000,
   [STEPS.PAYMENT_FILLED]: 2500,
   [STEPS.CONFIRMATION]: 6000,
-  [STEPS.EXIT]: 1200,
+  [STEPS.EXIT]: 2200,
 }
 
 export default function App() {
@@ -175,7 +175,7 @@ export default function App() {
       className="phone"
       onClick={() => setPaused(p => !p)}
       style={{
-        transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+        transition: 'all 1.8s cubic-bezier(0.16, 1, 0.3, 1)',
         opacity: phoneMounted ? 1 : 0,
         transform: phoneMounted ? 'translateY(0) scale(1)' : 'translateY(120px) scale(0.95)',
         filter: phoneMounted ? 'blur(0px)' : 'blur(12px)',
