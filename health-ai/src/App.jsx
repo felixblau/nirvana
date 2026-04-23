@@ -8,7 +8,7 @@ import BookingSheet from './BookingSheet'
 import PaymentSheet from './PaymentSheet'
 import DoctorCards from './DoctorCards'
 
-function Typewriter({ text, speed = 8 }) {
+function Typewriter({ text, speed = 8, onDone }) {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
@@ -16,7 +16,10 @@ function Typewriter({ text, speed = 8 }) {
   }, [text])
 
   useEffect(() => {
-    if (count >= text.length) return
+    if (count >= text.length) {
+      onDone?.()
+      return
+    }
     const t = setTimeout(() => setCount(c => c + 1), speed)
     return () => clearTimeout(t)
   }, [count, text, speed])
@@ -75,7 +78,6 @@ const AI_MSG_3 = "Okay! Appointment is booked.\nYour appointment is with Dr. Pri
 
 const TIMINGS = {
   [STEPS.INITIAL]: 800,
-  [STEPS.AI_RESPONSE]: 5000,
   [STEPS.USER_REPLY]: 1500,
   [STEPS.RETRIEVAL]: 2000,
   [STEPS.PROCESSING_1]: 2000,
@@ -98,8 +100,19 @@ export default function App() {
   const TAP_STEPS = new Set([STEPS.RESULTS, STEPS.BOOKING, STEPS.PAYMENT_EMPTY, STEPS.PAYMENT_FILLED])
   const TAP_LEAD = 900
 
+  const advanceStep = () => {
+    setShowTap(false)
+    if (step === STEPS.CONFIRMATION) {
+      chatRef.current?.scrollTo({ top: 0 })
+      setStep(STEPS.INITIAL)
+    } else {
+      setStep(s => s + 1)
+    }
+  }
+
   useEffect(() => {
     if (paused) return
+    if (step === STEPS.AI_RESPONSE) return
     const delay = TIMINGS[step]
     if (delay == null) return
 
@@ -110,18 +123,15 @@ export default function App() {
       tapTimer = setTimeout(() => setShowTap(true), delay - TAP_LEAD)
     }
 
-    stepTimer = setTimeout(() => {
-      setShowTap(false)
-      if (step === STEPS.CONFIRMATION) {
-        chatRef.current?.scrollTo({ top: 0 })
-        setStep(STEPS.INITIAL)
-      } else {
-        setStep(s => s + 1)
-      }
-    }, delay)
+    stepTimer = setTimeout(advanceStep, delay)
 
     return () => { clearTimeout(tapTimer); clearTimeout(stepTimer) }
   }, [step, paused])
+
+  const handleFirstTypeDone = () => {
+    if (paused) return
+    setTimeout(advanceStep, 1500)
+  }
 
   useEffect(() => {
     if (step < STEPS.RESULTS) return
@@ -186,7 +196,7 @@ export default function App() {
         {/* AI response */}
         {showAiResponse && (
           <div className="msg-ai">
-            <Typewriter text={AI_MSG_1} />
+            <Typewriter text={AI_MSG_1} onDone={handleFirstTypeDone} />
           </div>
         )}
 

@@ -560,6 +560,10 @@ html, body, #root {
   padding: 0 12px;
 }
 
+.cvv-input.active {
+  border-color: #0C9488;
+}
+
 .cvv-dots {
   font-size: 18px;
   letter-spacing: 3px;
