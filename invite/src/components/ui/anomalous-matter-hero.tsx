@@ -3,7 +3,6 @@ import * as THREE from "three";
 
 export function GenerativeArtScene() {
   const mountRef = useRef<HTMLDivElement>(null);
-  const lightRef = useRef<THREE.PointLight>(null);
 
   useEffect(() => {
     const currentMount = mountRef.current;
@@ -23,17 +22,21 @@ export function GenerativeArtScene() {
     renderer.setPixelRatio(window.devicePixelRatio);
     currentMount.appendChild(renderer.domElement);
 
-    const geometry = new THREE.IcosahedronGeometry(1.2, 64);
+    const geometry = new THREE.IcosahedronGeometry(3.6, 64);
+    const mousePos = new THREE.Vector2(0, 0);
     const material = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
-        pointLightPos: { value: new THREE.Vector3(0, 0, 5) },
-        color: { value: new THREE.Color(0.35, 0.55, 0.9) },
+        mousePos: { value: mousePos },
+        colorA: { value: new THREE.Color(0x9073f2) },
+        colorB: { value: new THREE.Color(0xdcd2c8) },
       },
       vertexShader: `
         uniform float time;
+        uniform vec2 mousePos;
         varying vec3 vNormal;
         varying vec3 vPosition;
+        varying vec3 vWorldPosition;
 
         vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
         vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -85,24 +88,31 @@ export function GenerativeArtScene() {
         void main() {
           vNormal = normal;
           vPosition = position;
+          float mouseInfluence = smoothstep(2.0, 0.0, length(position.xy - mousePos * 3.0));
           float displacement = snoise(position * 2.0 + time * 0.5) * 0.2;
+          displacement += mouseInfluence * 0.15;
           vec3 newPosition = position + normal * displacement;
+          vWorldPosition = newPosition;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
         }
       `,
       fragmentShader: `
-        uniform vec3 color;
-        uniform vec3 pointLightPosition;
+        uniform vec3 colorA;
+        uniform vec3 colorB;
+        uniform vec2 mousePos;
         varying vec3 vNormal;
         varying vec3 vPosition;
+        varying vec3 vWorldPosition;
 
         void main() {
           vec3 normal = normalize(vNormal);
-          vec3 lightDir = normalize(pointLightPosition - vPosition);
-          float diffuse = max(dot(normal, lightDir), 0.0);
-          float fresnel = 1.0 - dot(normal, vec3(0.0, 0.0, 1.0));
-          fresnel = pow(fresnel, 2.0);
-          vec3 finalColor = color * diffuse + color * fresnel * 0.5;
+          float fresnel = 1.0 - abs(dot(normal, vec3(0.0, 0.0, 1.0)));
+          fresnel = pow(fresnel, 1.5);
+          float gradient = (vWorldPosition.y + 4.0) / 8.0;
+          float mouseDist = smoothstep(2.5, 0.0, length(vWorldPosition.xy - mousePos * 3.0));
+          gradient = clamp(gradient + mouseDist * 0.3, 0.0, 1.0);
+          vec3 color = mix(colorA, colorB, gradient);
+          vec3 finalColor = color * (0.3 + fresnel * 0.7 + mouseDist * 0.4);
           gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
@@ -110,11 +120,6 @@ export function GenerativeArtScene() {
     });
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
-
-    const pointLight = new THREE.PointLight(0xffffff, 1, 100);
-    pointLight.position.set(0, 0, 5);
-    lightRef.current = pointLight;
-    scene.add(pointLight);
 
     let frameId: number;
     const animate = (t: number) => {
@@ -134,16 +139,8 @@ export function GenerativeArtScene() {
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth) * 2 - 1;
-      const y = -(e.clientY / window.innerHeight) * 2 + 1;
-      const vec = new THREE.Vector3(x, y, 0.5).unproject(camera);
-      const dir = vec.sub(camera.position).normalize();
-      const dist = -camera.position.z / dir.z;
-      const pos = camera.position.clone().add(dir.multiplyScalar(dist));
-      if (lightRef.current) {
-        lightRef.current.position.copy(pos);
-      }
-      material.uniforms.pointLightPos.value = pos;
+      mousePos.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mousePos.y = -(e.clientY / window.innerHeight) * 2 + 1;
     };
 
     window.addEventListener("resize", handleResize);

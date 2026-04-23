@@ -39,13 +39,13 @@ function App() {
             <div
               className="inline-block px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm"
             >
-              <span className="text-xs font-mono tracking-[0.25em] uppercase text-white/50">
+              <span className="text-xs font-mono tracking-[0.25em] uppercase text-white/60">
                 By Invitation Only
               </span>
             </div>
           </div>
 
-          <p className="text-sm font-mono tracking-[0.2em] uppercase text-white/40 mb-4">
+          <p className="text-sm font-mono tracking-[0.2em] uppercase text-white/60 mb-4">
             Nirvana presents
           </p>
 
@@ -61,7 +61,7 @@ function App() {
             className="mt-10 max-w-lg mx-auto"
             style={{ animation: "fadeInSlow 1.2s ease-out 0.3s both" }}
           >
-            <p className="text-base sm:text-lg text-white/60 leading-relaxed">
+            <p className="text-base sm:text-lg text-white leading-relaxed">
               Join CFOs, RCM leaders, alongside AI leaders from OpenAI, Anthropic
               and more at this intimate dinner to trade notes and discuss how to
               improve healthcare revenue operations.
@@ -72,7 +72,7 @@ function App() {
             className="mt-12 flex flex-col items-center gap-6"
             style={{ animation: "fadeInSlow 1.2s ease-out 0.5s both" }}
           >
-            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 text-sm font-mono tracking-wider uppercase text-white/40">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 text-sm font-mono tracking-wider uppercase text-white/60">
               <span>July 23, 2025</span>
               <span className="hidden sm:block w-1 h-1 rounded-full bg-white/20" />
               <span>3:00 PM &ndash; 9:00 PM</span>
@@ -88,7 +88,7 @@ function App() {
               RSVP
             </Button>
 
-            <p className="text-xs font-mono text-white/25 tracking-wider">
+            <p className="text-xs font-mono text-gray-400 tracking-wider">
               Please RSVP by May 15, 2025
             </p>
           </div>
