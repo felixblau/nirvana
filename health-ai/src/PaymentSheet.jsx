@@ -44,9 +44,9 @@ export default function PaymentSheet({ cvvFilled, onConfirm, showTap }) {
         </div>
 
         <div className="cvv-section">
-          <div className="payment-section-label">CVV</div>
+          <div className="cvv-label">CVV</div>
           <div className="cvv-input" style={{ position: 'relative', overflow: 'hidden' }}>
-            {cvvFilled ? <span className="cvv-dots">•••</span> : null}
+            <span className="cvv-dots" style={{ opacity: cvvFilled ? 1 : 0 }}>•••</span>
             <LockIcon />
             {showTap && !cvvFilled && <TapRipple />}
           </div>

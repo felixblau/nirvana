@@ -1,5 +1,7 @@
-import { StarIcon, LocationIcon, InsuranceIcon, PersonIcon, ArrowRight } from './Icons'
+import { StarIcon, LocationIcon, ArrowRight } from './Icons'
 import TapRipple from './TapRipple'
+
+const base = import.meta.env.BASE_URL
 
 const DOCTORS = [
   {
@@ -31,7 +33,7 @@ const DOCTORS = [
   },
 ]
 
-export default function DoctorCards({ onBook, showTap }) {
+export default function DoctorCards({ onBook, showTap, disabled }) {
   return (
     <div className="doctor-cards">
       {DOCTORS.map((doc, i) => (
@@ -58,12 +60,18 @@ export default function DoctorCards({ onBook, showTap }) {
           <div className="doctor-address">{doc.address}</div>
 
           <div className="doctor-tags">
-            <InsuranceIcon /> <PersonIcon /> In-network
+            <img src={`${base}assets/nirvana-glyph.png`} alt="" style={{ height: 12, width: 'auto' }} />
+            <img src={`${base}assets/amazone-one.png`} alt="" style={{ height: 16, width: 'auto' }} />
+            In-network
           </div>
 
-          <button className={`book-btn ${i === 0 ? '' : ''}`} onClick={i === 0 ? onBook : undefined} style={{ position: 'relative', overflow: 'hidden' }}>
+          <button
+            className={`book-btn${disabled ? ' disabled' : ''}`}
+            onClick={!disabled && i === 0 ? onBook : undefined}
+            style={{ position: 'relative', overflow: 'hidden' }}
+          >
             Book <ArrowRight />
-            {i === 0 && showTap && <TapRipple />}
+            {i === 0 && showTap && !disabled && <TapRipple />}
           </button>
         </div>
       ))}

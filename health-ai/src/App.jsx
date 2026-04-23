@@ -97,7 +97,7 @@ export default function App() {
   }, [step])
 
   const showSheet = step >= STEPS.PROCESSING_1 && step <= STEPS.PROCESSING_3
-  const showResults = step >= STEPS.RESULTS && step !== STEPS.CONFIRMATION
+  const showResults = step >= STEPS.RESULTS
   const showBooking = step === STEPS.BOOKING
   const showPayment = step === STEPS.PAYMENT_EMPTY || step === STEPS.PAYMENT_FILLED
   const showConfirmation = step === STEPS.CONFIRMATION
@@ -179,25 +179,19 @@ export default function App() {
               Here are 3 radiologists near you that accept your insurance and are available for booking via Nirvana:
             </div>
             <div style={{ marginTop: 12 }}>
-              <DoctorCards onBook={() => {}} showTap={showTap && step === STEPS.RESULTS} />
+              <DoctorCards onBook={() => {}} showTap={showTap && step === STEPS.RESULTS} disabled={showConfirmation} />
             </div>
           </AnimateIn>
         )}
 
         {/* Confirmation message */}
         {showConfirmation && (
-          <>
+          <AnimateIn>
             <div className="msg-ai">
-              Here are 3 radiologists near you that accept your insurance and are available for booking via Nirvana:
+              Okay! Appointment is booked.<br />
+              Your appointment is with Dr. Priya Sharma, on Monday March 24 at 9:00AM. You will also shortly receive a confirmation email at <strong>michael@dundermifflin.com</strong>
             </div>
-            <DoctorCards onBook={() => {}} />
-            <AnimateIn>
-              <div className="msg-ai">
-                Okay! Appointment is booked.<br />
-                Your appointment is with Dr. Priya Sharma, on Monday March 24 at 9:00AM. You will also shortly receive a confirmation email at <strong>michael@dundermifflin.com</strong>
-              </div>
-            </AnimateIn>
-          </>
+          </AnimateIn>
         )}
 
         {/* Bottom spacer — keeps room to scroll before content pushes layout */}
