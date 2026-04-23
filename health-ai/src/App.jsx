@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useLayoutEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   MenuIcon, EditIcon, CloseIcon, PlusIcon, MicIcon,
   SignalIcon, WifiIcon, BatteryIcon,
@@ -7,6 +7,25 @@ import ProcessingSheet from './ProcessingSheet'
 import BookingSheet from './BookingSheet'
 import PaymentSheet from './PaymentSheet'
 import DoctorCards from './DoctorCards'
+
+function AnimateIn({ children, delay = 0, style }) {
+  const [visible, setVisible] = useState(false)
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), delay)
+    return () => clearTimeout(t)
+  }, [delay])
+
+  return (
+    <div style={{
+      transition: 'all 0.5s ease-out',
+      opacity: visible ? 1 : 0,
+      transform: visible ? 'translateY(0)' : 'translateY(16px)',
+      ...style,
+    }}>
+      {children}
+    </div>
+  )
+}
 
 const STEPS = {
   INITIAL_CHAT: 0,
@@ -40,21 +59,13 @@ export default function App() {
   const [step, setStep] = useState(STEPS.INITIAL_CHAT)
   const [paused, setPaused] = useState(false)
   const chatRef = useRef(null)
-
-  const snapshotRef = useRef({ scrollHeight: 0, scrollTop: 0 })
+  const endRef = useRef(null)
 
   useEffect(() => {
     if (paused) return
     const delay = TIMINGS[step]
     if (delay == null) return
     const t = setTimeout(() => {
-      const el = chatRef.current
-      if (el) {
-        snapshotRef.current = {
-          scrollHeight: el.scrollHeight,
-          scrollTop: el.scrollTop,
-        }
-      }
       if (step === STEPS.CONFIRMATION) {
         setStep(STEPS.INITIAL_CHAT)
       } else {
@@ -64,21 +75,11 @@ export default function App() {
     return () => clearTimeout(t)
   }, [step, paused])
 
-  useLayoutEffect(() => {
-    const el = chatRef.current
-    if (!el) return
-    const { scrollHeight: oldSH } = snapshotRef.current
-    const newSH = el.scrollHeight
-    const diff = newSH - oldSH
-    if (diff <= 0 || oldSH === 0) return
-
-    el.style.setProperty('--slide-offset', `${diff}px`)
-    el.classList.remove('chat-slide')
-    void el.offsetHeight
-    el.classList.add('chat-slide')
-
-    el.scrollTop = el.scrollHeight - el.clientHeight
-  })
+  useEffect(() => {
+    setTimeout(() => {
+      endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    }, 150)
+  }, [step])
 
   const showSheet = step >= STEPS.PROCESSING_1 && step <= STEPS.PROCESSING_3
   const showResults = step >= STEPS.RESULTS && step !== STEPS.CONFIRMATION
@@ -141,42 +142,51 @@ export default function App() {
 
         {/* User reply */}
         {step >= STEPS.USER_REPLY && (
-          <div className="msg-user" key="user-reply">yes please</div>
+          <AnimateIn style={{ alignSelf: 'flex-end' }}>
+            <div className="msg-user">yes please</div>
+          </AnimateIn>
         )}
 
         {/* Retrieval indicator */}
         {step === STEPS.RETRIEVAL && (
-          <div className="retrieval" key="retrieval">
-            <div className="spinner" />
-            Retrieving your insurance information...
-          </div>
+          <AnimateIn>
+            <div className="retrieval">
+              <div className="spinner" />
+              Retrieving your insurance information...
+            </div>
+          </AnimateIn>
         )}
 
         {/* Doctor results */}
         {showResults && (
-          <>
-            <div className="msg-ai" key="results-msg">
+          <AnimateIn>
+            <div className="msg-ai">
               Here are 3 radiologists near you that accept your insurance and are available for booking via Nirvana:
             </div>
-            <DoctorCards onBook={() => {}} />
-            <div style={{ minHeight: 130, flexShrink: 0 }} />
-          </>
+            <div style={{ marginTop: 12 }}>
+              <DoctorCards onBook={() => {}} />
+            </div>
+          </AnimateIn>
         )}
 
         {/* Confirmation message */}
         {showConfirmation && (
           <>
-            <div className="msg-ai" key="confirm-results">
+            <div className="msg-ai">
               Here are 3 radiologists near you that accept your insurance and are available for booking via Nirvana:
             </div>
             <DoctorCards onBook={() => {}} />
-            <div style={{ minHeight: 130, flexShrink: 0 }} />
-            <div className="msg-ai" key="confirm-msg">
-              Okay! Appointment is booked.<br />
-              Your appointment is with Dr. Priya Sharma, on Monday March 24 at 9:00AM. You will also shortly receive a confirmation email at <strong>michael@dundermifflin.com</strong>
-            </div>
+            <AnimateIn>
+              <div className="msg-ai">
+                Okay! Appointment is booked.<br />
+                Your appointment is with Dr. Priya Sharma, on Monday March 24 at 9:00AM. You will also shortly receive a confirmation email at <strong>michael@dundermifflin.com</strong>
+              </div>
+            </AnimateIn>
           </>
         )}
+
+        {/* Bottom spacer — keeps room to scroll before content pushes layout */}
+        <div ref={endRef} style={{ minHeight: '60vh', flexShrink: 0 }} />
       </div>
 
       {/* Input bar */}
