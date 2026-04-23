@@ -1,8 +1,9 @@
 {
-  "buildCommand": "cd pt-checkin && npm install && npm run build && cd ../clear1 && npm install && npm run build && cd .. && mkdir -p dist/pt-checkin dist/clear1 && cp -r pt-checkin/dist/* dist/pt-checkin/ && cp -r clear1/dist/* dist/clear1/",
+  "buildCommand": "bash build.sh",
   "outputDirectory": "dist",
   "rewrites": [
     { "source": "/pt-checkin", "destination": "/pt-checkin/index.html" },
-    { "source": "/clear1", "destination": "/clear1/index.html" }
+    { "source": "/clear1", "destination": "/clear1/index.html" },
+    { "source": "/health-ai", "destination": "/health-ai/index.html" }
   ]
 }
