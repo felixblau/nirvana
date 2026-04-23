@@ -263,7 +263,7 @@ export default function TriageScreen() {
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => { if (e.key === "Enter") sendMessage(input); }}
-          placeholder="Describe your symptoms..."
+          placeholder="Chat with Triage AI"
           disabled={typing || confirmed}
           style={{ flex: 1, height: 40, borderRadius: r.pill, border: `1.5px solid ${T.warmLight}`, padding: "0 16px", fontFamily: font, fontSize: 14, color: T.deepPurple, background: T.white, outline: "none" }}
           onFocus={e => e.currentTarget.style.borderColor = T.lilac}
