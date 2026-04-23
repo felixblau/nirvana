@@ -46,9 +46,12 @@ export default function App() {
 
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", background: T.offWhite, minHeight: "100vh" }}>
-      <div style={{ width: 375, background: T.white, borderRadius: 40, overflow: "hidden", display: "flex", flexDirection: "column", height: 780, boxShadow: "0 24px 80px rgba(8,18,69,0.14)", position: "relative" }}>
+      <div style={{ width: 375, background: T.white, borderRadius: 40, overflow: "hidden", display: "flex", flexDirection: "column", height: 780, boxShadow: "0 24px 80px rgba(8,18,69,0.14)", position: "relative", border: "6px solid black" }}>
 
-        <img src={`${import.meta.env.BASE_URL}ios-bar.svg`} alt="" style={{ width: 375, height: 45, flexShrink: 0, display: "block" }} />
+        <div style={{ width: "100%", height: 45, flexShrink: 0, position: "relative", background: T.white }}>
+          <img src={`${import.meta.env.BASE_URL}ios-bar.svg`} alt="" style={{ width: "100%", height: 45, display: "block" }} />
+          <div style={{ position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)", width: 120, height: 32, background: "black", borderRadius: 20 }} />
+        </div>
 
         <div style={{ flex: 1, overflow: "hidden", display: "flex", flexDirection: "column" }}>
           {screens[tab]}
