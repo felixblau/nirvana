@@ -6,6 +6,7 @@ import VisitsScreen from "./VisitsScreen.jsx";
 import CoverageScreen from "./CoverageScreen.jsx";
 import AccountScreen from "./AccountScreen.jsx";
 import useTapRipple from "./TapRipple.jsx";
+import useRecorder from "./useRecorder.jsx";
 
 const TABS = [
   { id: "home", label: "Home", fa: "fa-house" },
@@ -43,6 +44,7 @@ export default function App() {
   const selfieRef = useRef(null);
   const homeScrollRef = useRef(null);
   const visitsRef = useRef(null);
+  const { startRecording, stopRecording } = useRecorder(phoneRef);
 
   const getElCenter = useCallback((selector) => {
     const phone = phoneRef.current;
@@ -80,6 +82,7 @@ export default function App() {
     setRunning(true);
     setStarted(true);
     setTab("home");
+    await startRecording();
     await sleep(1200);
 
     // 1. Tap "Ready to check in?" to expand
@@ -132,8 +135,9 @@ export default function App() {
     setTab("account");
     await sleep(1500);
 
+    await stopRecording();
     setRunning(false);
-  }, [tapEl, tapTabByIndex]);
+  }, [tapEl, tapTabByIndex, startRecording, stopRecording]);
 
   const screens = {
     home: <HomeScreen ref={homeScrollRef} selfieRef={selfieRef} onSelfieDone={() => {}} />,
@@ -143,10 +147,10 @@ export default function App() {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", background: T.offWhite, minHeight: "100vh", flexDirection: "column", gap: 24 }}>
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", background: T.offWhite, minHeight: "100vh" }}>
       {!started && (
         <button onClick={runDemo}
-          style={{ background: T.navy, color: T.white, border: "none", borderRadius: 28, padding: "12px 32px", fontFamily: font, fontSize: 16, fontWeight: 600, cursor: "pointer", letterSpacing: "-0.02em" }}>
+          style={{ position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)", zIndex: 100, background: T.navy, color: T.white, border: "none", borderRadius: 28, padding: "12px 32px", fontFamily: font, fontSize: 16, fontWeight: 600, cursor: "pointer", letterSpacing: "-0.02em", boxShadow: "0 4px 20px rgba(8,18,69,0.3)" }}>
           ▶ Start Demo
         </button>
       )}
