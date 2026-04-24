@@ -114,7 +114,7 @@ function App() {
               <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 text-sm font-mono tracking-wider uppercase text-white/60">
                 <span>July 23, 2025</span>
                 <span className="hidden sm:block w-1 h-1 rounded-full bg-white/20" />
-                <span>3:00 PM &ndash; 9:00 PM</span>
+                <span>5:00 PM &ndash; 9:00 PM</span>
                 <span className="hidden sm:block w-1 h-1 rounded-full bg-white/20" />
                 <span>New York City</span>
               </div>
@@ -199,7 +199,7 @@ function App() {
                 We&apos;ll send details to {email} shortly.
               </p>
               <p className="mt-4 text-gray-400 text-xs font-mono tracking-wider">
-                July 23 &middot; 3 PM &ndash; 9 PM &middot; NYC
+                July 23 &middot; 5 PM &ndash; 9 PM &middot; NYC
               </p>
             </div>
           )}
