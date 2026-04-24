@@ -112,7 +112,7 @@ function App() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight text-white leading-[1.1]">
               Healthcare AI
               <br />
-              <span className="font-normal bg-gradient-to-r from-purple-300 via-violet-200 to-purple-400 bg-clip-text text-transparent">
+              <span className="font-normal bg-clip-text text-transparent animate-gradient-shift" style={{ backgroundImage: 'linear-gradient(to right, #d8b4fe, #ddd6fe, #c084fc, #d8b4fe, #ddd6fe, #c084fc)', backgroundSize: '200% 100%' }}>
                 Executive Dinner
               </span>
             </h1>

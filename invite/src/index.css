@@ -73,6 +73,19 @@
   }
 }
 
+@keyframes gradient-shift {
+  0% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: -100% center;
+  }
+}
+
+@utility animate-gradient-shift {
+  animation: gradient-shift 6s linear infinite;
+}
+
 body {
   margin: 0;
   background: oklch(0.05 0 0);
