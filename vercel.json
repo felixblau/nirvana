@@ -4,7 +4,7 @@
   "redirects": [
     {
       "source": "/",
-      "destination": "/invite",
+      "destination": "https://aidininner2026.meetnirvana.com/",
       "permanent": false
     }
   ],
