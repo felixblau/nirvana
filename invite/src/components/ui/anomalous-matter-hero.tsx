@@ -24,7 +24,7 @@ export function GenerativeArtScene() {
 
     const geometry = new THREE.IcosahedronGeometry(3.6, 64);
     const mousePos = new THREE.Vector2(0, 0);
-    const rippleOrigin = new THREE.Vector2(-99, -99);
+    const rippleOrigin = new THREE.Vector3(-99, -99, -99);
     const material = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
@@ -38,7 +38,7 @@ export function GenerativeArtScene() {
       vertexShader: `
         uniform float time;
         uniform vec2 mousePos;
-        uniform vec2 rippleOrigin;
+        uniform vec3 rippleOrigin;
         uniform float rippleTime;
         uniform float rippleStrength;
         varying vec3 vNormal;
@@ -99,7 +99,7 @@ export function GenerativeArtScene() {
           float displacement = snoise(position * 2.0 + time * 0.5) * 0.2;
           displacement += mouseInfluence * 0.5;
 
-          float dist = length(position.xy - rippleOrigin);
+          float dist = length(position - rippleOrigin);
           float rippleRadius = rippleTime * 4.0;
           float rippleWave = sin((dist - rippleRadius) * 8.0) * exp(-3.0 * abs(dist - rippleRadius)) * rippleStrength;
           displacement += rippleWave * 0.4;
@@ -216,10 +216,19 @@ export function GenerativeArtScene() {
       mousePos.y = -(e.clientY / window.innerHeight) * 2 + 1;
     };
 
+    const raycaster = new THREE.Raycaster();
+    const clickNDC = new THREE.Vector2();
     const handleClick = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth) * 2 - 1;
-      const y = -(e.clientY / window.innerHeight) * 2 + 1;
-      rippleOrigin.set(x * 3.0, y * 3.0);
+      clickNDC.x = (e.clientX / window.innerWidth) * 2 - 1;
+      clickNDC.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      raycaster.setFromCamera(clickNDC, camera);
+      const hits = raycaster.intersectObject(mesh);
+      if (hits.length > 0) {
+        const localPt = mesh.worldToLocal(hits[0].point.clone());
+        rippleOrigin.set(localPt.x, localPt.y, localPt.z);
+      } else {
+        rippleOrigin.set(clickNDC.x * 3.0, clickNDC.y * 3.0, 0);
+      }
       material.uniforms.rippleOrigin.value = rippleOrigin;
       rippleStart = performance.now();
     };
