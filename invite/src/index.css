@@ -83,7 +83,7 @@
 }
 
 @utility animate-gradient-shift {
-  animation: gradient-shift 6s linear infinite;
+  animation: gradient-shift 6s ease-in-out infinite alternate;
 }
 
 body {

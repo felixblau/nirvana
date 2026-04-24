@@ -85,7 +85,7 @@ function App() {
           style={{ animation: "fadeIn 1s ease-out forwards" }}
         >
           <div className="mb-8">
-            <div className="relative inline-block px-4 py-1.5 rounded-full border border-white/10 bg-black/35" style={{ backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)' }}>
+            <div className="relative inline-block px-4 py-1.5 rounded-full border border-white/10 bg-black/50">
               <span className="text-xs font-mono tracking-[0.25em] uppercase text-white/60">
                 By Invitation Only
               </span>
@@ -104,7 +104,7 @@ function App() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight text-white leading-[1.1]">
               Healthcare AI
               <br />
-              <span className="font-normal bg-clip-text text-transparent animate-gradient-shift" style={{ backgroundImage: 'linear-gradient(to right, #d8b4fe, #ddd6fe, #c084fc, #d8b4fe)', backgroundSize: '200% 100%', backgroundRepeat: 'repeat' }}>
+              <span className="font-normal bg-clip-text text-transparent animate-gradient-shift" style={{ backgroundImage: 'linear-gradient(to right, #d8b4fe, #ddd6fe, #c084fc)', backgroundSize: '200% 100%' }}>
                 Executive Dinner
               </span>
             </h1>
