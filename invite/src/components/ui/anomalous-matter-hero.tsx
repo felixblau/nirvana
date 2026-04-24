@@ -144,15 +144,27 @@ export function GenerativeArtScene() {
           finalColor += vec3(streaks);
 
           float glint = 0.0;
-          for (int i = 0; i < 5; i++) {
+          vec3 nPos = normalize(vPosition);
+          float depth = nPos.z;
+          for (int i = 0; i < 8; i++) {
             float fi = float(i);
-            float speed = 0.3 + fi * 0.15;
-            vec3 seed = vec3(fi * 7.13, fi * 13.7, fi * 3.91);
-            float travel = fract(sin(dot(seed, vec3(12.9898, 78.233, 45.164))) * 43758.5453);
-            float wave = sin(vPosition.x * 6.0 + vPosition.y * 4.0 + vPosition.z * 5.0 + time * speed + travel * 30.0);
-            float spike = pow(max(0.0, wave), 40.0);
-            float flicker = 0.5 + 0.5 * sin(time * (1.2 + fi * 0.7) + fi * 5.0);
-            glint += spike * flicker * 0.24;
+            float seed1 = fract(sin(fi * 127.1) * 43758.5453);
+            float seed2 = fract(sin(fi * 269.5) * 18345.6231);
+            float seed3 = fract(sin(fi * 419.3) * 91837.2847);
+            float speed = 0.4 + seed1 * 0.3;
+            float t = fract(time * speed + seed1);
+            float zTarget = mix(-1.0, 1.0, t);
+            float zDist = abs(depth - zTarget);
+            float radialPulse = exp(-80.0 * zDist * zDist);
+            float angSpot = fract(sin(fi * 73.1 + floor(time * speed + seed1) * 31.7) * 43758.5453) * 6.283;
+            float angSpot2 = fract(sin(fi * 157.3 + floor(time * speed + seed1) * 67.1) * 28571.3947) * 3.14159 - 1.5708;
+            float pAngle = atan(nPos.y, nPos.x);
+            float pElev = asin(clamp(nPos.z, -1.0, 1.0));
+            float angDist = abs(pAngle - angSpot);
+            angDist = min(angDist, 6.283 - angDist);
+            float elevDist = abs(pElev - angSpot2);
+            float spatial = exp(-12.0 * (angDist * angDist + elevDist * elevDist));
+            glint += radialPulse * spatial * 0.35;
           }
           finalColor += vec3(glint);
 
