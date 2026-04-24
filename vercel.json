@@ -6,6 +6,11 @@
       "source": "/",
       "destination": "https://aidininner2026.meetnirvana.com/",
       "permanent": false
+    },
+    {
+      "source": "/invite",
+      "destination": "https://aidininner2026.meetnirvana.com/",
+      "permanent": false
     }
   ],
   "rewrites": [
