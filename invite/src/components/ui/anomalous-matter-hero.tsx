@@ -111,7 +111,9 @@ export function GenerativeArtScene() {
       fragmentShader: `
         uniform vec3 colorA;
         uniform vec3 colorB;
+        uniform float time;
         varying vec3 vNormal;
+        varying vec3 vPosition;
         varying vec3 vWorldPosition;
 
         void main() {
@@ -121,6 +123,39 @@ export function GenerativeArtScene() {
           float gradient = (vWorldPosition.y + 4.0) / 8.0;
           vec3 color = mix(colorA, colorB, gradient);
           vec3 finalColor = color * (0.3 + fresnel * 0.7);
+
+          float dist = length(vPosition);
+          float angle = atan(vPosition.y, vPosition.x);
+
+          float streaks = 0.0;
+          for (int i = 0; i < 3; i++) {
+            float fi = float(i);
+            float phase = fi * 2.09 + fi * 17.3;
+            float cycleTime = mod(time * 0.8 + phase, 4.0 + fi * 1.5);
+            float waveFront = cycleTime * 1.2;
+            float radialFade = exp(-2.5 * abs(dist - waveFront)) * step(0.0, waveFront - 0.1);
+            float angleSeed = fi * 43.7 + floor((time * 0.8 + phase) / (4.0 + fi * 1.5)) * 91.3;
+            float streakAngle = fract(sin(angleSeed) * 43758.5453) * 6.283;
+            float angularMask = pow(max(0.0, cos((angle - streakAngle) * 3.0)), 8.0);
+            float fade = smoothstep(0.0, 0.3, cycleTime) * smoothstep(4.0 + fi * 1.5, 1.5, cycleTime);
+            streaks += radialFade * angularMask * fade * 0.45;
+          }
+
+          finalColor += vec3(streaks);
+
+          float glint = 0.0;
+          for (int i = 0; i < 5; i++) {
+            float fi = float(i);
+            float speed = 0.3 + fi * 0.15;
+            vec3 seed = vec3(fi * 7.13, fi * 13.7, fi * 3.91);
+            float travel = fract(sin(dot(seed, vec3(12.9898, 78.233, 45.164))) * 43758.5453);
+            float wave = sin(vPosition.x * 6.0 + vPosition.y * 4.0 + vPosition.z * 5.0 + time * speed + travel * 30.0);
+            float spike = pow(max(0.0, wave), 40.0);
+            float flicker = 0.5 + 0.5 * sin(time * (1.2 + fi * 0.7) + fi * 5.0);
+            glint += spike * flicker * 0.12;
+          }
+          finalColor += vec3(glint);
+
           gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
