@@ -24,16 +24,23 @@ export function GenerativeArtScene() {
 
     const geometry = new THREE.IcosahedronGeometry(3.6, 64);
     const mousePos = new THREE.Vector2(0, 0);
+    const rippleOrigin = new THREE.Vector2(-99, -99);
     const material = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
         mousePos: { value: mousePos },
         colorA: { value: new THREE.Color(0x9073f2) },
         colorB: { value: new THREE.Color(0xdcd2c8) },
+        rippleOrigin: { value: rippleOrigin },
+        rippleTime: { value: -1.0 },
+        rippleStrength: { value: 0.0 },
       },
       vertexShader: `
         uniform float time;
         uniform vec2 mousePos;
+        uniform vec2 rippleOrigin;
+        uniform float rippleTime;
+        uniform float rippleStrength;
         varying vec3 vNormal;
         varying vec3 vPosition;
         varying vec3 vWorldPosition;
@@ -91,6 +98,11 @@ export function GenerativeArtScene() {
           float mouseInfluence = smoothstep(1.8, 0.0, length(position.xy - mousePos * 3.0));
           float displacement = snoise(position * 2.0 + time * 0.5) * 0.2;
           displacement += mouseInfluence * 0.5;
+
+          float dist = length(position.xy - rippleOrigin);
+          float rippleRadius = rippleTime * 4.0;
+          float rippleWave = sin((dist - rippleRadius) * 8.0) * exp(-3.0 * abs(dist - rippleRadius)) * rippleStrength;
+          displacement += rippleWave * 0.4;
           vec3 newPosition = position + normal * displacement;
           vWorldPosition = newPosition;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
@@ -119,12 +131,21 @@ export function GenerativeArtScene() {
 
     const targetRotX = { value: 0 };
     const targetRotY = { value: 0 };
+    let rippleStart = -1;
 
     let frameId: number;
     const animate = (t: number) => {
       material.uniforms.time.value = t * 0.0003;
       mesh.rotation.y += 0.0005 + (targetRotY.value - mesh.rotation.y) * 0.03;
       mesh.rotation.x += 0.0002 + (targetRotX.value - mesh.rotation.x) * 0.03;
+
+      if (rippleStart > 0) {
+        const elapsed = (t - rippleStart) * 0.001;
+        material.uniforms.rippleTime.value = elapsed;
+        material.uniforms.rippleStrength.value = Math.max(0, 1.0 - elapsed * 0.6);
+        if (elapsed > 2.0) rippleStart = -1;
+      }
+
       renderer.render(scene, camera);
       frameId = requestAnimationFrame(animate);
     };
@@ -144,13 +165,23 @@ export function GenerativeArtScene() {
       targetRotX.value = -mousePos.y * 0.3;
     };
 
+    const handleClick = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth) * 2 - 1;
+      const y = -(e.clientY / window.innerHeight) * 2 + 1;
+      rippleOrigin.set(x * 3.0, y * 3.0);
+      material.uniforms.rippleOrigin.value = rippleOrigin;
+      rippleStart = performance.now();
+    };
+
     window.addEventListener("resize", handleResize);
     window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("click", handleClick);
 
     return () => {
       cancelAnimationFrame(frameId);
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("click", handleClick);
       if (currentMount && renderer.domElement.parentNode === currentMount) {
         currentMount.removeChild(renderer.domElement);
       }
