@@ -180,15 +180,15 @@ export function GenerativeArtScene() {
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    const targetRotX = { value: 0 };
-    const targetRotY = { value: 0 };
+    mesh.rotation.x = 0.4;
     let rippleStart = -1;
+    let baseAngle = 0;
 
     let frameId: number;
     const animate = (t: number) => {
       material.uniforms.time.value = t * 0.0003;
-      mesh.rotation.y += 0.0005 + (targetRotY.value - mesh.rotation.y) * 0.03;
-      mesh.rotation.x += 0.0002 + (targetRotX.value - mesh.rotation.x) * 0.03;
+      baseAngle += 0.0012;
+      mesh.rotation.y = baseAngle;
 
       if (rippleStart > 0) {
         const elapsed = (t - rippleStart) * 0.001;
@@ -212,8 +212,6 @@ export function GenerativeArtScene() {
     const handleMouseMove = (e: MouseEvent) => {
       mousePos.x = (e.clientX / window.innerWidth) * 2 - 1;
       mousePos.y = -(e.clientY / window.innerHeight) * 2 + 1;
-      targetRotY.value = mousePos.x * 0.4;
-      targetRotX.value = -mousePos.y * 0.3;
     };
 
     const handleClick = (e: MouseEvent) => {
