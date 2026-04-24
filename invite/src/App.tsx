@@ -78,8 +78,8 @@ function App() {
         <GenerativeArtScene />
       </Suspense>
 
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6">
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent pointer-events-none" />
+      <div className="relative flex flex-col items-center justify-center min-h-screen px-6">
         <div
           className="relative max-w-2xl mx-auto text-center"
           style={{ animation: "fadeIn 1s ease-out forwards" }}
@@ -104,7 +104,7 @@ function App() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight text-white leading-[1.1]">
               Healthcare AI
               <br />
-              <span className="font-normal bg-clip-text text-transparent animate-gradient-shift" style={{ backgroundImage: 'linear-gradient(to right, #c084fc, #ddd6fe, #d8b4fe, #c084fc, #ddd6fe, #d8b4fe, #c084fc)', backgroundSize: '300% 100%' }}>
+              <span className="font-normal bg-clip-text text-transparent animate-gradient-shift" style={{ backgroundImage: 'linear-gradient(to right, #d8b4fe, #ddd6fe, #c084fc, #d8b4fe)', backgroundSize: '200% 100%', backgroundRepeat: 'repeat' }}>
                 Executive Dinner
               </span>
             </h1>

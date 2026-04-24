@@ -248,7 +248,7 @@ export function GenerativeArtScene() {
     };
   }, []);
 
-  return <div ref={mountRef} className="absolute inset-0 w-full h-full z-0" />;
+  return <div ref={mountRef} className="absolute inset-0 w-full h-full" style={{ willChange: 'transform' }} />;
 }
 
 export function AnomalousMatterHero({
