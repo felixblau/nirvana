@@ -189,7 +189,7 @@ export function GenerativeArtScene() {
     let frameId: number;
     const animate = (t: number) => {
       material.uniforms.time.value = t * 0.0003;
-      baseAngle += 0.0012;
+      baseAngle += 0.0006;
       mesh.rotation.y = baseAngle;
 
       if (rippleStart > 0) {
