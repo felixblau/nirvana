@@ -22,8 +22,8 @@ function TextGlow({ children }: { children: React.ReactNode }) {
       const rect = containerRef.current.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      glowRef.current.style.maskImage = `radial-gradient(circle 120px at ${x}px ${y}px, black 0%, transparent 100%)`;
-      glowRef.current.style.webkitMaskImage = `radial-gradient(circle 120px at ${x}px ${y}px, black 0%, transparent 100%)`;
+      glowRef.current.style.maskImage = `radial-gradient(circle 80px at ${x}px ${y}px, black 0%, transparent 100%)`;
+      glowRef.current.style.webkitMaskImage = `radial-gradient(circle 80px at ${x}px ${y}px, black 0%, transparent 100%)`;
     };
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
@@ -37,9 +37,9 @@ function TextGlow({ children }: { children: React.ReactNode }) {
         aria-hidden
         className="absolute inset-0 pointer-events-none"
         style={{
-          maskImage: "radial-gradient(circle 120px at -200px -200px, black 0%, transparent 100%)",
-          WebkitMaskImage: "radial-gradient(circle 120px at -200px -200px, black 0%, transparent 100%)",
-          filter: "drop-shadow(0 0 12px rgba(255,255,255,0.8)) drop-shadow(0 0 30px rgba(255,255,255,0.3))",
+          maskImage: "radial-gradient(circle 80px at -200px -200px, black 0%, transparent 100%)",
+          WebkitMaskImage: "radial-gradient(circle 80px at -200px -200px, black 0%, transparent 100%)",
+          filter: "drop-shadow(0 0 8px rgba(255,255,255,0.5)) drop-shadow(0 0 20px rgba(255,255,255,0.15))",
         }}
       >
         {children}
