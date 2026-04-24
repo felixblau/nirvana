@@ -186,7 +186,7 @@ function App() {
               <p className="text-white/50 text-sm">
                 We&apos;ll send details to {email} shortly.
               </p>
-              <p className="mt-4 text-white/30 text-xs font-mono tracking-wider">
+              <p className="mt-4 text-gray-400 text-xs font-mono tracking-wider">
                 July 23 &middot; 3 PM &ndash; 9 PM &middot; NYC
               </p>
             </div>
