@@ -156,6 +156,10 @@ export function GenerativeArtScene() {
           }
           finalColor += vec3(glint);
 
+          float facing = dot(normal, vec3(0.0, 0.0, 1.0));
+          float depthFade = smoothstep(-0.1, 0.4, facing);
+          finalColor *= depthFade;
+
           gl_FragColor = vec4(finalColor, 1.0);
         }
       `,
