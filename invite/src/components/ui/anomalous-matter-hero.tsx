@@ -29,7 +29,7 @@ export function GenerativeArtScene() {
       uniforms: {
         time: { value: 0 },
         mousePos: { value: mousePos },
-        colorA: { value: new THREE.Color(0x9073f2) },
+        colorA: { value: new THREE.Color(0x5a4599) },
         colorB: { value: new THREE.Color(0xdcd2c8) },
         rippleOrigin: { value: rippleOrigin },
         rippleTime: { value: -1.0 },
