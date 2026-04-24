@@ -152,7 +152,7 @@ export function GenerativeArtScene() {
             float wave = sin(vPosition.x * 6.0 + vPosition.y * 4.0 + vPosition.z * 5.0 + time * speed + travel * 30.0);
             float spike = pow(max(0.0, wave), 40.0);
             float flicker = 0.5 + 0.5 * sin(time * (1.2 + fi * 0.7) + fi * 5.0);
-            glint += spike * flicker * 0.12;
+            glint += spike * flicker * 0.24;
           }
           finalColor += vec3(glint);
 
