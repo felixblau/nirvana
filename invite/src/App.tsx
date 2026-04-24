@@ -78,22 +78,22 @@ function App() {
         <GenerativeArtScene />
       </Suspense>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/30 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent z-10" />
 
       <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-6">
         <div
           className="max-w-2xl mx-auto text-center"
           style={{ animation: "fadeIn 1s ease-out forwards" }}
         >
-          <TextGlow>
-            <div className="mb-8">
-              <div className="inline-block px-4 py-1.5 rounded-full border border-white/10 bg-white/[0.03] backdrop-blur-xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]">
-                <span className="text-xs font-mono tracking-[0.25em] uppercase text-white/60">
-                  By Invitation Only
-                </span>
-              </div>
+          <div className="mb-8">
+            <div className="inline-block px-4 py-1.5 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]">
+              <span className="text-xs font-mono tracking-[0.25em] uppercase text-white/60">
+                By Invitation Only
+              </span>
             </div>
+          </div>
 
+          <TextGlow>
             <div className="mb-4">
               <img
                 src={nirvanaLogo}
