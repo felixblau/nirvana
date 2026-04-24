@@ -73,20 +73,19 @@ function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-background text-foreground overflow-hidden" style={{ isolation: 'isolate' }}>
+    <div className="relative min-h-screen bg-background text-foreground overflow-hidden">
       <Suspense fallback={<div className="w-full h-full bg-background" />}>
         <GenerativeArtScene />
       </Suspense>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent z-10" />
-
-      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-6">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6">
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent pointer-events-none" />
         <div
-          className="max-w-2xl mx-auto text-center"
+          className="relative max-w-2xl mx-auto text-center"
           style={{ animation: "fadeIn 1s ease-out forwards" }}
         >
           <div className="mb-8">
-            <div className="inline-block px-4 py-1.5 rounded-full border border-white/10 bg-black/35" style={{ backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)' }}>
+            <div className="relative inline-block px-4 py-1.5 rounded-full border border-white/10 bg-black/35" style={{ backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)' }}>
               <span className="text-xs font-mono tracking-[0.25em] uppercase text-white/60">
                 By Invitation Only
               </span>
