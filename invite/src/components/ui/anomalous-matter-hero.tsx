@@ -109,11 +109,12 @@ export function GenerativeArtScene() {
           float fresnel = 1.0 - abs(dot(normal, vec3(0.0, 0.0, 1.0)));
           fresnel = pow(fresnel, 1.5);
           float gradient = (vWorldPosition.y + 4.0) / 8.0;
-          float mouseDist = smoothstep(1.8, 0.0, length(vWorldPosition.xy - mousePos * 3.0));
-          gradient = clamp(gradient + mouseDist * 0.15, 0.0, 1.0);
+          float mouseDist = smoothstep(3.0, 0.0, length(vWorldPosition.xy - mousePos * 3.0));
+          mouseDist = pow(mouseDist, 4.0);
+          gradient = clamp(gradient + mouseDist * 0.1, 0.0, 1.0);
           vec3 color = mix(colorA, colorB, gradient);
           vec3 baseColor = color * (0.3 + fresnel * 0.7);
-          vec3 whiteHighlight = vec3(1.0) * mouseDist * mouseDist * 0.8;
+          vec3 whiteHighlight = vec3(1.0) * mouseDist * 0.25;
           vec3 finalColor = baseColor + whiteHighlight;
           gl_FragColor = vec4(finalColor, 1.0);
         }
