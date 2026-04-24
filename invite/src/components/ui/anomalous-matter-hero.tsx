@@ -178,9 +178,11 @@ export function GenerativeArtScene() {
       wireframe: true,
     });
     const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
+    const tiltGroup = new THREE.Group();
+    tiltGroup.rotation.z = THREE.MathUtils.degToRad(18);
+    tiltGroup.add(mesh);
+    scene.add(tiltGroup);
 
-    mesh.rotation.x = 0.4;
     let rippleStart = -1;
     let baseAngle = 0;
 
