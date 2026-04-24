@@ -78,12 +78,12 @@
     background-position: 0% center;
   }
   100% {
-    background-position: -100% center;
+    background-position: 100% center;
   }
 }
 
 @utility animate-gradient-shift {
-  animation: gradient-shift 6s ease-in-out infinite alternate;
+  animation: gradient-shift 8s ease-in-out infinite alternate;
 }
 
 body {
