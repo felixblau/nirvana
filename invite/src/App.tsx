@@ -86,14 +86,7 @@ function App() {
           style={{ animation: "fadeIn 1s ease-out forwards" }}
         >
           <div className="mb-8">
-            <div
-              className="inline-block px-4 py-1.5 rounded-full border border-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]"
-              style={{
-                backgroundColor: 'rgba(255,255,255,0.04)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
-              }}
-            >
+            <div className="inline-block px-4 py-1.5 rounded-full border border-white/10 bg-black/15">
               <span className="text-xs font-mono tracking-[0.25em] uppercase text-white/60">
                 By Invitation Only
               </span>
