@@ -53,9 +53,23 @@ function App() {
   const [submitted, setSubmitted] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitting(true);
+    try {
+      await fetch(
+        "https://script.google.com/macros/s/AKfycbxoHYB-GtNa8aE8gBWPVWqd52yBu5E0epHjReKGT91B6xZ476-L_CzNLXMnwaayPlvs/exec",
+        {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email }),
+        }
+      );
+    } catch {}
     setSubmitted(true);
+    setSubmitting(false);
   };
 
   return (
@@ -183,9 +197,10 @@ function App() {
                 </div>
                 <Button
                   type="submit"
-                  className="w-full py-5 text-sm font-mono tracking-[0.15em] uppercase bg-white text-black hover:bg-white/90 rounded-full cursor-pointer"
+                  disabled={submitting}
+                  className="w-full py-5 text-sm font-mono tracking-[0.15em] uppercase bg-white text-black hover:bg-white/90 rounded-full cursor-pointer disabled:opacity-50"
                 >
-                  Confirm RSVP
+                  {submitting ? "Confirming…" : "Confirm RSVP"}
                 </Button>
               </form>
             </>
