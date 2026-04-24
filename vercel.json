@@ -1,6 +1,9 @@
 {
   "buildCommand": "bash build.sh",
   "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/", "destination": "/invite", "permanent": false }
+  ],
   "rewrites": [
     { "source": "/pt-checkin", "destination": "/pt-checkin/index.html" },
     { "source": "/clear1", "destination": "/clear1/index.html" },
