@@ -87,7 +87,7 @@ function App() {
         >
           <TextGlow>
             <div className="mb-8">
-              <div className="inline-block px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
+              <div className="inline-block px-4 py-1.5 rounded-full border border-white/10 bg-white/[0.03] backdrop-blur-xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]">
                 <span className="text-xs font-mono tracking-[0.25em] uppercase text-white/60">
                   By Invitation Only
                 </span>
