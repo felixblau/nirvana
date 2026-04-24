@@ -39,7 +39,7 @@ function TextGlow({ children }: { children: React.ReactNode }) {
         style={{
           maskImage: "radial-gradient(circle 80px at -200px -200px, black 0%, transparent 100%)",
           WebkitMaskImage: "radial-gradient(circle 80px at -200px -200px, black 0%, transparent 100%)",
-          filter: "drop-shadow(0 0 8px rgba(255,255,255,0.5)) drop-shadow(0 0 20px rgba(255,255,255,0.15))",
+          filter: "drop-shadow(0 0 8px rgba(192,132,252,0.5)) drop-shadow(0 0 20px rgba(192,132,252,0.15))",
         }}
       >
         {children}
@@ -104,7 +104,7 @@ function App() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light tracking-tight text-white leading-[1.1]">
               Healthcare AI
               <br />
-              <span className="font-normal bg-clip-text text-transparent animate-gradient-shift" style={{ backgroundImage: 'linear-gradient(to right, #d8b4fe, #ddd6fe, #c084fc, #ddd6fe, #d8b4fe)', backgroundSize: '200% 100%', backgroundRepeat: 'no-repeat' }}>
+              <span className="font-normal bg-gradient-to-r from-purple-300 via-violet-200 to-purple-400 bg-clip-text text-transparent">
                 Executive Dinner
               </span>
             </h1>
