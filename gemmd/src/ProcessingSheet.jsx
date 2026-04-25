@@ -1,4 +1,4 @@
-import { CheckIcon, InsuranceIcon, DollarIcon, CalendarIcon, GemMDLogo, GeminiSparkle } from './Icons'
+import { CheckIcon, InsuranceIcon, DollarIcon, CalendarIcon, NirvanaLogo, StepSpinner } from './Icons'
 
 const STEPS = [
   { label: 'Matching providers to your insurance', icon: InsuranceIcon },
@@ -20,7 +20,7 @@ export default function ProcessingSheet({ activeStep }) {
             <div key={i} className={`step-row ${state}`}>
               <div className={`step-icon ${state}`}>
                 {state === 'done' && <CheckIcon size={14} />}
-                {state === 'active' && <GeminiSparkle />}
+                {state === 'active' && <StepSpinner />}
                 {state === 'pending' && <step.icon />}
               </div>
               <span>{step.label}</span>
@@ -28,7 +28,7 @@ export default function ProcessingSheet({ activeStep }) {
           )
         })}
         <div className="sheet-footer">
-          Powered by <GemMDLogo />
+          Powered by <NirvanaLogo />
         </div>
       </div>
     </div>

@@ -660,6 +660,10 @@ html, body, #root {
   color: var(--gray-400);
 }
 
+.step-spinner {
+  animation: spin 0.8s linear infinite;
+}
+
 .gemini-sparkle {
   animation: spinSlow 3s linear infinite;
 }

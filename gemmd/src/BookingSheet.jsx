@@ -1,4 +1,4 @@
-import { GemMDLogo } from './Icons'
+import { NirvanaLogo } from './Icons'
 import TapRipple from './TapRipple'
 
 const DATES = [
@@ -58,7 +58,7 @@ export default function BookingSheet({ onBook, showTap }) {
         </button>
 
         <div className="sheet-footer">
-          Powered by <GemMDLogo />
+          Powered by <NirvanaLogo />
         </div>
       </div>
     </div>

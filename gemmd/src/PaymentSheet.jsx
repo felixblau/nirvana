@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ChevronRight, LockIcon, GemMDLogo } from './Icons'
+import { ChevronRight, LockIcon, NirvanaLogo } from './Icons'
 import TapRipple from './TapRipple'
 
 function CvvDots({ active }) {
@@ -76,7 +76,7 @@ export default function PaymentSheet({ cvvFilled, onConfirm, showTap }) {
         </button>
 
         <div className="sheet-footer">
-          Powered by <GemMDLogo />
+          Powered by <NirvanaLogo />
         </div>
       </div>
     </div>
