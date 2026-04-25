@@ -110,6 +110,11 @@ html, body, #root {
   cursor: pointer;
 }
 
+.nav-bar-right .nav-icon {
+  width: 17px;
+  height: 17px;
+}
+
 .chat-area {
   flex: 1;
   overflow-y: auto;

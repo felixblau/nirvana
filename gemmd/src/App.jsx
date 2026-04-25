@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import {
   HamburgerIcon, GeminiEditIcon, ShareIcon, KebabIcon, MicIcon,
   SignalIcon, WifiIcon, BatteryIcon, GeminiSparkleStatic,
-  ThumbsUpIcon, ThumbsDownIcon, CopyIcon, PlusIcon, SettingsIcon,
+  ThumbsUpIcon, ThumbsDownIcon, CopyIcon, PlusIcon, SlidersIcon,
 } from './Icons'
 import ProcessingSheet from './ProcessingSheet'
 import BookingSheet from './BookingSheet'
@@ -285,9 +285,9 @@ export default function App() {
           <span className="input-placeholder">Ask GemMD</span>
           <div className="input-actions-row">
             <PlusIcon />
-            <SettingsIcon />
-            <span className="input-fast">Fast <span className="input-chevron">›</span></span>
+            <SlidersIcon />
             <div style={{ flex: 1 }} />
+            <span className="input-fast">Fast <span className="input-chevron">›</span></span>
             <MicIcon />
           </div>
         </div>
