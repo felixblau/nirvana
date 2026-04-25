@@ -7,6 +7,7 @@
     { "source": "/amazon", "destination": "/amazon/index.html" },
     { "source": "/wallet-e2e", "destination": "/wallet-e2e/index.html" },
     { "source": "/clear1-demo", "destination": "/clear1-demo/index.html" },
-    { "source": "/invite", "destination": "/invite/index.html" }
+    { "source": "/invite", "destination": "/invite/index.html" },
+    { "source": "/gemmd", "destination": "/gemmd/index.html" }
   ]
 }
