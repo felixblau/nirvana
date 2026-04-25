@@ -68,7 +68,6 @@ function AiActions() {
     <div className="ai-actions">
       <button className="ai-action-btn"><ThumbsUpIcon /></button>
       <button className="ai-action-btn"><ThumbsDownIcon /></button>
-      <button className="ai-action-btn"><ShareIcon size={16} /></button>
       <button className="ai-action-btn"><CopyIcon /></button>
       <button className="ai-action-btn"><KebabIcon size={16} /></button>
     </div>
@@ -171,7 +170,7 @@ export default function App() {
   }
 
   useEffect(() => {
-    if (step < STEPS.RESULTS) return
+    if (step < STEPS.USER_REPLY) return
     setTimeout(() => {
       endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
     }, 150)
@@ -249,7 +248,7 @@ export default function App() {
           </AnimateIn>
         )}
 
-        {step === STEPS.RETRIEVAL && (
+        {step >= STEPS.RETRIEVAL && step <= STEPS.PROCESSING_3 && (
           <AnimateIn>
             <div className="retrieval">
               <div className="spinner" />

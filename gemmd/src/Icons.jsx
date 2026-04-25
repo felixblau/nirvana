@@ -50,7 +50,7 @@ export function PlusIcon() {
 
 export function SlidersIcon() {
   return (
-    <svg className="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg className="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: 'rotate(90deg)' }}>
       <line x1="4" y1="21" x2="4" y2="14" />
       <line x1="4" y1="10" x2="4" y2="3" />
       <line x1="12" y1="21" x2="12" y2="12" />
@@ -228,9 +228,9 @@ export function GeminiSparkleStatic() {
     <svg className="msg-ai-sparkle" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="gemini-grad" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#4285f4"/>
-          <stop offset="50%" stopColor="#9b72cb"/>
-          <stop offset="100%" stopColor="#d96570"/>
+          <stop offset="0%" stopColor="#7baaf7"/>
+          <stop offset="50%" stopColor="#4285f4"/>
+          <stop offset="100%" stopColor="#1a6cf0"/>
         </linearGradient>
       </defs>
       <path d="M14 0C14 7.732 7.732 14 0 14C7.732 14 14 20.268 14 28C14 20.268 20.268 14 28 14C20.268 14 14 7.732 14 0Z" fill="url(#gemini-grad)"/>

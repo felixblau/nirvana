@@ -265,8 +265,8 @@ html, body, #root {
 }
 
 .input-icon {
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   color: var(--gray-400);
   flex-shrink: 0;
 }
@@ -583,7 +583,7 @@ html, body, #root {
   margin-bottom: 16px;
 }
 
-.copay-label { font-size: 14px; color: var(--blue); }
+.copay-label { font-size: 14px; color: #8ab4f8; }
 .copay-amount { font-size: 22px; font-weight: 700; color: var(--gray-900); }
 
 .payment-section-label {
