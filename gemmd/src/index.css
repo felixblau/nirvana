@@ -231,18 +231,21 @@ html, body, #root {
 }
 
 .input-bar {
-  padding: 0 16px 28px;
+  padding: 0 12px 28px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   flex-shrink: 0;
 }
 
-.input-field-wrapper {
+.input-container {
   background: var(--surface);
   border: 1px solid var(--gray-200);
   border-radius: 24px;
-  padding: 14px 18px;
+  padding: 14px 16px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .input-placeholder {
@@ -254,7 +257,6 @@ html, body, #root {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0 4px;
 }
 
 .input-icon {

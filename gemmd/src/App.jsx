@@ -281,15 +281,15 @@ export default function App() {
       </div>
 
       <div className="input-bar">
-        <div className="input-field-wrapper">
+        <div className="input-container">
           <span className="input-placeholder">Ask GemMD</span>
-        </div>
-        <div className="input-actions-row">
-          <PlusIcon />
-          <SettingsIcon />
-          <span className="input-fast">Fast <span className="input-chevron">›</span></span>
-          <div style={{ flex: 1 }} />
-          <MicIcon />
+          <div className="input-actions-row">
+            <PlusIcon />
+            <SettingsIcon />
+            <span className="input-fast">Fast <span className="input-chevron">›</span></span>
+            <div style={{ flex: 1 }} />
+            <MicIcon />
+          </div>
         </div>
         <div className="input-disclaimer">GemMD is AI and can make mistakes.</div>
       </div>
