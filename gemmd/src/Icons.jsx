@@ -132,6 +132,21 @@ export function GemMDLogo() {
   )
 }
 
+export function GeminiSparkleStatic() {
+  return (
+    <svg className="msg-ai-sparkle" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gemini-grad" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#4285f4"/>
+          <stop offset="50%" stopColor="#9b72cb"/>
+          <stop offset="100%" stopColor="#d96570"/>
+        </linearGradient>
+      </defs>
+      <path d="M14 0C14 7.732 7.732 14 0 14C7.732 14 14 20.268 14 28C14 20.268 20.268 14 28 14C20.268 14 14 7.732 14 0Z" fill="url(#gemini-grad)"/>
+    </svg>
+  )
+}
+
 export function GeminiSparkle() {
   return (
     <svg className="gemini-sparkle" width="16" height="16" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">

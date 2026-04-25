@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import {
-  MenuIcon, EditIcon, CloseIcon, PlusIcon, MicIcon,
-  SignalIcon, WifiIcon, BatteryIcon,
+  MenuIcon, CloseIcon, PlusIcon, MicIcon,
+  SignalIcon, WifiIcon, BatteryIcon, GeminiSparkleStatic,
 } from './Icons'
 import ProcessingSheet from './ProcessingSheet'
 import BookingSheet from './BookingSheet'
@@ -58,6 +58,15 @@ function AnimateIn({ children, delay = 0, style }) {
       ...style,
     }}>
       {children}
+    </div>
+  )
+}
+
+function AiMessage({ children }) {
+  return (
+    <div className="msg-ai-wrapper">
+      <GeminiSparkleStatic />
+      <div className="msg-ai">{children}</div>
     </div>
   )
 }
@@ -196,30 +205,19 @@ export default function App() {
           <span className="nav-bar-title">GemMD</span>
         </div>
         <div className="nav-bar-right">
-          <EditIcon />
           <CloseIcon />
         </div>
       </div>
 
       <div className="chat-area" ref={chatRef}>
-        {step < STEPS.RESULTS && (
-          <div className="identifier-bar">
-            <div className="identifier-avatar">M</div>
-            <span className="identifier-name">Michael</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="6 9 12 15 18 9" />
-            </svg>
-          </div>
-        )}
-
         <div className="msg-user">
           I've been having persistent knee pain for the past two weeks, especially when climbing stairs. It's a sharp pain on the outer side of my right knee.
         </div>
 
         {showAiResponse && (
-          <div className="msg-ai">
+          <AiMessage>
             <Typewriter text={AI_MSG_1} onDone={handleFirstTypeDone} />
-          </div>
+          </AiMessage>
         )}
 
         {step >= STEPS.USER_REPLY && (
@@ -239,10 +237,10 @@ export default function App() {
 
         {showResults && (
           <AnimateIn>
-            <div className="msg-ai">
+            <AiMessage>
               <Typewriter text={AI_MSG_2} />
-            </div>
-            <div style={{ marginTop: 12 }}>
+            </AiMessage>
+            <div style={{ marginTop: 12, paddingLeft: 38 }}>
               <DoctorCards onBook={() => {}} showTap={showTap && step === STEPS.RESULTS} disabled={showConfirmation} />
             </div>
           </AnimateIn>
@@ -250,9 +248,9 @@ export default function App() {
 
         {showConfirmation && (
           <AnimateIn>
-            <div className="msg-ai">
+            <AiMessage>
               <Typewriter text={AI_MSG_3} />
-            </div>
+            </AiMessage>
           </AnimateIn>
         )}
 
@@ -260,9 +258,11 @@ export default function App() {
       </div>
 
       <div className="input-bar">
-        <PlusIcon />
-        <div className="input-field">Ask GemMD</div>
-        <MicIcon />
+        <div className="input-bar-inner">
+          <PlusIcon />
+          <div className="input-field">Ask GemMD</div>
+          <MicIcon />
+        </div>
       </div>
 
       {showSheet && <ProcessingSheet activeStep={processingStep} />}
@@ -272,7 +272,7 @@ export default function App() {
       {paused && (
         <div style={{
           position: 'absolute', top: 60, left: '50%', transform: 'translateX(-50%)',
-          background: 'rgba(0,0,0,0.7)', color: 'white', padding: '4px 12px',
+          background: 'rgba(0,0,0,0.8)', color: 'white', padding: '4px 12px',
           borderRadius: 12, fontSize: 12, zIndex: 20,
         }}>
           paused — tap to resume
