@@ -206,53 +206,79 @@ html, body, #root {
   to { transform: rotate(360deg); }
 }
 
-.input-bar {
-  padding: 8px 12px 34px;
+.nav-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: conic-gradient(#4285f4 0deg, #ea4335 90deg, #fbbc04 180deg, #34a853 270deg, #4285f4 360deg);
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding: 2px;
+}
+
+.nav-avatar span {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #5f6368;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.input-bar {
+  padding: 0 16px 28px;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
   flex-shrink: 0;
 }
 
-.input-bar-inner {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.input-field-wrapper {
   background: var(--surface);
   border: 1px solid var(--gray-200);
   border-radius: 24px;
-  padding: 10px 14px;
+  padding: 14px 18px;
 }
 
-.input-bar-plus {
+.input-placeholder {
+  font-size: 16px;
+  color: var(--gray-400);
+}
+
+.input-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 4px;
+}
+
+.input-icon {
   width: 20px;
   height: 20px;
   color: var(--gray-400);
   flex-shrink: 0;
 }
 
-.input-field {
-  flex: 1;
-  font-size: 15px;
+.input-fast {
+  font-size: 14px;
+  font-weight: 500;
   color: var(--gray-400);
-  background: transparent;
-  border: none;
-  outline: none;
 }
 
-.input-mic {
-  width: 20px;
-  height: 20px;
-  color: var(--gray-400);
-  flex-shrink: 0;
+.input-chevron {
+  font-size: 16px;
 }
 
-.input-footer {
+.input-disclaimer {
   text-align: center;
   font-size: 11px;
   color: var(--gray-300);
-  padding: 4px 0 0;
+  padding: 2px 0 0;
 }
 
 .sheet-overlay {

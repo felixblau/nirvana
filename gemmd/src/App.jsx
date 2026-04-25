@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import {
-  MenuIcon, CloseIcon, PlusIcon, MicIcon,
+  HamburgerIcon, GeminiEditIcon, ShareIcon, KebabIcon, MicIcon,
   SignalIcon, WifiIcon, BatteryIcon, GeminiSparkleStatic,
+  ThumbsUpIcon, ThumbsDownIcon, CopyIcon, PlusIcon, SettingsIcon,
 } from './Icons'
 import ProcessingSheet from './ProcessingSheet'
 import BookingSheet from './BookingSheet'
@@ -62,12 +63,27 @@ function AnimateIn({ children, delay = 0, style }) {
   )
 }
 
-function AiMessage({ children }) {
+function AiActions() {
   return (
-    <div className="msg-ai-wrapper">
-      <GeminiSparkleStatic />
-      <div className="msg-ai">{children}</div>
+    <div className="ai-actions">
+      <button className="ai-action-btn"><ThumbsUpIcon /></button>
+      <button className="ai-action-btn"><ThumbsDownIcon /></button>
+      <button className="ai-action-btn"><ShareIcon size={16} /></button>
+      <button className="ai-action-btn"><CopyIcon /></button>
+      <button className="ai-action-btn"><KebabIcon size={16} /></button>
     </div>
+  )
+}
+
+function AiMessage({ children, showActions }) {
+  return (
+    <>
+      <div className="msg-ai-wrapper">
+        <GeminiSparkleStatic />
+        <div className="msg-ai">{children}</div>
+      </div>
+      {showActions && <AiActions />}
+    </>
   )
 }
 
@@ -112,6 +128,7 @@ export default function App() {
   const [step, setStep] = useState(STEPS.ENTER)
   const [paused, setPaused] = useState(false)
   const [showTap, setShowTap] = useState(false)
+  const [firstDone, setFirstDone] = useState(false)
   const chatRef = useRef(null)
   const endRef = useRef(null)
 
@@ -122,6 +139,7 @@ export default function App() {
     setShowTap(false)
     if (step === STEPS.EXIT) {
       chatRef.current?.scrollTo({ top: 0 })
+      setFirstDone(false)
       setStep(STEPS.ENTER)
     } else {
       setStep(s => s + 1)
@@ -147,6 +165,7 @@ export default function App() {
   }, [step, paused])
 
   const handleFirstTypeDone = () => {
+    setFirstDone(true)
     if (paused) return
     setTimeout(advanceStep, 1500)
   }
@@ -201,11 +220,15 @@ export default function App() {
 
       <div className="nav-bar">
         <div className="nav-bar-left">
-          <MenuIcon />
-          <span className="nav-bar-title">GemMD</span>
+          <HamburgerIcon />
         </div>
         <div className="nav-bar-right">
-          <CloseIcon />
+          <GeminiEditIcon />
+          <ShareIcon />
+          <KebabIcon />
+          <div className="nav-avatar">
+            <span>F</span>
+          </div>
         </div>
       </div>
 
@@ -215,7 +238,7 @@ export default function App() {
         </div>
 
         {showAiResponse && (
-          <AiMessage>
+          <AiMessage showActions={firstDone && step >= STEPS.USER_REPLY}>
             <Typewriter text={AI_MSG_1} onDone={handleFirstTypeDone} />
           </AiMessage>
         )}
@@ -237,7 +260,7 @@ export default function App() {
 
         {showResults && (
           <AnimateIn>
-            <AiMessage>
+            <AiMessage showActions={false}>
               <Typewriter text={AI_MSG_2} />
             </AiMessage>
             <div style={{ marginTop: 12, paddingLeft: 38 }}>
@@ -248,7 +271,7 @@ export default function App() {
 
         {showConfirmation && (
           <AnimateIn>
-            <AiMessage>
+            <AiMessage showActions={false}>
               <Typewriter text={AI_MSG_3} />
             </AiMessage>
           </AnimateIn>
@@ -258,11 +281,17 @@ export default function App() {
       </div>
 
       <div className="input-bar">
-        <div className="input-bar-inner">
+        <div className="input-field-wrapper">
+          <span className="input-placeholder">Ask GemMD</span>
+        </div>
+        <div className="input-actions-row">
           <PlusIcon />
-          <div className="input-field">Ask GemMD</div>
+          <SettingsIcon />
+          <span className="input-fast">Fast <span className="input-chevron">›</span></span>
+          <div style={{ flex: 1 }} />
           <MicIcon />
         </div>
+        <div className="input-disclaimer">GemMD is AI and can make mistakes.</div>
       </div>
 
       {showSheet && <ProcessingSheet activeStep={processingStep} />}
