@@ -14,3 +14,5 @@ cp -r "health-ai/dist/"* "dist/amazon/"
 
 mkdir -p "dist/invite"
 cp -r "invite/dist/"* "dist/invite/"
+
+cp index.html "dist/index.html"
