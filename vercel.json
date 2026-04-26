@@ -9,6 +9,7 @@
     { "source": "/clear1-demo", "destination": "/clear1-demo/index.html" },
     { "source": "/invite", "destination": "/invite/index.html" },
     { "source": "/gemmd", "destination": "/gemmd/index.html" },
-    { "source": "/lifestance", "destination": "/lifestance/index.html" }
+    { "source": "/lifestance", "destination": "/lifestance/index.html" },
+    { "source": "/lifestance-demo", "destination": "/lifestance-demo/index.html" }
   ]
 }

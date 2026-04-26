@@ -1,0 +1,77 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  /* LifeStance brand */
+  --ls-ink: #2b2b2b;
+  --ls-ink-soft: #4a4a4a;
+  --ls-ink-muted: #6b6b6b;
+  --ls-teal: #2e7cbf;       /* blue ribbon from mark */
+  --ls-teal-dark: #1f5a9e;
+  --ls-teal-deep: #18416e;
+  --ls-green: #6cbf4a;      /* green ribbon */
+  --ls-cta-navy: #14294a;   /* button / dark bg */
+  --ls-cta-navy-hover: #0d1c33;
+  --ls-sage: #e7ecd9;
+  --ls-sage-soft: #f1f4e7;
+  --ls-cream: #f5efe3;
+  --ls-cream-soft: #faf6ee;
+  --ls-border: #e3ddd3;
+  --ls-border-soft: #efeae0;
+  --ls-white: #ffffff;
+
+  /* Nirvana brand (for injected screen) */
+  --nv-navy: #0a1d3a;
+  --nv-navy-soft: #14294a;
+  --nv-lavender: #c4b5fd;
+  --nv-lavender-soft: #e4deff;
+
+  --ls-shadow-sm: 0 1px 2px rgba(20, 41, 74, 0.04);
+  --ls-shadow-md: 0 4px 16px rgba(20, 41, 74, 0.06);
+  --ls-shadow-lg: 0 12px 36px rgba(20, 41, 74, 0.10);
+  --ls-radius: 10px;
+  --ls-radius-lg: 16px;
+
+  /* Type stacks — use real fonts if installed (Mac/Adobe), web fallback otherwise */
+  --font-serif: 'Utopia Std', 'Utopia', 'Source Serif 4', 'Source Serif Pro', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Styrene B', 'Styrene B LC', 'Styrene', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 30px;
+  color: var(--ls-ink);
+  background: var(--ls-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 25px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+input, select, textarea {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: inherit;
+}
+
+a { color: inherit; text-decoration: none; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
