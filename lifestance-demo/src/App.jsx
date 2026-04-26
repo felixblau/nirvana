@@ -62,8 +62,7 @@ const SCRIPT = [
   { kind: 'tap', target: '[data-demo="meet-flexible"]', delay: 1400 },
   { kind: 'selectMeet', value: 'flexible', delay: 300 },
 
-  { kind: 'scrollTo', selector: '[data-demo="view-matches"]', delay: 1400 },
-  { kind: 'tap', target: '[data-demo="view-matches"]', delay: 1200 },
+  { kind: 'tap', target: '[data-demo="view-matches"]', delay: 1400 },
   { kind: 'go', to: 'matches', delay: 500 },
 
   // therapists skeleton (2s) then real content + 3s hold

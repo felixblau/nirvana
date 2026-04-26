@@ -401,15 +401,24 @@ function CareTypeSheet({ visible, value, onSelect, onClose }) {
   const demo = useDemo()
   const [innerValue, setInnerValue] = useState(value)
   const [mounted, setMounted] = useState(visible)
+  const [entered, setEntered] = useState(visible)
   const localValue = demo.inDemo ? demo.careSheetLocal : innerValue
   const setLocalValue = demo.inDemo ? demo.setCareSheetLocal : setInnerValue
 
-  // keep mounted while sheet animates out
+  // mount first with translateY(100%), then flip to translateY(0) on next frame
+  // so the transition plays from off-screen to in-place
   useEffect(() => {
     if (visible) {
       setMounted(true)
+      // next frame after mount, trigger the slide-in
+      const raf1 = requestAnimationFrame(() => {
+        const raf2 = requestAnimationFrame(() => setEntered(true))
+        return () => cancelAnimationFrame(raf2)
+      })
+      return () => cancelAnimationFrame(raf1)
     } else if (mounted) {
-      const t = setTimeout(() => setMounted(false), 380)
+      setEntered(false)
+      const t = setTimeout(() => setMounted(false), 1050)
       return () => clearTimeout(t)
     }
   }, [visible, mounted])
@@ -427,8 +436,8 @@ function CareTypeSheet({ visible, value, onSelect, onClose }) {
         flexDirection: 'column',
         justifyContent: 'flex-end',
         zIndex: 60,
-        background: visible ? 'rgba(0, 0, 0, 0.35)' : 'rgba(0, 0, 0, 0)',
-        transition: 'background 0.36s cubic-bezier(0.16, 1, 0.3, 1)',
+        background: entered ? 'rgba(0, 0, 0, 0.35)' : 'rgba(0, 0, 0, 0)',
+        transition: 'background 1s cubic-bezier(0.16, 1, 0.3, 1)',
         pointerEvents: visible ? 'auto' : 'none',
       }}
       onClick={onClose}
@@ -442,8 +451,8 @@ function CareTypeSheet({ visible, value, onSelect, onClose }) {
           height: '92%',
           display: 'flex',
           flexDirection: 'column',
-          transform: visible ? 'translateY(0)' : 'translateY(100%)',
-          transition: 'transform 0.38s cubic-bezier(0.16, 1, 0.3, 1)',
+          transform: entered ? 'translateY(0)' : 'translateY(100%)',
+          transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1)',
           willChange: 'transform',
         }}
       >
