@@ -30,7 +30,7 @@ export function TapRipple({ x, y, onDone }) {
           width: 44,
           height: 44,
           borderRadius: '50%',
-          background: 'rgba(0, 103, 206, 0.2)',
+          background: 'rgba(196, 181, 253, 0.55)',
           transform: 'scale(0)',
           animation: 'lsd-tap-down 0.9s cubic-bezier(0.25, 0.1, 0.25, 1) forwards',
         }}
@@ -44,7 +44,7 @@ export function TapRipple({ x, y, onDone }) {
           height: 44,
           borderRadius: '50%',
           background: 'transparent',
-          border: '2px solid #0067ce',
+          border: '2px solid #8b7ff0',
           transform: 'scale(1)',
           animation: 'lsd-tap-ring 0.9s cubic-bezier(0.25, 0.1, 0.25, 1) 0.15s forwards',
           opacity: 0,

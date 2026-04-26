@@ -27,10 +27,10 @@ const SCRIPT = [
   { kind: 'tap', target: '[data-demo="state-dropdown"]', delay: 1400 },
   { kind: 'setDropdownOpen', value: true, delay: 200 },
   { kind: 'scrollDropdown', targetCode: 'NY', delay: 1200 },
-  { kind: 'tap', target: '[data-demo="state-option-NY"]', delay: 800 },
+  { kind: 'tap', target: '[data-demo="state-option-NY"]', delay: 1300 },
   { kind: 'selectState', code: 'NY', delay: 300 },
 
-  { kind: 'tap', target: '[data-demo="modal-book-online"]', delay: 1400 },
+  { kind: 'tap', target: '[data-demo="modal-book-online"]', delay: 2400 },
   { kind: 'go', to: 'patient-type', delay: 500 },
 
   { kind: 'tap', target: '[data-demo="patient-new"]', delay: 1600 },
@@ -42,7 +42,7 @@ const SCRIPT = [
   { kind: 'tap', target: '[data-demo="dob-input"]', delay: 1400 },
   { kind: 'typeDob', value: '01/01/1990', delay: 300 },
 
-  { kind: 'tap', target: '[data-demo="care-select"]', delay: 1400 },
+  { kind: 'tap', target: '[data-demo="care-select"]', delay: 2400 },
   { kind: 'openCareSheet', delay: 200 },
   { kind: 'tap', target: '[data-demo="care-individual"]', delay: 1400 },
   { kind: 'selectCare', value: 'individual', delay: 300 },
@@ -53,11 +53,12 @@ const SCRIPT = [
   { kind: 'openPayerDropdown', delay: 200 },
   { kind: 'tap', target: '[data-demo="payer-Aetna"]', delay: 1200 },
   { kind: 'selectPayer', value: 'Aetna', delay: 300 },
+  { kind: 'scrollTo', selector: '[data-demo="coverage-card"]', delay: 200 },
 
-  { kind: 'scrollTo', selector: '[data-demo="coverage-card"]', delay: 2400 },
   // wait for Nirvana verification (2s) + read
   { kind: 'wait', delay: 2800 },
 
+  { kind: 'scrollTo', selector: '[data-demo="meet-flexible"]', delay: 600 },
   { kind: 'tap', target: '[data-demo="meet-flexible"]', delay: 1400 },
   { kind: 'selectMeet', value: 'flexible', delay: 300 },
 
@@ -95,31 +96,29 @@ export default function App() {
   const phoneRef = useRef(null)
   const viewportRef = useRef(null)
 
-  // phone enter animation
+  // phone enter animation — only for the very first mount
   useEffect(() => {
     requestAnimationFrame(() => setPhoneIn(true))
   }, [])
 
-  // orchestration loop
+  // orchestration loop: runs one command per tick; cursor advances after delay
   useEffect(() => {
-    if (!phoneIn) return
     const cmd = SCRIPT[cursor]
     if (!cmd) return
 
     let cancelled = false
-
     const doCmd = () => {
       if (cancelled) return
-      runCommand(cmd)
+      const halt = runCommand(cmd)
+      if (halt === 'halt') return
       setCursor((c) => c + 1)
     }
-
     const t = setTimeout(doCmd, cmd.delay || 0)
     return () => {
       cancelled = true
       clearTimeout(t)
     }
-  }, [cursor, phoneIn])
+  }, [cursor])
 
   function runCommand(cmd) {
     switch (cmd.kind) {
@@ -193,7 +192,7 @@ export default function App() {
         setPhoneIn(false)
         return
       case 'restart':
-        // reset everything
+        // reset everything, then animate phone back in and restart script
         setScreen('welcome')
         setStateCode('')
         setDropdownOpen(false)
@@ -206,12 +205,14 @@ export default function App() {
         setPayer(null)
         setPayerDropdownOpen(false)
         setMeetMode(null)
-        setCursor(-1)
+        // scroll viewport to top before animating in
+        if (viewportRef.current) viewportRef.current.scrollTop = 0
         setTimeout(() => {
           setPhoneIn(true)
           setCursor(0)
-        }, 50)
-        return
+        }, 200)
+        // break advance chain — next setCursor will be called manually above
+        return 'halt'
       default:
         return
     }

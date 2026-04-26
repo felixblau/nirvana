@@ -239,13 +239,12 @@ export function BasicInfo({ onBack, onNext }) {
         <a style={{ color: 'rgb(0, 103, 206)', fontWeight: 600, cursor: 'pointer' }}>Sign in</a>
       </div>
 
-      {sheetOpen && (
-        <CareTypeSheet
-          value={careType}
-          onSelect={setCareType}
-          onClose={() => setSheetOpen(false)}
-        />
-      )}
+      <CareTypeSheet
+        visible={sheetOpen}
+        value={careType}
+        onSelect={setCareType}
+        onClose={() => setSheetOpen(false)}
+      />
 
       {payerOpen && (
         <PayerDropdown
@@ -398,11 +397,25 @@ function SelectButton({ value, placeholder, onClick, demoAttr }) {
   )
 }
 
-function CareTypeSheet({ value, onSelect, onClose }) {
+function CareTypeSheet({ visible, value, onSelect, onClose }) {
   const demo = useDemo()
   const [innerValue, setInnerValue] = useState(value)
+  const [mounted, setMounted] = useState(visible)
   const localValue = demo.inDemo ? demo.careSheetLocal : innerValue
   const setLocalValue = demo.inDemo ? demo.setCareSheetLocal : setInnerValue
+
+  // keep mounted while sheet animates out
+  useEffect(() => {
+    if (visible) {
+      setMounted(true)
+    } else if (mounted) {
+      const t = setTimeout(() => setMounted(false), 380)
+      return () => clearTimeout(t)
+    }
+  }, [visible, mounted])
+
+  if (!mounted) return null
+
   return (
     <div
       role="dialog"
@@ -410,11 +423,13 @@ function CareTypeSheet({ value, onSelect, onClose }) {
       style={{
         position: 'absolute',
         inset: 0,
-        background: 'rgba(0, 0, 0, 0.35)',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-end',
         zIndex: 60,
+        background: visible ? 'rgba(0, 0, 0, 0.35)' : 'rgba(0, 0, 0, 0)',
+        transition: 'background 0.36s cubic-bezier(0.16, 1, 0.3, 1)',
+        pointerEvents: visible ? 'auto' : 'none',
       }}
       onClick={onClose}
     >
@@ -427,7 +442,9 @@ function CareTypeSheet({ value, onSelect, onClose }) {
           height: '92%',
           display: 'flex',
           flexDirection: 'column',
-          animation: 'ls-sheet-slide 0.28s cubic-bezier(0.16, 1, 0.3, 1)',
+          transform: visible ? 'translateY(0)' : 'translateY(100%)',
+          transition: 'transform 0.38s cubic-bezier(0.16, 1, 0.3, 1)',
+          willChange: 'transform',
         }}
       >
         <div
@@ -511,7 +528,6 @@ function CareTypeSheet({ value, onSelect, onClose }) {
           </button>
         </div>
       </div>
-      <style>{`@keyframes ls-sheet-slide { from { transform: translateY(100%); } to { transform: translateY(0); } }`}</style>
     </div>
   )
 }
