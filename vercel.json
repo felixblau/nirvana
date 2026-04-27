@@ -1,6 +1,16 @@
 {
   "buildCommand": "bash build.sh",
   "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/",
+      "has": [
+        { "type": "host", "value": "aidinner2026.meetnirvana.com" }
+      ],
+      "destination": "/invite",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     { "source": "/pt-checkin", "destination": "/pt-checkin/index.html" },
     { "source": "/clear1", "destination": "/clear1/index.html" },
@@ -10,6 +20,7 @@
     { "source": "/invite", "destination": "/invite/index.html" },
     { "source": "/gemmd", "destination": "/gemmd/index.html" },
     { "source": "/lifestance", "destination": "/lifestance/index.html" },
-    { "source": "/lifestance-demo", "destination": "/lifestance-demo/index.html" }
+    { "source": "/lifestance-demo", "destination": "/lifestance-demo/index.html" },
+    { "source": "/nav", "destination": "/nav/index.html" }
   ]
 }

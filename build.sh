@@ -18,4 +18,5 @@ cp -r "invite/dist/"* "dist/invite/"
 mkdir -p "dist/gemmd"
 cp -r "gemmd/dist/"* "dist/gemmd/"
 
-cp index.html "dist/index.html"
+mkdir -p "dist/nav"
+cp nav/index.html "dist/nav/index.html"
