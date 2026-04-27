@@ -1,17 +1,14 @@
 {
   "buildCommand": "bash build.sh",
   "outputDirectory": "dist",
-  "redirects": [
+  "rewrites": [
     {
       "source": "/",
       "has": [
         { "type": "host", "value": "aidinner2026.meetnirvana.com" }
       ],
-      "destination": "/invite",
-      "permanent": false
-    }
-  ],
-  "rewrites": [
+      "destination": "/invite/index.html"
+    },
     { "source": "/pt-checkin", "destination": "/pt-checkin/index.html" },
     { "source": "/clear1", "destination": "/clear1/index.html" },
     { "source": "/amazon", "destination": "/amazon/index.html" },
