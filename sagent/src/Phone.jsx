@@ -2,7 +2,7 @@ export function Phone({ children, phoneRef, viewportRef }) {
   return (
     <div
       style={{
-        background: '#0f0b14',
+        background: '#e5e5e5',
         minHeight: '100vh',
         display: 'flex',
         justifyContent: 'center',
