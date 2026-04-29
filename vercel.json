@@ -18,6 +18,7 @@
     { "source": "/gemmd", "destination": "/gemmd/index.html" },
     { "source": "/lifestance", "destination": "/lifestance/index.html" },
     { "source": "/lifestance-demo", "destination": "/lifestance-demo/index.html" },
+    { "source": "/sagent", "destination": "/sagent/index.html" },
     { "source": "/nav", "destination": "/nav/index.html" }
   ]
 }
