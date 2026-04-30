@@ -93,6 +93,7 @@ export const BookingFlow = forwardRef(function BookingFlow(_props, ref) {
   }
 
   const filledCount = useMemo(() => {
+    if (submitting || submitted) return TOTAL_FIELDS
     const scalarFields = [...STEP1_FIELDS, ...STEP2_FIELDS]
     const baseCount = scalarFields.filter((k) => String(data[k] ?? '').trim()).length
     const step3Count =
@@ -101,7 +102,7 @@ export const BookingFlow = forwardRef(function BookingFlow(_props, ref) {
       (data.helpMessage?.trim() ? 1 : 0) +
       (data.consent === true ? 1 : 0)
     return Math.min(TOTAL_FIELDS, baseCount + step3Count)
-  }, [data])
+  }, [data, submitting, submitted])
   const percent = Math.round((filledCount / TOTAL_FIELDS) * 100)
 
   return (
