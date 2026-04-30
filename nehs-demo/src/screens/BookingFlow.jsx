@@ -2,6 +2,7 @@ import { useImperativeHandle, useMemo, useState, forwardRef } from 'react'
 import { SiteHeader } from '../brand/SiteHeader.jsx'
 import { Step1Basics } from './steps/Step1Basics.jsx'
 import { Step2Details } from './steps/Step2Details.jsx'
+import { Step3Consent } from './steps/Step3Consent.jsx'
 
 const BRAND_BLUE = '#173A64'
 const BRAND_BLUE_DEEP = '#0f2a49'
@@ -18,6 +19,10 @@ const INITIAL_DATA = {
   nearestClinic: '',
   hearAbout: '',
   insurance: '',
+  altTreatmentInterest: '',
+  preferredTimes: [],
+  helpMessage: '',
+  consent: false,
 }
 
 // Fields on each step, in order, counted against the progress bar.
@@ -50,7 +55,7 @@ export const BookingFlow = forwardRef(function BookingFlow(_props, ref) {
   const next = () => {
     setDirection('forward')
     setDropdownOpen(null)
-    setStep((s) => Math.min(2, s + 1))
+    setStep((s) => Math.min(3, s + 1))
   }
   const prev = () => {
     setDirection('back')
@@ -76,18 +81,26 @@ export const BookingFlow = forwardRef(function BookingFlow(_props, ref) {
       setDirection('forward')
       setDropdownOpen(null)
     },
-    submit: () => {
-      setSubmitting(true)
-      setTimeout(() => {
-        setSubmitting(false)
-        setSubmitted(true)
-      }, 1800)
-    },
+    submit,
   }))
 
+  function submit() {
+    setSubmitting(true)
+    setTimeout(() => {
+      setSubmitting(false)
+      setSubmitted(true)
+    }, 2000)
+  }
+
   const filledCount = useMemo(() => {
-    const fields = [...STEP1_FIELDS, ...STEP2_FIELDS]
-    return fields.filter((k) => String(data[k] ?? '').trim()).length
+    const scalarFields = [...STEP1_FIELDS, ...STEP2_FIELDS]
+    const baseCount = scalarFields.filter((k) => String(data[k] ?? '').trim()).length
+    const step3Count =
+      (data.altTreatmentInterest ? 1 : 0) +
+      ((data.preferredTimes ?? []).length > 0 ? 1 : 0) +
+      (data.helpMessage?.trim() ? 1 : 0) +
+      (data.consent === true ? 1 : 0)
+    return Math.min(TOTAL_FIELDS, baseCount + step3Count)
   }, [data])
   const percent = Math.round((filledCount / TOTAL_FIELDS) * 100)
 
@@ -109,7 +122,7 @@ export const BookingFlow = forwardRef(function BookingFlow(_props, ref) {
             dropdownOpen={dropdownOpen}
             onDropdownToggle={handleDropdownToggle}
           />
-        ) : (
+        ) : step === 2 ? (
           <Step2Details
             data={data}
             update={update}
@@ -117,6 +130,13 @@ export const BookingFlow = forwardRef(function BookingFlow(_props, ref) {
             onPrev={prev}
             dropdownOpen={dropdownOpen}
             onDropdownToggle={handleDropdownToggle}
+          />
+        ) : (
+          <Step3Consent
+            data={data}
+            update={update}
+            onSubmit={submit}
+            onPrev={prev}
           />
         )}
       </FormCard>
@@ -262,25 +282,45 @@ function ProgressBar({ percent, filled, total }) {
 
 function SubmittingCard() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
-      <div style={{ width: 72, height: 72, position: 'relative', marginBottom: 18 }}>
-        <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden>
-          <circle cx="36" cy="36" r="30" stroke="rgba(23,58,100,0.15)" strokeWidth="4" />
+    <div
+      data-demo="submitting"
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '60px 20px' }}
+    >
+      <div
+        style={{
+          width: 84,
+          height: 84,
+          borderRadius: 999,
+          background: BRAND_BLUE,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: 20,
+          position: 'relative',
+        }}
+      >
+        <svg width="96" height="96" viewBox="0 0 96 96" fill="none" aria-hidden style={{ position: 'absolute', inset: -6 }}>
           <circle
-            cx="36"
-            cy="36"
-            r="30"
+            cx="48"
+            cy="48"
+            r="44"
             stroke={BRAND_BLUE}
-            strokeWidth="4"
+            strokeWidth="3"
             strokeLinecap="round"
-            strokeDasharray="50 200"
+            strokeDasharray="46 220"
             fill="none"
             style={{ transformOrigin: 'center', animation: 'nehs-submit-spin 1s linear infinite' }}
           />
         </svg>
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden style={{ opacity: 0.35 }}>
+          <path d="M7 16.5 L13 22.5 L25 10.5" stroke="#ffffff" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
       </div>
-      <div style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: 16, color: '#2c2c2c', textAlign: 'center' }}>
+      <div style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: 17, color: '#1a2332', textAlign: 'center', marginBottom: 6 }}>
         Submitting your request…
+      </div>
+      <div style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: '#5a6a85', textAlign: 'center', maxWidth: 260, lineHeight: 1.5 }}>
+        Sending your information to our intake team.
       </div>
       <style>{`@keyframes nehs-submit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
     </div>
@@ -289,30 +329,38 @@ function SubmittingCard() {
 
 function SubmittedCard() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
+    <div
+      data-demo="submitted"
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '60px 20px' }}
+    >
       <div
         style={{
-          width: 72,
-          height: 72,
+          width: 84,
+          height: 84,
           borderRadius: 999,
-          background: 'rgba(23,58,100,0.1)',
-          border: `2px solid ${BRAND_BLUE}`,
+          background: BRAND_BLUE,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          marginBottom: 18,
+          marginBottom: 20,
+          animation: 'nehs-submit-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
         }}
       >
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden>
-          <path d="M7 16.5 L13 22.5 L25 10.5" stroke={BRAND_BLUE_DEEP} strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+        <svg width="40" height="40" viewBox="0 0 32 32" fill="none" aria-hidden>
+          <path d="M7 16.5 L13 22.5 L25 10.5" stroke="#ffffff" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
-      <h2 style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: 22, color: '#222', textAlign: 'center', marginBottom: 10 }}>
+      <h2 style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: 22, color: '#1a2332', textAlign: 'center', marginBottom: 10 }}>
         Form submitted successfully
       </h2>
-      <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, lineHeight: '22px', color: '#555', textAlign: 'center', maxWidth: 280 }}>
+      <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, lineHeight: '22px', color: '#5a6a85', textAlign: 'center', maxWidth: 280 }}>
         We've received your request. A member of our intake team will reach out shortly to confirm your appointment.
       </p>
+      <style>{`@keyframes nehs-submit-pop {
+        0% { transform: scale(0.6); opacity: 0; }
+        60% { transform: scale(1.06); opacity: 1; }
+        100% { transform: scale(1); opacity: 1; }
+      }`}</style>
     </div>
   )
 }

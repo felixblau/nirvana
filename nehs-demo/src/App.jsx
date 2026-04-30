@@ -100,15 +100,29 @@ const SCRIPT = [
   { kind: 'scrollTo', target: 'nirvana-checking', delay: 800 },
   { kind: 'wait', delay: 3400 },
   { kind: 'scrollTo', target: 'nirvana-verified', delay: 400 },
-  { kind: 'wait', delay: 3800 },
+  { kind: 'wait', delay: 3200 },
 
-  // Submit
+  // Advance to Step 3
   { kind: 'scrollTo', target: 'next-btn', delay: 700 },
+  { kind: 'tap', target: 'next-btn', delay: 900 },
+  { kind: 'call', fn: 'next', delay: 420 },
+
+  // STEP 3 — pick "No" on alt treatments, then check consent, then submit
+  { kind: 'wait', delay: 900 },
+  { kind: 'scrollTo', target: 'altTreatmentInterest-No', delay: 700 },
+  { kind: 'tap', target: 'altTreatmentInterest-No', delay: 900 },
+  { kind: 'setField', patch: { altTreatmentInterest: 'No' }, delay: 260 },
+
+  { kind: 'scrollTo', target: 'consent', delay: 900 },
+  { kind: 'tap', target: 'consent', delay: 900 },
+  { kind: 'setField', patch: { consent: true }, delay: 260 },
+
+  { kind: 'scrollTo', target: 'next-btn', delay: 800 },
   { kind: 'tap', target: 'next-btn', delay: 900 },
   { kind: 'call', fn: 'submit', delay: 420 },
 
-  // Show confirmation, then loop
-  { kind: 'wait', delay: 5400 },
+  // Submitting spinner is 2s, hold success confirmation 3.5s, then loop
+  { kind: 'wait', delay: 5500 },
   { kind: 'phoneOut', delay: 0 },
   { kind: 'wait', delay: 1600 },
   { kind: 'restart', delay: 0 },

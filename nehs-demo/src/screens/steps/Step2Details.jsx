@@ -253,11 +253,14 @@ function CheckingCard({ payer }) {
 }
 
 function VerifiedCard({ payer }) {
+  const BORDER = 'rgba(23, 58, 100, 0.18)'
+  const BODY = '#142544'
+  const SUB = '#5a6a85'
   return (
     <div
       style={{
         marginTop: 16,
-        background: 'rgba(255, 247, 176, 0.35)',
+        background: '#e8f0fb',
         borderRadius: 12,
         padding: '18px 18px 16px',
       }}
@@ -272,13 +275,13 @@ function VerifiedCard({ payer }) {
           marginBottom: 14,
         }}
       >
-        <div style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: 18, color: '#2a1f05' }}>
+        <div style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: 18, color: BODY }}>
           {payer}
         </div>
         <span
           style={{
-            background: '#FAFF0E',
-            color: '#000000',
+            background: '#173A64',
+            color: '#ffffff',
             fontFamily: 'var(--font-sans)',
             fontSize: 10,
             fontWeight: 700,
@@ -293,11 +296,11 @@ function VerifiedCard({ payer }) {
 
       <div
         style={{
-          borderTop: '1px solid rgba(90, 72, 10, 0.18)',
+          borderTop: `1px solid ${BORDER}`,
           paddingTop: 12,
           fontFamily: 'var(--font-sans)',
           fontSize: 13,
-          color: '#5c4a1e',
+          color: SUB,
           marginBottom: 10,
         }}
       >
@@ -307,8 +310,8 @@ function VerifiedCard({ payer }) {
       <Row
         icon={
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <circle cx="11" cy="11" r="7" stroke="#3a2e0a" strokeWidth="1.6" />
-            <path d="M20 20l-3.5-3.5" stroke="#3a2e0a" strokeWidth="1.6" strokeLinecap="round" />
+            <circle cx="11" cy="11" r="7" stroke={BODY} strokeWidth="1.6" />
+            <path d="M20 20l-3.5-3.5" stroke={BODY} strokeWidth="1.6" strokeLinecap="round" />
           </svg>
         }
         label="Your member ID is"
@@ -317,8 +320,8 @@ function VerifiedCard({ payer }) {
       <Row
         icon={
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="6" width="18" height="12" rx="2" stroke="#3a2e0a" strokeWidth="1.6" />
-            <path d="M3 10h18" stroke="#3a2e0a" strokeWidth="1.6" />
+            <rect x="3" y="6" width="18" height="12" rx="2" stroke={BODY} strokeWidth="1.6" />
+            <path d="M3 10h18" stroke={BODY} strokeWidth="1.6" />
           </svg>
         }
         label="Your"
@@ -329,8 +332,8 @@ function VerifiedCard({ payer }) {
       <Row
         icon={
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M6 4l6 3 6-3v13l-6 3-6-3V4z" stroke="#3a2e0a" strokeWidth="1.6" strokeLinejoin="round" />
-            <path d="M12 7v13" stroke="#3a2e0a" strokeWidth="1.6" />
+            <path d="M6 4l6 3 6-3v13l-6 3-6-3V4z" stroke={BODY} strokeWidth="1.6" strokeLinejoin="round" />
+            <path d="M12 7v13" stroke={BODY} strokeWidth="1.6" />
           </svg>
         }
         label="Your"
@@ -342,9 +345,9 @@ function VerifiedCard({ payer }) {
       <Row
         icon={
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <rect x="3.5" y="5" width="17" height="14" rx="2" stroke="#3a2e0a" strokeWidth="1.6" />
-            <path d="M3.5 9H20.5" stroke="#3a2e0a" strokeWidth="1.6" />
-            <path d="M8 3.5V6.5M16 3.5V6.5" stroke="#3a2e0a" strokeWidth="1.6" strokeLinecap="round" />
+            <rect x="3.5" y="5" width="17" height="14" rx="2" stroke={BODY} strokeWidth="1.6" />
+            <path d="M3.5 9H20.5" stroke={BODY} strokeWidth="1.6" />
+            <path d="M8 3.5V6.5M16 3.5V6.5" stroke={BODY} strokeWidth="1.6" strokeLinecap="round" />
           </svg>
         }
         label="Your plan expires on"
@@ -355,7 +358,7 @@ function VerifiedCard({ payer }) {
       <div
         style={{
           marginTop: 12,
-          borderTop: '1px solid rgba(90, 72, 10, 0.18)',
+          borderTop: `1px solid ${BORDER}`,
           paddingTop: 10,
           display: 'flex',
           alignItems: 'center',
@@ -368,18 +371,22 @@ function VerifiedCard({ payer }) {
             fontSize: 10,
             fontWeight: 600,
             letterSpacing: '0.16em',
-            color: '#7a6a3a',
+            color: SUB,
           }}
         >
           POWERED BY
         </span>
-        <NirvanaMark height={11} color="#2a1f05" />
+        <NirvanaMark height={11} color={BODY} />
       </div>
     </div>
   )
 }
 
 function Row({ icon, label, labelAccent, labelSuffix, value, sub, last }) {
+  const BORDER = 'rgba(23, 58, 100, 0.18)'
+  const BODY = '#142544'
+  const ACCENT = '#2c61d6'
+  const SUB = '#5a6a85'
   return (
     <div
       style={{
@@ -387,19 +394,19 @@ function Row({ icon, label, labelAccent, labelSuffix, value, sub, last }) {
         alignItems: 'flex-start',
         gap: 12,
         padding: '10px 0',
-        borderBottom: last ? 'none' : '1px solid rgba(90, 72, 10, 0.18)',
+        borderBottom: last ? 'none' : `1px solid ${BORDER}`,
       }}
     >
       <div style={{ paddingTop: 2 }}>{icon}</div>
-      <div style={{ flex: 1, fontFamily: 'var(--font-sans)', fontSize: 14, color: '#2a1f05', lineHeight: '20px' }}>
+      <div style={{ flex: 1, fontFamily: 'var(--font-sans)', fontSize: 14, color: BODY, lineHeight: '20px' }}>
         <span>
           {label}
-          {labelAccent ? <> <span style={{ color: '#436a8a' }}>{labelAccent}</span></> : null}
+          {labelAccent ? <> <span style={{ color: ACCENT }}>{labelAccent}</span></> : null}
           {labelSuffix ? ` ${labelSuffix}` : ''}
         </span>{' '}
         <strong style={{ fontWeight: 700 }}>{value}</strong>
         {sub ? (
-          <div style={{ fontSize: 13, color: '#7a6a3a', marginTop: 1 }}>{sub}</div>
+          <div style={{ fontSize: 13, color: SUB, marginTop: 1 }}>{sub}</div>
         ) : null}
       </div>
     </div>
