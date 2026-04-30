@@ -1,4 +1,5 @@
-export function Phone({ children, phoneRef, viewportRef }) {
+export function Phone({ children, phoneRef, viewportRef, animateIn }) {
+  const animated = animateIn !== undefined
   return (
     <div
       style={{
@@ -23,6 +24,14 @@ export function Phone({ children, phoneRef, viewportRef }) {
           boxShadow: '0 24px 80px rgba(0, 0, 0, 0.5)',
           position: 'relative',
           border: '7px solid black',
+          transition: animated ? 'all 1.4s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
+          opacity: animated ? (animateIn ? 1 : 0) : 1,
+          transform: animated
+            ? animateIn
+              ? 'translateY(0) scale(1)'
+              : 'translateY(80px) scale(0.95)'
+            : 'none',
+          filter: animated ? (animateIn ? 'blur(0px)' : 'blur(8px)') : 'none',
         }}
       >
         {/* iOS status bar with notch */}
@@ -39,11 +48,7 @@ export function Phone({ children, phoneRef, viewportRef }) {
           <img
             src={`${import.meta.env.BASE_URL}ios-bar.svg`}
             alt=""
-            style={{
-              width: '100%',
-              height: 45,
-              display: 'block',
-            }}
+            style={{ width: '100%', height: 45, display: 'block' }}
           />
           <div
             style={{
@@ -62,6 +67,7 @@ export function Phone({ children, phoneRef, viewportRef }) {
         {/* scrollable viewport */}
         <div
           ref={viewportRef}
+          className="nehs-viewport"
           style={{
             flex: 1,
             overflowY: 'auto',

@@ -67,6 +67,7 @@ export function Phone({ children, phoneRef, viewportRef, animateIn }) {
         {/* scrollable viewport */}
         <div
           ref={viewportRef}
+          className="nehs-viewport"
           style={{
             flex: 1,
             overflowY: 'auto',

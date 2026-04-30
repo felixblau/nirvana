@@ -56,3 +56,8 @@ input, select, textarea {
 a { color: inherit; text-decoration: none; }
 
 h1, h2, h3, h4 { font-family: var(--font-sans); font-weight: 700; }
+
+/* Hide the desktop scrollbar inside the phone viewport so the form sits
+   centered in the bezel (the bar otherwise eats ~15px on the right). */
+.nehs-viewport::-webkit-scrollbar { width: 0; height: 0; display: none; }
+.nehs-viewport { scrollbar-width: none; -ms-overflow-style: none; }
