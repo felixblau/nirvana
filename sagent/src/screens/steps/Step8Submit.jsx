@@ -1,6 +1,6 @@
 import { StepNav } from './StepNav.jsx'
 
-export function Step7Submit({ onPrev, onSubmit }) {
+export function Step8Submit({ onPrev, onSubmit }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'center', paddingTop: 40 }}>
       <h2

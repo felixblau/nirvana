@@ -6,12 +6,14 @@ import { Step3State } from './steps/Step3State.jsx'
 import { Step4Options } from './steps/Step4Options.jsx'
 import { Step5PatientInfo } from './steps/Step5PatientInfo.jsx'
 import { Step6Additional } from './steps/Step6Additional.jsx'
-import { Step7Submit } from './steps/Step7Submit.jsx'
+import { Step7Insurance } from './steps/Step7Insurance.jsx'
+import { Step8Submit } from './steps/Step8Submit.jsx'
 
-const TOTAL = 7
+const TOTAL = 8
 
-export function BookingFlow({ onExit }) {
+export function BookingFlow() {
   const [step, setStep] = useState(1)
+  const [direction, setDirection] = useState('forward')
   const [data, setData] = useState({
     patientType: 'New Patient',
     state: 'Iowa',
@@ -33,53 +35,85 @@ export function BookingFlow({ onExit }) {
     addrState: 'NY',
     zip: '10012',
     insurance: 'Aetna',
+    insuranceVerified: false,
     reason: 'test flow',
     consent: 'Yes',
   })
 
   const update = (patch) => setData((d) => ({ ...d, ...patch }))
 
-  const next = () => setStep((s) => Math.min(TOTAL, s + 1))
+  const next = () => {
+    if (step >= TOTAL) return
+    setDirection('forward')
+    setStep((s) => s + 1)
+  }
   const prev = () => {
-    if (step === 1) onExit?.()
-    else setStep((s) => s - 1)
+    if (step <= 1) return
+    setDirection('back')
+    setStep((s) => s - 1)
   }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', background: '#f0f0f0', minHeight: '100%' }}>
       <SiteHeader />
-      <FormCard step={step}>
-        {step === 1 && <Step1Disclaimer onNext={next} />}
-        {step === 2 && <Step2PatientType value={data.patientType} onChange={(v) => update({ patientType: v })} onNext={next} onPrev={prev} />}
-        {step === 3 && <Step3State value={data.state} onChange={(v) => update({ state: v })} onNext={next} onPrev={prev} />}
-        {step === 4 && <Step4Options data={data} update={update} onNext={next} onPrev={prev} />}
-        {step === 5 && <Step5PatientInfo data={data} update={update} onNext={next} onPrev={prev} />}
-        {step === 6 && <Step6Additional data={data} update={update} onNext={next} onPrev={prev} />}
-        {step === 7 && <Step7Submit onPrev={prev} onSubmit={() => onExit?.()} />}
+      <FormCard step={step} direction={direction}>
+        <StepContent step={step} data={data} update={update} next={next} prev={prev} />
       </FormCard>
       <Footer />
     </div>
   )
 }
 
-function FormCard({ step, children }) {
+function StepContent({ step, data, update, next, prev }) {
+  if (step === 1) return <Step1Disclaimer onNext={next} />
+  if (step === 2) return <Step2PatientType value={data.patientType} onChange={(v) => update({ patientType: v })} onNext={next} onPrev={prev} />
+  if (step === 3) return <Step3State value={data.state} onChange={(v) => update({ state: v })} onNext={next} onPrev={prev} />
+  if (step === 4) return <Step4Options data={data} update={update} onNext={next} onPrev={prev} />
+  if (step === 5) return <Step5PatientInfo data={data} update={update} onNext={next} onPrev={prev} />
+  if (step === 6) return <Step6Additional data={data} update={update} onNext={next} onPrev={prev} />
+  if (step === 7) return <Step7Insurance data={data} update={update} onNext={next} onPrev={prev} />
+  if (step === 8) return <Step8Submit onPrev={prev} onSubmit={() => {}} />
+  return null
+}
+
+function FormCard({ step, direction, children }) {
   return (
     <section style={{ background: '#f0f0f0', padding: '18px 0 26px' }}>
       <div
         style={{
           background: '#ffffff',
-          padding: '18px 22px 28px',
           boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
           position: 'relative',
-          minHeight: 460,
-          display: 'flex',
-          flexDirection: 'column',
+          overflow: 'hidden',
         }}
       >
         <StepIndicator step={step} />
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', paddingTop: 18 }}>
+        <div
+          key={step}
+          style={{
+            padding: '0 22px 28px',
+            minHeight: 460,
+            display: 'flex',
+            flexDirection: 'column',
+            paddingTop: 18,
+            animation:
+              direction === 'forward'
+                ? 'sg-slide-in-right 0.38s cubic-bezier(0.22, 1, 0.36, 1)'
+                : 'sg-slide-in-left 0.38s cubic-bezier(0.22, 1, 0.36, 1)',
+          }}
+        >
           {children}
         </div>
+        <style>{`
+          @keyframes sg-slide-in-right {
+            from { transform: translateX(100%); opacity: 0.6; }
+            to { transform: translateX(0); opacity: 1; }
+          }
+          @keyframes sg-slide-in-left {
+            from { transform: translateX(-100%); opacity: 0.6; }
+            to { transform: translateX(0); opacity: 1; }
+          }
+        `}</style>
       </div>
     </section>
   )
@@ -89,6 +123,7 @@ function StepIndicator({ step }) {
   return (
     <div
       style={{
+        padding: '18px 22px 0',
         textAlign: 'right',
         fontFamily: 'var(--font-sans)',
         fontSize: 13,

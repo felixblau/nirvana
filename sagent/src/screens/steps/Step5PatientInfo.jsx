@@ -94,14 +94,6 @@ export function Step5PatientInfo({ data, update, onNext, onPrev }) {
         <TextInput value={data.zip} onChange={(v) => update({ zip: v })} />
       </Field>
 
-      <Field label="Insurance Carrier">
-        <Select
-          value={data.insurance}
-          onChange={(v) => update({ insurance: v })}
-          options={['Aetna', 'Cigna', 'United Healthcare', 'Anthem', 'Other']}
-        />
-      </Field>
-
       <StepNav onPrev={onPrev} onNext={onNext} />
     </div>
   )
