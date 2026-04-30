@@ -118,6 +118,7 @@ export default function App() {
   const phoneRef = useRef(null)
   const viewportRef = useRef(null)
   const bookingRef = useRef(null)
+  const typingTimersRef = useRef(new Set())
 
   const [phoneIn, setPhoneIn] = useState(false)
   const [cursor, setCursor] = useState(0)
@@ -146,6 +147,7 @@ export default function App() {
         setPhoneIn,
         setCursor,
         timers,
+        typingTimersRef,
       })
       if (halt === 'halt') return
       if (cancelled) return
@@ -193,7 +195,8 @@ function runCommand(cmd, ctx) {
       return
     case 'type':
       typewriter(cmd.key, cmd.value, ctx)
-      return
+      // halt the cursor; typewriter advances it when the string finishes
+      return 'halt'
     case 'scrollTo': {
       const v = ctx.viewportRef.current
       const target = v && v.querySelector(`[data-demo="${cmd.target}"]`)
@@ -211,6 +214,9 @@ function runCommand(cmd, ctx) {
       ctx.setPhoneIn(true)
       return
     case 'restart': {
+      // abort any typewriter in flight before we wipe state
+      ctx.typingTimersRef.current.forEach(clearTimeout)
+      ctx.typingTimersRef.current.clear()
       ctx.bookingRef.current?.reset()
       const v = ctx.viewportRef.current
       if (v) v.scrollTop = 0
@@ -254,8 +260,18 @@ function typewriter(key, value, ctx) {
     i += 1
     ctx.bookingRef.current?.update({ [key]: value.slice(0, i) })
     if (i < value.length) {
-      const t = setTimeout(tick, 45)
-      ctx.timers.push(t)
+      const t = setTimeout(() => {
+        ctx.typingTimersRef.current.delete(t)
+        tick()
+      }, 45)
+      ctx.typingTimersRef.current.add(t)
+    } else {
+      // finished typing — let the orchestrator advance to the next command
+      const t = setTimeout(() => {
+        ctx.typingTimersRef.current.delete(t)
+        ctx.setCursor((c) => c + 1)
+      }, 120)
+      ctx.typingTimersRef.current.add(t)
     }
   }
   tick()
