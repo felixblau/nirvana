@@ -133,7 +133,7 @@ function VerifiedCard({ payer }) {
   return (
     <div
       style={{
-        background: 'var(--sg-yellow-soft)',
+        background: 'rgba(250, 255, 14, 0.1)',
         borderRadius: 12,
         padding: '18px 18px 16px',
       }}

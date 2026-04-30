@@ -32,7 +32,7 @@ export function Phone({ children, phoneRef, viewportRef }) {
             height: 45,
             flexShrink: 0,
             position: 'relative',
-            background: 'var(--sg-purple)',
+            background: '#ffffff',
             zIndex: 30,
           }}
         >
@@ -43,7 +43,6 @@ export function Phone({ children, phoneRef, viewportRef }) {
               width: '100%',
               height: 45,
               display: 'block',
-              filter: 'invert(1) brightness(2)',
             }}
           />
           <div
