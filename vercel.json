@@ -19,6 +19,7 @@
     { "source": "/lifestance", "destination": "/lifestance/index.html" },
     { "source": "/lifestance-demo", "destination": "/lifestance-demo/index.html" },
     { "source": "/sagent", "destination": "/sagent/index.html" },
+    { "source": "/sagent-demo", "destination": "/sagent-demo/index.html" },
     { "source": "/nav", "destination": "/nav/index.html" }
   ]
 }
