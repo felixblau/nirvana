@@ -104,11 +104,12 @@ const SCRIPT = [
   { kind: 'tap', target: 'next-btn', delay: 900 },
   { kind: 'call', fn: 'next', delay: 420 },
 
-  // STEP 8 — Submit
+  // STEP 8 — Submit (2s spinner then confirmation)
   { kind: 'tap', target: 'submit-btn', delay: 1200 },
   { kind: 'call', fn: 'submit', delay: 420 },
 
-  { kind: 'wait', delay: 3200 },
+  // 2s spinner + read time on the confirmation
+  { kind: 'wait', delay: 5200 },
   { kind: 'phoneOut', delay: 0 },
   { kind: 'wait', delay: 1600 },
   { kind: 'restart', delay: 0 },
