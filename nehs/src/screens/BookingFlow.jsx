@@ -203,14 +203,13 @@ function Hero() {
 
 function FormCard({ children, direction }) {
   return (
-    <section style={{ background: BRAND_BLUE, padding: '14px 14px 0' }}>
+    <section style={{ background: BRAND_BLUE, padding: '14px 14px 0', position: 'relative', zIndex: 10 }}>
       <div
         style={{
           background: '#ffffff',
           borderRadius: 10,
           boxShadow: '0 6px 18px rgba(10,20,40,0.24)',
           padding: '20px 20px 22px',
-          overflow: 'hidden',
           position: 'relative',
         }}
       >
@@ -219,20 +218,20 @@ function FormCard({ children, direction }) {
           style={{
             animation:
               direction === 'forward'
-                ? 'nehs-slide-in-right 0.38s cubic-bezier(0.22, 1, 0.36, 1)'
-                : 'nehs-slide-in-left 0.38s cubic-bezier(0.22, 1, 0.36, 1)',
+                ? 'nehs-fade-up 0.38s cubic-bezier(0.22, 1, 0.36, 1)'
+                : 'nehs-fade-down 0.38s cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         >
           {children}
         </div>
         <style>{`
-          @keyframes nehs-slide-in-right {
-            from { transform: translateX(8%); opacity: 0.4; }
-            to { transform: translateX(0); opacity: 1; }
+          @keyframes nehs-fade-up {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
           }
-          @keyframes nehs-slide-in-left {
-            from { transform: translateX(-8%); opacity: 0.4; }
-            to { transform: translateX(0); opacity: 1; }
+          @keyframes nehs-fade-down {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
           }
         `}</style>
       </div>
