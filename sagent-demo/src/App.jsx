@@ -56,7 +56,7 @@ const SCRIPT = [
 
   { kind: 'scrollTo', target: 'phone', delay: 900 },
   { kind: 'tap', target: 'phone', delay: 700 },
-  { kind: 'type', key: 'phone', value: '123-456-7890', delay: 260 },
+  { kind: 'type', key: 'phone', value: '(123)456-7890', delay: 260 },
 
   { kind: 'scrollTo', target: 'email', delay: 900 },
   { kind: 'tap', target: 'email', delay: 700 },
@@ -64,7 +64,7 @@ const SCRIPT = [
 
   { kind: 'scrollTo', target: 'streetAddress', delay: 900 },
   { kind: 'tap', target: 'streetAddress', delay: 700 },
-  { kind: 'type', key: 'streetAddress', value: '1234 E University Ave', delay: 260 },
+  { kind: 'type', key: 'streetAddress', value: '123 Main Street', delay: 260 },
 
   { kind: 'scrollTo', target: 'city', delay: 900 },
   { kind: 'tap', target: 'city', delay: 700 },
@@ -76,7 +76,7 @@ const SCRIPT = [
 
   { kind: 'scrollTo', target: 'zip', delay: 900 },
   { kind: 'tap', target: 'zip', delay: 700 },
-  { kind: 'type', key: 'zip', value: '50316', delay: 260 },
+  { kind: 'type', key: 'zip', value: '50913', delay: 260 },
 
   { kind: 'scrollTo', target: 'next-btn', delay: 900 },
   { kind: 'tap', target: 'next-btn', delay: 900 },
