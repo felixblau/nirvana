@@ -20,6 +20,8 @@
     { "source": "/lifestance-demo", "destination": "/lifestance-demo/index.html" },
     { "source": "/sagent", "destination": "/sagent/index.html" },
     { "source": "/sagent-demo", "destination": "/sagent-demo/index.html" },
+    { "source": "/nehs", "destination": "/nehs/index.html" },
+    { "source": "/nehs-demo", "destination": "/nehs-demo/index.html" },
     { "source": "/nav", "destination": "/nav/index.html" }
   ]
 }
