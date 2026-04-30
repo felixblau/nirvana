@@ -88,7 +88,7 @@ const SCRIPT = [
     kind: 'type',
     key: 'reason',
     value:
-      "Get help addressing challenges and improve wellbeing with a therapist's guidance",
+      "Get help addressing challenges and improve wellbeing with a therapist's guidance.",
     delay: 220,
   },
   { kind: 'tap', target: 'consent-Yes', delay: 1000 },
