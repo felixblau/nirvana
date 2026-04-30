@@ -81,7 +81,8 @@ export function Textarea({ value, onChange, placeholder, rows = 3 }) {
   )
 }
 
-export function Select({ value, onChange, options }) {
+export function Select({ value, onChange, options, placeholder = 'Select...' }) {
+  const isEmpty = !value
   return (
     <div style={{ position: 'relative' }}>
       <select
@@ -95,13 +96,14 @@ export function Select({ value, onChange, options }) {
           borderRadius: 4,
           fontFamily: 'var(--font-sans)',
           fontSize: 14,
-          color: '#2c2c2c',
+          color: isEmpty ? '#9a9a9a' : '#2c2c2c',
           outline: 'none',
           appearance: 'none',
           WebkitAppearance: 'none',
           cursor: 'pointer',
         }}
       >
+        <option value="" disabled>{placeholder}</option>
         {options.map((o) => (
           <option key={o} value={o}>{o}</option>
         ))}

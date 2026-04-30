@@ -2,6 +2,8 @@ import { StepNav } from './StepNav.jsx'
 import { FieldLabel, TextInput, Select, SectionHeading } from '../form.jsx'
 
 export function Step5PatientInfo({ data, update, onNext, onPrev }) {
+  const required = ['firstName', 'lastName', 'dob', 'sex', 'phone', 'email', 'streetAddress', 'city', 'addrState', 'zip']
+  const disabled = required.some((k) => !String(data[k] ?? '').trim())
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       <SectionHeading>Patient Information</SectionHeading>
@@ -51,6 +53,7 @@ export function Step5PatientInfo({ data, update, onNext, onPrev }) {
           value={data.sex}
           onChange={(v) => update({ sex: v })}
           options={['Male', 'Female']}
+          placeholder="Select sex"
         />
       </Field>
 
@@ -87,6 +90,7 @@ export function Step5PatientInfo({ data, update, onNext, onPrev }) {
           value={data.addrState}
           onChange={(v) => update({ addrState: v })}
           options={['NY', 'IA', 'MN', 'MO', 'ND', 'WI']}
+          placeholder="Select state"
         />
       </Field>
 
@@ -94,7 +98,7 @@ export function Step5PatientInfo({ data, update, onNext, onPrev }) {
         <TextInput value={data.zip} onChange={(v) => update({ zip: v })} />
       </Field>
 
-      <StepNav onPrev={onPrev} onNext={onNext} />
+      <StepNav onPrev={onPrev} onNext={onNext} nextDisabled={disabled} />
     </div>
   )
 }

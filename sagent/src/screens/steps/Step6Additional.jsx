@@ -69,7 +69,7 @@ export function Step6Additional({ data, update, onNext, onPrev }) {
       </p>
 
       <div style={{ flex: 1 }} />
-      <StepNav onPrev={onPrev} onNext={onNext} />
+      <StepNav onPrev={onPrev} onNext={onNext} nextDisabled={!data.consent} />
     </div>
   )
 }

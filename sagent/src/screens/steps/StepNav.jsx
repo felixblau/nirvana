@@ -1,4 +1,4 @@
-export function StepNav({ onPrev, onNext, nextLabel = 'Next', submit, onSubmit }) {
+export function StepNav({ onPrev, onNext, nextLabel = 'Next', submit, onSubmit, nextDisabled }) {
   return (
     <div
       style={{
@@ -50,19 +50,21 @@ export function StepNav({ onPrev, onNext, nextLabel = 'Next', submit, onSubmit }
         </button>
       ) : onNext ? (
         <button
-          onClick={onNext}
+          onClick={nextDisabled ? undefined : onNext}
+          disabled={nextDisabled}
           style={{
             display: 'inline-flex',
             alignItems: 'center',
             gap: 8,
             padding: '11px 22px',
-            background: 'var(--sg-purple)',
+            background: nextDisabled ? '#c9c0cd' : 'var(--sg-purple)',
             color: '#fff',
             borderRadius: 4,
             fontFamily: 'var(--font-sans)',
             fontSize: 15,
             fontWeight: 600,
-            cursor: 'pointer',
+            cursor: nextDisabled ? 'not-allowed' : 'pointer',
+            transition: 'background 0.18s ease',
           }}
         >
           {nextLabel}

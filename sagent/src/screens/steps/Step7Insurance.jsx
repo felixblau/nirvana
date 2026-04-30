@@ -36,6 +36,7 @@ export function Step7Insurance({ data, update, onNext, onPrev }) {
         value={data.insurance}
         onChange={(v) => update({ insurance: v, insuranceVerified: false })}
         options={PAYERS}
+        placeholder="Select a payer"
       />
 
       <div style={{ marginTop: 18 }}>
@@ -44,7 +45,7 @@ export function Step7Insurance({ data, update, onNext, onPrev }) {
       </div>
 
       <div style={{ flex: 1 }} />
-      <StepNav onPrev={onPrev} onNext={onNext} />
+      <StepNav onPrev={onPrev} onNext={onNext} nextDisabled={!data.insurance || phase !== 'verified'} />
     </div>
   )
 }

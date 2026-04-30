@@ -14,7 +14,7 @@ export function Step3State({ value, onChange, onNext, onPrev }) {
         />
       </div>
       <div style={{ flex: 1 }} />
-      <StepNav onPrev={onPrev} onNext={onNext} />
+      <StepNav onPrev={onPrev} onNext={onNext} nextDisabled={!value} />
     </div>
   )
 }
