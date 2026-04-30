@@ -110,38 +110,40 @@ export const BookingFlow = forwardRef(function BookingFlow(_props, ref) {
       <SiteHeader />
       <Hero />
       <FormCard direction={direction}>
-        <ProgressBar percent={percent} filled={filledCount} total={TOTAL_FIELDS} />
-        {submitted ? (
-          <SubmittedCard />
-        ) : submitting ? (
-          <SubmittingCard />
-        ) : step === 1 ? (
-          <Step1Basics
-            data={data}
-            update={update}
-            onNext={next}
-            dropdownOpen={dropdownOpen}
-            onDropdownToggle={handleDropdownToggle}
-          />
-        ) : step === 2 ? (
-          <Step2Details
-            data={data}
-            update={update}
-            onNext={next}
-            onPrev={prev}
-            dropdownOpen={dropdownOpen}
-            onDropdownToggle={handleDropdownToggle}
-          />
-        ) : (
-          <Step3Consent
-            data={data}
-            update={update}
-            onSubmit={submit}
-            onPrev={prev}
-          />
-        )}
+        <div style={{ padding: '20px 20px 22px' }}>
+          <ProgressBar percent={percent} filled={filledCount} total={TOTAL_FIELDS} />
+          {submitted ? (
+            <SubmittedCard />
+          ) : submitting ? (
+            <SubmittingCard />
+          ) : step === 1 ? (
+            <Step1Basics
+              data={data}
+              update={update}
+              onNext={next}
+              dropdownOpen={dropdownOpen}
+              onDropdownToggle={handleDropdownToggle}
+            />
+          ) : step === 2 ? (
+            <Step2Details
+              data={data}
+              update={update}
+              onNext={next}
+              onPrev={prev}
+              dropdownOpen={dropdownOpen}
+              onDropdownToggle={handleDropdownToggle}
+            />
+          ) : (
+            <Step3Consent
+              data={data}
+              update={update}
+              onSubmit={submit}
+              onPrev={prev}
+            />
+          )}
+        </div>
+        <HipaaBar />
       </FormCard>
-      <HipaaFooter />
       <BelowFold />
     </div>
   )
@@ -209,8 +211,9 @@ function FormCard({ children, direction }) {
           background: '#ffffff',
           borderRadius: 10,
           boxShadow: '0 6px 18px rgba(10,20,40,0.24)',
-          padding: '20px 20px 22px',
           position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         <div
@@ -365,36 +368,26 @@ function SubmittedCard() {
   )
 }
 
-function HipaaFooter() {
+function HipaaBar() {
   return (
     <div
       style={{
-        background: BRAND_BLUE,
-        padding: '0 14px 16px',
+        background: '#f5f7fb',
+        borderTop: '1px solid #e4e8ef',
+        borderRadius: '0 0 10px 10px',
+        padding: '14px 18px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 10,
       }}
     >
-      <div
-        style={{
-          background: '#ffffff',
-          borderRadius: '0 0 10px 10px',
-          padding: '14px 18px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 10,
-          boxShadow: '0 6px 18px rgba(10,20,40,0.24)',
-          marginTop: -6,
-          position: 'relative',
-          borderTop: '1px solid #eef1f6',
-        }}
-      >
-        <HipaaShield />
-        <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 18, fontWeight: 800, color: BRAND_LINK }}>HIPAA</span>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 700, color: '#7b8795', letterSpacing: '0.12em' }}>
-            COMPLIANCE
-          </span>
-        </div>
+      <HipaaShield />
+      <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
+        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 18, fontWeight: 800, color: BRAND_LINK }}>HIPAA</span>
+        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 700, color: '#7b8795', letterSpacing: '0.12em' }}>
+          COMPLIANCE
+        </span>
       </div>
     </div>
   )
