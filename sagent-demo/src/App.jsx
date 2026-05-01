@@ -59,7 +59,9 @@ const SCRIPT = [
 
   // STEP 7 — Insurance + Nirvana verification
   { kind: 'tap', target: 'insurance', delay: 900 },
-  { kind: 'setField', patch: { insurance: 'Aetna' }, delay: 300 },
+  { kind: 'setField', patch: { insuranceOpen: true }, delay: 260 },
+  { kind: 'tap', target: 'insurance-Aetna', delay: 900 },
+  { kind: 'setField', patch: { insurance: 'Aetna', insuranceOpen: false }, delay: 300 },
   // 3s Nirvana loader + brief read time on the verified card
   { kind: 'wait', delay: 4200 },
   { kind: 'tap', target: 'next-btn', delay: 700 },

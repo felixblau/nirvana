@@ -32,6 +32,7 @@ const INITIAL_DATA = {
   addrState: 'IA',
   zip: '50913',
   insurance: '',
+  insuranceOpen: false,
   insuranceVerified: false,
   reason: '',
   consent: '',

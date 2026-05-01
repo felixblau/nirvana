@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { StepNav } from './StepNav.jsx'
-import { FieldLabel, Select, SectionHeading } from '../form.jsx'
+import { FieldLabel, SectionHeading } from '../form.jsx'
 import { NirvanaMark } from '../../brand/NirvanaMark.jsx'
 
 const PAYERS = [
@@ -32,12 +32,13 @@ export function Step7Insurance({ data, update, onNext, onPrev }) {
       <SectionHeading>Insurance</SectionHeading>
 
       <FieldLabel required>How would you like to pay?</FieldLabel>
-      <Select
+      <PayerSelect
         value={data.insurance}
-        onChange={(v) => update({ insurance: v, insuranceVerified: false })}
-        options={PAYERS}
-        placeholder="Select a payer"
-        demoKey="insurance"
+        open={!!data.insuranceOpen}
+        onToggle={() => update({ insuranceOpen: !data.insuranceOpen })}
+        onPick={(v) =>
+          update({ insurance: v, insuranceOpen: false, insuranceVerified: false })
+        }
       />
 
       <div style={{ marginTop: 18 }}>
@@ -47,6 +48,99 @@ export function Step7Insurance({ data, update, onNext, onPrev }) {
 
       <div style={{ flex: 1 }} />
       <StepNav onPrev={onPrev} onNext={onNext} nextDisabled={!data.insurance || phase !== 'verified'} />
+    </div>
+  )
+}
+
+function PayerSelect({ value, open, onToggle, onPick }) {
+  const isEmpty = !value
+  return (
+    <div data-demo="insurance" style={{ position: 'relative' }}>
+      <button
+        type="button"
+        onClick={onToggle}
+        style={{
+          width: '100%',
+          padding: '10px 36px 10px 12px',
+          background: '#ffffff',
+          border: '1px solid #cfcfcf',
+          borderRadius: 4,
+          fontFamily: 'var(--font-sans)',
+          fontSize: 14,
+          color: isEmpty ? '#9a9a9a' : '#2c2c2c',
+          textAlign: 'left',
+          outline: 'none',
+          cursor: 'pointer',
+        }}
+      >
+        {value || 'Select a payer'}
+      </button>
+      <span
+        aria-hidden
+        style={{
+          position: 'absolute',
+          right: 10,
+          top: '50%',
+          transform: 'translateY(-50%)',
+          fontSize: 10,
+          color: '#555',
+          pointerEvents: 'none',
+          lineHeight: 1,
+        }}
+      >
+        ▲▼
+      </span>
+
+      {open ? (
+        <div
+          style={{
+            position: 'absolute',
+            top: 'calc(100% + 4px)',
+            left: 0,
+            right: 0,
+            background: '#ffffff',
+            border: '1px solid #cfcfcf',
+            borderRadius: 4,
+            boxShadow: '0 8px 20px rgba(0,0,0,0.12)',
+            zIndex: 5,
+            overflow: 'hidden',
+            animation: 'sg-dropdown-in 0.16s ease-out',
+          }}
+        >
+          {PAYERS.map((p) => {
+            const selected = p === value
+            return (
+              <button
+                key={p}
+                type="button"
+                data-demo={`insurance-${p}`}
+                onClick={() => onPick(p)}
+                style={{
+                  width: '100%',
+                  display: 'block',
+                  padding: '10px 12px',
+                  background: selected ? 'rgba(127,7,149,0.08)' : 'transparent',
+                  border: 'none',
+                  borderBottom: '1px solid #efefef',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 14,
+                  color: '#2c2c2c',
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                }}
+              >
+                {p}
+              </button>
+            )
+          })}
+          <style>{`
+            @keyframes sg-dropdown-in {
+              from { opacity: 0; transform: translateY(-4px); }
+              to { opacity: 1; transform: translateY(0); }
+            }
+          `}</style>
+        </div>
+      ) : null}
     </div>
   )
 }
