@@ -386,8 +386,9 @@ export default function NirvanaInvite() {
 
             <div className="mt-10 max-w-lg mx-auto" style={{ animation: "fadeInSlow 1.2s ease-out 0.3s both" }}>
               <p className="text-base sm:text-lg text-white leading-relaxed">
-                Join CFOs and RCM leaders at this intimate dinner to trade notes
-                and discuss how to improve healthcare revenue operations.
+                Join CFOs, RCM leaders, AI leaders and more at this intimate
+                dinner to trade notes and discuss how to improve healthcare
+                revenue operations.
               </p>
             </div>
 
