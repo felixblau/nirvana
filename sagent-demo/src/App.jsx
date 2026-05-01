@@ -17,101 +17,62 @@ import { TapRipple } from './TapRipple.jsx'
  */
 
 const SCRIPT = [
-  { kind: 'wait', delay: 1400 },
+  { kind: 'wait', delay: 1000 },
 
   // STEP 1 — disclaimer
-  { kind: 'tap', target: 'next-btn', delay: 1600 },
-  { kind: 'call', fn: 'next', delay: 420 },
+  { kind: 'tap', target: 'next-btn', delay: 1200 },
+  { kind: 'call', fn: 'next', delay: 360 },
 
-  // STEP 2 — New Patient
-  { kind: 'tap', target: 'patient-type-New Patient', delay: 1300 },
-  { kind: 'setField', patch: { patientType: 'New Patient' }, delay: 260 },
-  { kind: 'tap', target: 'next-btn', delay: 1100 },
-  { kind: 'call', fn: 'next', delay: 420 },
-
-  // STEP 3 — Iowa
-  { kind: 'tap', target: 'state-Iowa', delay: 1300 },
-  { kind: 'setField', patch: { state: 'Iowa' }, delay: 260 },
-  { kind: 'tap', target: 'next-btn', delay: 1100 },
-  { kind: 'call', fn: 'next', delay: 420 },
-
-  // STEP 4 — Options
-  { kind: 'tap', target: 'service', delay: 1200 },
-  { kind: 'setField', patch: { service: 'Therapy for Individuals' }, delay: 360 },
-  { kind: 'tap', target: 'location', delay: 1100 },
-  { kind: 'setField', patch: { location: 'Des Moines Clinic - 600 42nd Street' }, delay: 360 },
-  { kind: 'tap', target: 'mode', delay: 1100 },
-  { kind: 'setField', patch: { mode: 'No Preference' }, delay: 360 },
-  { kind: 'tap', target: 'next-btn', delay: 1100 },
-  { kind: 'call', fn: 'next', delay: 420 },
-
-  // STEP 5 — Patient Info (scroll + tap + type, field by field)
-  { kind: 'scrollTo', target: 'dob', delay: 800 },
-  { kind: 'tap', target: 'dob', delay: 800 },
-  { kind: 'type', key: 'dob', value: '01/01/1990', delay: 260 },
-
-  { kind: 'scrollTo', target: 'sex', delay: 900 },
-  { kind: 'tap', target: 'sex', delay: 700 },
-  { kind: 'setField', patch: { sex: 'Male' }, delay: 360 },
-
-  { kind: 'scrollTo', target: 'phone', delay: 900 },
-  { kind: 'tap', target: 'phone', delay: 700 },
-  { kind: 'type', key: 'phone', value: '(123)456-7890', delay: 260 },
-
-  { kind: 'scrollTo', target: 'email', delay: 900 },
-  { kind: 'tap', target: 'email', delay: 700 },
-  { kind: 'type', key: 'email', value: 'mscott@dundermifflin.com', delay: 260 },
-
-  { kind: 'scrollTo', target: 'streetAddress', delay: 900 },
-  { kind: 'tap', target: 'streetAddress', delay: 700 },
-  { kind: 'type', key: 'streetAddress', value: '123 Main Street', delay: 260 },
-
-  { kind: 'scrollTo', target: 'city', delay: 900 },
-  { kind: 'tap', target: 'city', delay: 700 },
-  { kind: 'type', key: 'city', value: 'Des Moines', delay: 260 },
-
-  { kind: 'scrollTo', target: 'addrState', delay: 900 },
-  { kind: 'tap', target: 'addrState', delay: 700 },
-  { kind: 'setField', patch: { addrState: 'IA' }, delay: 360 },
-
-  { kind: 'scrollTo', target: 'zip', delay: 900 },
-  { kind: 'tap', target: 'zip', delay: 700 },
-  { kind: 'type', key: 'zip', value: '50913', delay: 260 },
-
-  { kind: 'scrollTo', target: 'next-btn', delay: 900 },
+  // STEP 2 — New Patient (prefilled)
   { kind: 'tap', target: 'next-btn', delay: 900 },
-  { kind: 'call', fn: 'next', delay: 420 },
+  { kind: 'call', fn: 'next', delay: 360 },
+
+  // STEP 3 — Iowa (prefilled)
+  { kind: 'tap', target: 'next-btn', delay: 900 },
+  { kind: 'call', fn: 'next', delay: 360 },
+
+  // STEP 4 — Options (prefilled)
+  { kind: 'tap', target: 'next-btn', delay: 900 },
+  { kind: 'call', fn: 'next', delay: 360 },
+
+  // STEP 5 — Patient Info (only DOB needs entry; rest prefilled)
+  { kind: 'scrollTo', target: 'dob', delay: 600 },
+  { kind: 'tap', target: 'dob', delay: 600 },
+  { kind: 'type', key: 'dob', value: '01/01/1990', delay: 200 },
+
+  { kind: 'scrollTo', target: 'next-btn', delay: 700 },
+  { kind: 'tap', target: 'next-btn', delay: 700 },
+  { kind: 'call', fn: 'next', delay: 360 },
 
   // STEP 6 — Additional
-  { kind: 'tap', target: 'reason', delay: 900 },
+  { kind: 'tap', target: 'reason', delay: 700 },
   {
     kind: 'type',
     key: 'reason',
-    value:
-      "Get help addressing challenges and improve wellbeing with a therapist's guidance.",
-    delay: 220,
+    value: 'Help improving wellbeing with therapy.',
+    delay: 180,
   },
-  { kind: 'tap', target: 'consent-Yes', delay: 1000 },
-  { kind: 'setField', patch: { consent: 'Yes' }, delay: 260 },
-  { kind: 'tap', target: 'next-btn', delay: 1100 },
-  { kind: 'call', fn: 'next', delay: 420 },
+  { kind: 'tap', target: 'consent-Yes', delay: 700 },
+  { kind: 'setField', patch: { consent: 'Yes' }, delay: 220 },
+  { kind: 'tap', target: 'next-btn', delay: 800 },
+  { kind: 'call', fn: 'next', delay: 360 },
 
   // STEP 7 — Insurance + Nirvana verification
-  { kind: 'tap', target: 'insurance', delay: 1200 },
-  { kind: 'setField', patch: { insurance: 'Aetna' }, delay: 360 },
-  // wait for the 3s Nirvana loader + extra read time on the verified card
-  { kind: 'wait', delay: 6200 },
-  { kind: 'tap', target: 'next-btn', delay: 900 },
-  { kind: 'call', fn: 'next', delay: 420 },
+  { kind: 'tap', target: 'insurance', delay: 900 },
+  { kind: 'setField', patch: { insurance: 'Aetna' }, delay: 300 },
+  // 3s Nirvana loader + brief read time on the verified card
+  { kind: 'wait', delay: 4200 },
+  { kind: 'tap', target: 'next-btn', delay: 700 },
+  { kind: 'call', fn: 'next', delay: 360 },
 
   // STEP 8 — Submit (2s spinner then confirmation)
-  { kind: 'tap', target: 'submit-btn', delay: 1200 },
-  { kind: 'call', fn: 'submit', delay: 420 },
+  { kind: 'tap', target: 'submit-btn', delay: 900 },
+  { kind: 'call', fn: 'submit', delay: 360 },
 
-  // 2s spinner + read time on the confirmation
-  { kind: 'wait', delay: 5200 },
+  // 2s spinner + brief read time on the confirmation
+  { kind: 'wait', delay: 3400 },
   { kind: 'phoneOut', delay: 0 },
-  { kind: 'wait', delay: 1600 },
+  { kind: 'wait', delay: 1400 },
   { kind: 'restart', delay: 0 },
 ]
 
