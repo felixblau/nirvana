@@ -24,15 +24,15 @@ const SCRIPT = [
   { kind: 'call', fn: 'next', delay: 360 },
 
   // STEP 2 — New Patient (prefilled)
-  { kind: 'tap', target: 'next-btn', delay: 900 },
+  { kind: 'tap', target: 'next-btn', delay: 1400 },
   { kind: 'call', fn: 'next', delay: 360 },
 
   // STEP 3 — Iowa (prefilled)
-  { kind: 'tap', target: 'next-btn', delay: 900 },
+  { kind: 'tap', target: 'next-btn', delay: 1400 },
   { kind: 'call', fn: 'next', delay: 360 },
 
   // STEP 4 — Options (prefilled)
-  { kind: 'tap', target: 'next-btn', delay: 900 },
+  { kind: 'tap', target: 'next-btn', delay: 1400 },
   { kind: 'call', fn: 'next', delay: 360 },
 
   // STEP 5 — Patient Info (only DOB needs entry; rest prefilled)
