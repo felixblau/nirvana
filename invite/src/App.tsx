@@ -114,9 +114,8 @@ function App() {
               style={{ animation: "fadeInSlow 1.2s ease-out 0.3s both" }}
             >
               <p className="text-base sm:text-lg text-white leading-relaxed">
-                Join CFOs, RCM leaders, alongside AI leaders from OpenAI, Anthropic
-                and more at this intimate dinner to trade notes and discuss how to
-                improve healthcare revenue operations.
+                Join CFOs and RCM leaders at this intimate dinner to trade notes
+                and discuss how to improve healthcare revenue operations.
               </p>
             </div>
 
