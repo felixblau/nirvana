@@ -9,12 +9,10 @@ export function HamburgerIcon() {
 }
 
 export function GeminiEditIcon() {
-  // ChatGPT-style compose icon: rounded square with a pencil in the corner
+  // ChatPCP compose icon sourced from the Figma storyboard export
   return (
-    <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 4h10v5" opacity="0" />
-      <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6" />
-      <path d="M15 4l5 5L12 17H7v-5l8-8z" />
+    <svg className="nav-icon" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9.62451 3.5H5.94951C4.47937 3.5 3.7443 3.5 3.18279 3.78611C2.68886 4.03777 2.28729 4.43935 2.03562 4.93327C1.74951 5.49479 1.74951 6.22986 1.74951 7.7V15.05C1.74951 16.5201 1.74951 17.2552 2.03562 17.8167C2.28729 18.3106 2.68886 18.7122 3.18279 18.9639C3.7443 19.25 4.47937 19.25 5.94951 19.25H13.2995C14.7696 19.25 15.5047 19.25 16.0662 18.9639C16.5602 18.7122 16.9617 18.3106 17.2134 17.8167C17.4995 17.2552 17.4995 16.5201 17.4995 15.05V11.375M6.99984 14H8.46506C8.8931 14 9.10712 14 9.30852 13.9516C9.48708 13.9088 9.65779 13.8381 9.81436 13.7421C9.99097 13.6339 10.1423 13.4826 10.445 13.1799L18.8124 4.81249C19.5372 4.08762 19.5372 2.91237 18.8124 2.18749C18.0875 1.46262 16.9122 1.46262 16.1874 2.18749L7.81994 10.5549C7.51728 10.8576 7.36594 11.0089 7.25772 11.1855C7.16177 11.3421 7.09106 11.5128 7.04819 11.6913C6.99984 11.8927 6.99984 12.1068 6.99984 12.5348V14Z" stroke="currentColor" strokeWidth="1.69014" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
