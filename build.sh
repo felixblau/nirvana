@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-for app in pt-checkin clear1 clear1-demo health-ai wallet-e2e invite gemmd lifestance lifestance-demo sagent sagent-demo nehs nehs-demo; do
+for app in pt-checkin clear1 clear1-demo health-ai wallet-e2e invite gemmd chatpcp lifestance lifestance-demo sagent sagent-demo nehs nehs-demo; do
   cd "$app" && npm install && npm run build && cd ..
 done
 
@@ -17,6 +17,9 @@ cp -r "invite/dist/"* "dist/invite/"
 
 mkdir -p "dist/gemmd"
 cp -r "gemmd/dist/"* "dist/gemmd/"
+
+mkdir -p "dist/chatpcp"
+cp -r "chatpcp/dist/"* "dist/chatpcp/"
 
 mkdir -p "dist/nav"
 cp nav/index.html "dist/nav/index.html"
