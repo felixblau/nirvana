@@ -4,6 +4,7 @@ import {
   SignalIcon, WifiIcon, BatteryIcon,
 } from './Icons'
 import ProcessingSheet from './ProcessingSheet'
+import InsuranceConfirmSheet from './InsuranceConfirmSheet'
 import BookingSheet from './BookingSheet'
 import PaymentSheet from './PaymentSheet'
 import DoctorCards from './DoctorCards'
@@ -68,15 +69,16 @@ const STEPS = {
   AI_RESPONSE: 2,
   USER_REPLY: 3,
   RETRIEVAL: 4,
-  PROCESSING_1: 5,
-  PROCESSING_2: 6,
-  PROCESSING_3: 7,
-  RESULTS: 8,
-  BOOKING: 9,
-  PAYMENT_EMPTY: 10,
-  PAYMENT_FILLED: 11,
-  CONFIRMATION: 12,
-  EXIT: 13,
+  INSURANCE_CONFIRM: 5,
+  PROCESSING_1: 6,
+  PROCESSING_2: 7,
+  PROCESSING_3: 8,
+  RESULTS: 9,
+  BOOKING: 10,
+  PAYMENT_EMPTY: 11,
+  PAYMENT_FILLED: 12,
+  CONFIRMATION: 13,
+  EXIT: 14,
 }
 
 const AI_MSG_1 = "I'm sorry to hear about your knee pain. Based on what you're describing - sharp pain on the outer side of your right knee that worsens with stair climbing - this could be related to several conditions, including iliotibial band syndrome, a lateral meniscus issue, or possible ligament strain.\n\nIn this case, imaging would be really helpful. **Based on your symptoms, I suggest you consult a radiologist.** Would you like me to find some radiologists you can reach out to?"
@@ -88,6 +90,7 @@ const TIMINGS = {
   [STEPS.INITIAL]: 800,
   [STEPS.USER_REPLY]: 1500,
   [STEPS.RETRIEVAL]: 2000,
+  [STEPS.INSURANCE_CONFIRM]: 3800,
   [STEPS.PROCESSING_1]: 2000,
   [STEPS.PROCESSING_2]: 2000,
   [STEPS.PROCESSING_3]: 2000,
@@ -106,7 +109,7 @@ export default function App() {
   const chatRef = useRef(null)
   const endRef = useRef(null)
 
-  const TAP_STEPS = new Set([STEPS.RESULTS, STEPS.BOOKING, STEPS.PAYMENT_EMPTY, STEPS.PAYMENT_FILLED])
+  const TAP_STEPS = new Set([STEPS.INSURANCE_CONFIRM, STEPS.RESULTS, STEPS.BOOKING, STEPS.PAYMENT_EMPTY, STEPS.PAYMENT_FILLED])
   const TAP_LEAD = 900
 
   const advanceStep = () => {
@@ -160,6 +163,7 @@ export default function App() {
   }, [phoneVisible])
 
   const showAiResponse = step >= STEPS.AI_RESPONSE
+  const showInsuranceConfirm = step === STEPS.INSURANCE_CONFIRM
   const showSheet = step >= STEPS.PROCESSING_1 && step <= STEPS.PROCESSING_3
   const showResults = step >= STEPS.RESULTS
   const showBooking = step === STEPS.BOOKING
@@ -235,8 +239,8 @@ export default function App() {
           </AnimateIn>
         )}
 
-        {/* Retrieval indicator */}
-        {step === STEPS.RETRIEVAL && (
+        {/* Retrieval indicator — visible through retrieval + insurance confirmation */}
+        {step >= STEPS.RETRIEVAL && step <= STEPS.PROCESSING_3 && (
           <AnimateIn>
             <div className="retrieval">
               <div className="spinner" />
@@ -278,6 +282,7 @@ export default function App() {
       </div>
 
       {/* Sheets */}
+      {showInsuranceConfirm && <InsuranceConfirmSheet showTap={showTap} onConfirm={() => {}} />}
       {showSheet && <ProcessingSheet activeStep={processingStep} />}
       {showBooking && <BookingSheet onBook={() => {}} showTap={showTap} />}
       {showPayment && <PaymentSheet cvvFilled={step === STEPS.PAYMENT_FILLED} onConfirm={() => {}} showTap={showTap} />}

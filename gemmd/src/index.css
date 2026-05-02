@@ -718,3 +718,126 @@ html, body, #root {
   0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
   100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
 }
+
+/* Insurance Confirmation Sheet (dark theme) */
+.insurance-confirm-sheet {
+  padding: 12px 20px 28px;
+}
+
+.ic-heading {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gray-900);
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
+
+.ic-card {
+  background: var(--surface-light);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ic-plan {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-900);
+  letter-spacing: -0.01em;
+}
+
+.ic-card-image {
+  width: 100%;
+  max-width: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.ic-card-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.ic-details {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ic-details li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--gray-700);
+  line-height: 1.6;
+}
+
+.ic-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--gray-400);
+}
+
+.ic-bold { font-weight: 500; color: var(--gray-900); }
+
+.ic-accent { color: var(--blue); }
+
+.ic-payer-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ic-aetna-chip {
+  display: inline-flex;
+  align-items: center;
+  background: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.ic-aetna-chip img {
+  height: 12px;
+  width: auto;
+  display: block;
+}
+
+.ic-dim { color: var(--gray-500); font-size: 12px; }
+
+.ic-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.ic-btn {
+  flex: 1;
+  height: 44px;
+  border-radius: 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+}
+
+.ic-btn-secondary {
+  background: transparent;
+  border: 1.5px solid var(--gray-200);
+  color: var(--gray-600);
+}
+
+.ic-btn-primary {
+  background: var(--blue);
+  color: #fff;
+}

@@ -651,3 +651,118 @@ html, body, #root {
   0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
   100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
 }
+
+/* Insurance Confirmation Sheet */
+.insurance-confirm-sheet {
+  padding: 12px 20px 28px;
+}
+
+.ic-heading {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gray-900);
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
+
+.ic-card {
+  background: #f3efeb;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ic-plan {
+  font-size: 14px;
+  font-weight: 700;
+  color: #333;
+  letter-spacing: -0.01em;
+}
+
+.ic-card-image {
+  width: 100%;
+  max-width: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.ic-card-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.ic-details {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ic-details li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #262626;
+  line-height: 1.6;
+}
+
+.ic-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.ic-bold { font-weight: 500; }
+
+.ic-accent { color: #9073f2; }
+
+.ic-payer-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ic-aetna {
+  height: 14px;
+  width: auto;
+  mix-blend-mode: multiply;
+  object-fit: contain;
+}
+
+.ic-dim { color: rgba(38,38,38,0.5); font-size: 12px; }
+
+.ic-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.ic-btn {
+  flex: 1;
+  height: 44px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+}
+
+.ic-btn-secondary {
+  background: transparent;
+  border: 1.5px solid var(--gray-200);
+  color: var(--gray-600);
+}
+
+.ic-btn-primary {
+  background: var(--teal);
+  color: white;
+}
