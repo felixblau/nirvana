@@ -11,11 +11,6 @@ export function SiteFooter() {
       <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-10 mb-16">
           <div className="md:col-span-2 space-y-6">
-            <img
-              src={`${import.meta.env.BASE_URL}footer-nirvana-logo.svg`}
-              alt="Nirvana"
-              className="h-16 w-16"
-            />
             <div className="flex gap-3">
               <span className="w-9 h-9 rounded-full bg-[color:var(--lilac)]/20 flex items-center justify-center cursor-default" aria-label="Instagram">
                 <svg viewBox="0 0 24 24" className="h-4 w-4 text-[color:var(--lilac)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -50,12 +45,12 @@ export function SiteFooter() {
             <img
               src={`${import.meta.env.BASE_URL}hipaa-badge.png`}
               alt="HIPAA Compliant"
-              className="h-16 w-auto"
+              className="h-16 w-auto object-contain"
             />
             <img
               src={`${import.meta.env.BASE_URL}footer-compliance-badges.png`}
               alt="AICPA SOC certified"
-              className="h-16 w-16 rounded-full"
+              className="h-16 w-16 rounded-full object-contain"
             />
           </div>
           <div className="hidden md:flex items-center gap-4 bg-[color:var(--lilac)]/25 rounded-full pl-6 pr-3 py-2 cursor-default">

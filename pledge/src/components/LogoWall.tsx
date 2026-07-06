@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import type { PublicPledge } from "@/types";
 
 const BASE = import.meta.env.BASE_URL;
@@ -75,11 +75,11 @@ export function LogoWall({ pledges }: Props) {
   const totalPages = pages.length;
 
   const [progress, setProgress] = useState(0);
+  const [playing, setPlaying] = useState(true);
   const startedAtRef = useRef<number>(performance.now());
   useEffect(() => {
-    if (totalPages < 2) return;
-    startedAtRef.current = performance.now();
-    setProgress(0);
+    if (totalPages < 2 || !playing) return;
+    startedAtRef.current = performance.now() - progress * AUTOPLAY_MS;
     let raf = 0;
     const tick = () => {
       const now = performance.now();
@@ -94,7 +94,8 @@ export function LogoWall({ pledges }: Props) {
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [safePage, totalPages]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [safePage, totalPages, playing]);
 
   const resetTimer = () => {
     startedAtRef.current = performance.now();
@@ -103,6 +104,7 @@ export function LogoWall({ pledges }: Props) {
 
   const goBack = () => { setPage((p) => (p - 1 + totalPages) % totalPages); resetTimer(); };
   const goNext = () => { setPage((p) => (p + 1) % totalPages); resetTimer(); };
+  const togglePlay = () => setPlaying((p) => !p);
 
   const visible = pages[safePage];
 
@@ -131,7 +133,13 @@ export function LogoWall({ pledges }: Props) {
       </section>
 
       {totalPages > 1 && (
-        <TimerPill onBack={goBack} onNext={goNext} progress={progress} />
+        <TimerPill
+          onBack={goBack}
+          onNext={goNext}
+          onTogglePlay={togglePlay}
+          playing={playing}
+          progress={progress}
+        />
       )}
     </div>
   );
@@ -140,13 +148,17 @@ export function LogoWall({ pledges }: Props) {
 function TimerPill({
   onBack,
   onNext,
+  onTogglePlay,
+  playing,
   progress,
 }: {
   onBack: () => void;
   onNext: () => void;
+  onTogglePlay: () => void;
+  playing: boolean;
   progress: number;
 }) {
-  const W = 96;
+  const W = 128;
   const H = 40;
   const R = H / 2;
   const straight = W - 2 * R;
@@ -172,6 +184,13 @@ function TimerPill({
           aria-label="Previous page of logos"
         >
           <ChevronLeft className="h-5 w-5" />
+        </button>
+        <button
+          onClick={onTogglePlay}
+          className="flex-1 flex items-center justify-center text-white hover:bg-[color:var(--warm-tan)] transition-colors"
+          aria-label={playing ? "Pause logo autoplay" : "Resume logo autoplay"}
+        >
+          {playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
         </button>
         <button
           onClick={onNext}
