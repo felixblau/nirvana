@@ -699,7 +699,7 @@ export function Hero({ onSignClick }: HeroProps) {
         <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-foreground leading-[1.05]">
           Patients deserve to know what care costs — and what they're covered for — before they book.
         </h1>
-        <p className="text-lg text-[color:var(--lilac)] max-w-2xl mx-auto">
+        <p className="text-lg text-[color:var(--deep-purple)]/70 max-w-2xl mx-auto">
           Sign the pledge and stand with providers committing to price transparency and coverage clarity for every patient.
         </p>
         <div className="pt-2">
@@ -716,6 +716,8 @@ export function Hero({ onSignClick }: HeroProps) {
   );
 }
 ```
+
+Note: subhead uses `deep-purple/70` (not `--lilac`) for WCAG AA contrast on the off-white background.
 
 - [ ] **Step 2: Wire into `App.tsx`**
 
@@ -1586,7 +1588,15 @@ export function usePledgeState() {
     if (!cookie) return;
     try {
       const row = await apiLookup(cookie.email);
-      if (!row) { clearPledgeCookie(); setLocal({ kind: "fresh" }); return; }
+      if (!row) {
+        // If we only have a temp id, the just-submitted row may not be visible
+        // to the server yet (Apps Script write-read race). Do NOT wipe the
+        // optimistic state — leave it and the next poll will reconcile.
+        if (cookie.id.startsWith("temp-")) return;
+        clearPledgeCookie();
+        setLocal({ kind: "fresh" });
+        return;
+      }
       // Reconcile temp ID with real server id
       if (row.id !== cookie.id) writePledgeCookie({ id: row.id, email: cookie.email });
       if (row.status === "rescinded") {
@@ -1818,11 +1828,12 @@ type Props = {
 export function PendingCard({ firstName, company, onRescind }: Props) {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [rescinding, setRescinding] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const doRescind = async () => {
-    setRescinding(true);
+    setRescinding(true); setError(null);
     try { await onRescind(); setConfirmOpen(false); }
-    catch { /* toast handled elsewhere later; keep dialog open */ }
+    catch { setError("Couldn't rescind. Try again."); }
     finally { setRescinding(false); }
   };
 
@@ -1854,6 +1865,7 @@ export function PendingCard({ firstName, company, onRescind }: Props) {
             <BaseDialog.Description className="text-sm text-muted-foreground">
               This will remove your pledge for {company}. You can pledge again later.
             </BaseDialog.Description>
+            {error && <p className="text-xs text-destructive" role="alert">{error}</p>}
             <div className="flex gap-2 justify-end pt-2">
               <Button variant="ghost" onClick={() => setConfirmOpen(false)} disabled={rescinding}>Cancel</Button>
               <Button variant="destructive" onClick={doRescind} disabled={rescinding}>
