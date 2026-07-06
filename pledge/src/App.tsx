@@ -66,7 +66,7 @@ export default function App() {
                 </Hero>
               </div>
 
-              <aside className="lg:col-span-5 lg:sticky lg:top-8 lg:self-start space-y-6">
+              <aside className="lg:col-span-5 lg:sticky lg:self-start space-y-6" style={{ top: 88 + 24 }}>
                 <LogoWall pledges={pledges} />
                 <PledgeCounterPill
                   pledges={pledges.length}

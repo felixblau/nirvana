@@ -11,10 +11,11 @@ export function SiteFooter() {
       <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-10 mb-16">
           <div className="md:col-span-2 space-y-6">
-            <div className="flex items-center gap-2">
-              <img src={`${import.meta.env.BASE_URL}nirvana-glyph.svg`} alt="" className="h-7 w-7" onError={(e) => (e.currentTarget.src = `${import.meta.env.BASE_URL}nirvana-glyph.png`)} />
-              <img src={`${import.meta.env.BASE_URL}nirvana-logo.svg`} alt="Nirvana" className="h-4 invert" />
-            </div>
+            <img
+              src={`${import.meta.env.BASE_URL}footer-nirvana-logo.svg`}
+              alt="Nirvana"
+              className="h-16 w-16"
+            />
             <div className="flex gap-3">
               <span className="w-9 h-9 rounded-full bg-[color:var(--lilac)]/20 flex items-center justify-center cursor-default" aria-label="Instagram">
                 <svg viewBox="0 0 24 24" className="h-4 w-4 text-[color:var(--lilac)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -45,9 +46,12 @@ export function SiteFooter() {
         </div>
 
         <div className="flex items-end justify-between gap-8 mb-10">
-          <div className="flex gap-4">
-            <div className="h-16 w-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] text-white/70 text-center leading-tight cursor-default">HIPAA<br/>COMPLIANT</div>
-            <div className="h-16 w-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] text-white/70 text-center leading-tight cursor-default">AICPA<br/>SOC</div>
+          <div>
+            <img
+              src={`${import.meta.env.BASE_URL}footer-compliance-badges.png`}
+              alt="AICPA SOC certified"
+              className="h-16 w-16 rounded-full"
+            />
           </div>
           <div className="hidden md:flex items-center gap-4 bg-[color:var(--lilac)]/25 rounded-full pl-6 pr-3 py-2 cursor-default">
             <span className="text-sm text-white">Looking to help make mental healthcare more accessible? Join Nirvana team.</span>

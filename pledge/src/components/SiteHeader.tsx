@@ -3,7 +3,7 @@ const BASE = import.meta.env.BASE_URL;
 export function SiteHeader() {
   return (
     <header
-      className="w-full bg-[color:var(--deep-purple)]"
+      className="sticky top-0 z-30 w-full bg-[color:var(--deep-purple)]"
       style={{ height: 88 }}
       aria-label="Site navigation (decorative)"
     >
