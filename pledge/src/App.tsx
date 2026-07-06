@@ -54,7 +54,7 @@ export default function App() {
                 </Button>
                 <button
                   onClick={() => setLookupOpen(true)}
-                  className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
+                  className="text-xs text-[color:var(--deep-purple)] font-medium underline underline-offset-4 hover:opacity-70"
                 >
                   Already pledged?
                 </button>
@@ -65,7 +65,7 @@ export default function App() {
           <PledgeCounterPill
             pledges={pledges.length}
             companies={companyCount}
-            visible={!state.listHidden && pledges.length > 0}
+            visible={!state.listHidden && state.list !== null}
             onOpenList={() => setListOpen(true)}
           />
         </main>

@@ -7,8 +7,8 @@ export function Hero({ children, onSignClick }: HeroProps) {
   return (
     <section className="relative w-full py-24 md:py-32 px-6 overflow-hidden">
       <div className="max-w-3xl mx-auto text-center space-y-8 animate-fade-in">
-        <div className="inline-block rounded-full border border-border bg-card px-4 py-1.5">
-          <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[color:var(--vibrant-purple)]">
+        <div className="inline-block rounded-full border border-[color:var(--deep-purple)]/15 bg-card px-4 py-1.5">
+          <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[color:var(--deep-purple)]">
             The Price Transparency Pledge
           </span>
         </div>

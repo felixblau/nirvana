@@ -20,7 +20,7 @@ export function ApprovedCard({ firstName, company, onViewList }: Props) {
       </div>
       <button
         onClick={onViewList}
-        className="text-xs text-[color:var(--vibrant-purple)] font-medium underline underline-offset-4"
+        className="text-xs text-[color:var(--deep-purple)] font-semibold underline underline-offset-4"
       >
         View the list →
       </button>

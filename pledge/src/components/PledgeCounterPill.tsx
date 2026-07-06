@@ -14,14 +14,14 @@ export function PledgeCounterPill({ pledges, companies, onOpenList, visible }: P
       <div className="max-w-3xl mx-auto flex justify-center">
         <button
           onClick={onOpenList}
-          className="group inline-flex items-center gap-3 bg-card border border-border rounded-full pl-6 pr-4 py-3 hover:border-[color:var(--vibrant-purple)] transition-colors"
+          className="group inline-flex items-center gap-3 bg-card border border-[color:var(--deep-purple)]/15 rounded-full pl-6 pr-4 py-3 hover:border-[color:var(--deep-purple)] transition-colors"
         >
           <span className="text-base">
             <span className="font-semibold text-foreground">{pledges} pledges</span>
             <span className="text-muted-foreground"> from </span>
             <span className="font-semibold text-foreground">{companies} companies</span>
           </span>
-          <span className="text-sm text-[color:var(--vibrant-purple)] font-medium flex items-center gap-1">
+          <span className="text-sm text-[color:var(--deep-purple)] font-semibold flex items-center gap-1">
             View list <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
           </span>
         </button>

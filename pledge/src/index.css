@@ -25,18 +25,18 @@
   --card-foreground: var(--deep-purple);
   --popover: #ffffff;
   --popover-foreground: var(--deep-purple);
-  --primary: var(--vibrant-purple);
+  --primary: var(--deep-purple);
   --primary-foreground: #ffffff;
   --secondary: var(--white-purple);
   --secondary-foreground: var(--deep-purple);
   --muted: var(--lilac-light);
-  --muted-foreground: var(--lilac);
+  --muted-foreground: color-mix(in srgb, var(--deep-purple) 60%, transparent);
   --accent: var(--lilac-light);
   --accent-foreground: var(--deep-purple);
   --destructive: var(--red);
   --border: var(--lilac-light);
   --input: var(--lilac-light);
-  --ring: var(--vibrant-purple);
+  --ring: var(--deep-purple);
   --radius: 0.75rem;
 }
 
