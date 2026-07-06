@@ -4,12 +4,8 @@ import type { PublicPledge } from "@/types";
 
 const BASE = import.meta.env.BASE_URL;
 
-// Per-Figma tile is 200.485 × 102.4 with ~32px inner padding.
-// Sizing spec: each logo gets its own height (per Figma 24771:90015 + 24774:90272).
-// We approximate by expressing height as a fraction of the tile height (102.4).
 type Tile = { src: string; label: string; hPct: number };
 
-// Page 1 — matches Figma 24771:90015 exactly.
 const PAGE_1: Tile[] = [
   { src: "amazon.png", label: "Amazon", hPct: 32 / 102.4 },
   { src: "simple-practice.png", label: "SimplePractice", hPct: 36.6 / 102.4 },
@@ -28,7 +24,6 @@ const PAGE_1: Tile[] = [
   { src: "headlight.png", label: "Headlight", hPct: 24 / 102.4 },
 ];
 
-// Page 2 — matches Figma 24774:90272 exactly.
 const PAGE_2: Tile[] = [
   { src: "octave.png", label: "Octave", hPct: 48.3 / 102.4 },
   { src: "headspace.png", label: "Headspace", hPct: 53 / 102.4 },
@@ -79,11 +74,7 @@ export function LogoWall({ pledges }: Props) {
   const safePage = Math.min(page, pages.length - 1);
   const totalPages = pages.length;
 
-  const goBack = () => setPage((p) => (p - 1 + totalPages) % totalPages);
-  const goNext = () => setPage((p) => (p + 1) % totalPages);
-
-  // Auto-advance timer with visual progress
-  const [progress, setProgress] = useState(0); // 0..1
+  const [progress, setProgress] = useState(0);
   const startedAtRef = useRef<number>(performance.now());
   useEffect(() => {
     if (totalPages < 2) return;
@@ -110,10 +101,13 @@ export function LogoWall({ pledges }: Props) {
     setProgress(0);
   };
 
+  const goBack = () => { setPage((p) => (p - 1 + totalPages) % totalPages); resetTimer(); };
+  const goNext = () => { setPage((p) => (p + 1) % totalPages); resetTimer(); };
+
   const visible = pages[safePage];
 
   return (
-    <div className="space-y-4 flex flex-col items-center">
+    <div className="flex flex-col items-center gap-4 w-full">
       <section
         aria-label="Signatory logos"
         className="grid grid-cols-3 gap-2 w-full"
@@ -137,11 +131,7 @@ export function LogoWall({ pledges }: Props) {
       </section>
 
       {totalPages > 1 && (
-        <TimerPill
-          onBack={() => { goBack(); resetTimer(); }}
-          onNext={() => { goNext(); resetTimer(); }}
-          progress={progress}
-        />
+        <TimerPill onBack={goBack} onNext={goNext} progress={progress} />
       )}
     </div>
   );
@@ -156,65 +146,64 @@ function TimerPill({
   onNext: () => void;
   progress: number;
 }) {
-  // Pill dimensions
   const W = 96;
   const H = 40;
-  const R = H / 2; // 20
-  // SVG stroke follows a rounded-rect path (pill shape).
-  // Path: start at top-left after arc, go right, arc down, go left, arc up.
-  const straight = W - 2 * R; // 56
-  const arc = Math.PI * R; // 62.83
-  const perimeter = 2 * straight + 2 * arc; // ≈ 237.7
+  const R = H / 2;
+  const straight = W - 2 * R;
+  const arc = Math.PI * R;
+  const perimeter = 2 * straight + 2 * arc;
 
-  // Path starting at the top-center, going clockwise, so progress fills from top-center outward evenly.
-  // But the mockup shows the fill starting at the top-center and progressing clockwise around the right side first.
-  // Easier: standard rounded-rect path starting top-left corner-arc endpoint.
-  const path = `
-    M ${R} 0
-    H ${W - R}
-    A ${R} ${R} 0 0 1 ${W - R} ${H}
-    H ${R}
-    A ${R} ${R} 0 0 1 ${R} 0
-    Z
-  `.trim();
-
-  const dash = perimeter;
-  const offset = perimeter * (1 - progress);
+  // Build a path that STARTS at the top-center and goes clockwise around the pill.
+  // Top-center = (W/2, 0). Go right along the top, arc down the right, go left along the bottom, arc up the left, back to the top-center.
+  const path =
+    `M ${W / 2} 0 ` +
+    `H ${W - R} ` +
+    `A ${R} ${R} 0 0 1 ${W - R} ${H} ` +
+    `H ${R} ` +
+    `A ${R} ${R} 0 0 1 ${R} 0 ` +
+    `H ${W / 2}`;
+  // Note: the path is 4 arcs+straights split so top-center is index 0.
+  // The path length equals the perimeter (halfStraight + arc + straight + arc + halfStraight = 2 straights + 2 arcs).
 
   return (
-    <div className="relative" style={{ width: W, height: H }}>
+    <div className="relative group" style={{ width: W, height: H }}>
+      {/* Base pill fill/outline layer: white border, no timer stroke */}
+      <div
+        className="absolute inset-0 rounded-full border border-white bg-transparent"
+        aria-hidden="true"
+      />
+
+      {/* Timer stroke traced OVER the base border, starting at top-center clockwise */}
       <svg
-        className="absolute inset-0 pointer-events-none"
+        className="absolute pointer-events-none"
         width={W}
         height={H}
-        viewBox={`0 0 ${W} ${H}`}
+        viewBox={`-1 -1 ${W + 2} ${H + 2}`}
         aria-hidden="true"
+        style={{ overflow: "visible" }}
       >
-        {/* Base pill border */}
-        <path d={path} fill="none" stroke="#ffffff" strokeWidth={1.5} />
-        {/* Progress overlay */}
         <path
           d={path}
           fill="none"
           stroke="#2c1f45"
           strokeWidth={2}
-          strokeDasharray={dash}
-          strokeDashoffset={offset}
-          strokeLinecap="round"
-          style={{ transform: "rotate(-90deg)", transformOrigin: "center" }}
+          strokeDasharray={perimeter}
+          strokeDashoffset={perimeter * (1 - progress)}
+          strokeLinecap="butt"
         />
       </svg>
-      <div className="relative w-full h-full flex items-center justify-center">
+
+      <div className="relative w-full h-full flex items-stretch rounded-full overflow-hidden">
         <button
           onClick={onBack}
-          className="w-1/2 h-full flex items-center justify-center text-white hover:opacity-80 transition-opacity"
+          className="flex-1 flex items-center justify-center text-white hover:bg-[color:var(--warm-tan)] transition-colors"
           aria-label="Previous page of logos"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
         <button
           onClick={onNext}
-          className="w-1/2 h-full flex items-center justify-center text-white hover:opacity-80 transition-opacity"
+          className="flex-1 flex items-center justify-center text-white hover:bg-[color:var(--warm-tan)] transition-colors"
           aria-label="Next page of logos"
         >
           <ChevronRight className="h-5 w-5" />

@@ -15,8 +15,6 @@ import { LookupSheet } from "@/components/LookupSheet";
 import { usePledgeState } from "@/hooks/usePledgeState";
 
 const HEADER_HEIGHT = 88;
-const LEFT_PAD = 80;
-const RIGHT_PAD = 50;
 
 export default function App() {
   const state = usePledgeState();
@@ -27,16 +25,27 @@ export default function App() {
   const pledges = state.list ?? [];
   const companyCount = new Set(pledges.map((p) => p.company)).size;
 
+  const CounterOrSkeleton = state.list === null ? (
+    <PledgeCounterPill loading />
+  ) : !state.listHidden ? (
+    <PledgeCounterPill
+      pledges={pledges.length}
+      companies={companyCount}
+      onOpenList={() => setListOpen(true)}
+    />
+  ) : null;
+
   return (
     <PasswordGate>
       <div className="min-h-screen flex flex-col bg-background">
         <SiteHeader />
         <div className="grid grid-cols-1 lg:grid-cols-2">
-          <main
-            style={{ paddingLeft: LEFT_PAD, paddingRight: LEFT_PAD, paddingTop: LEFT_PAD, paddingBottom: LEFT_PAD }}
-            className="space-y-24"
-          >
-            <div className="flex flex-col justify-center" style={{ minHeight: 640 }}>
+          <main>
+            {/* Hero section — 40px top/bottom, 80px left/right, min-h 740, vertically centered */}
+            <section
+              className="flex flex-col justify-center gap-6"
+              style={{ minHeight: 740, paddingTop: 40, paddingBottom: 40, paddingLeft: 80, paddingRight: 80 }}
+            >
               <Hero>
                 {state.local.kind === "pending" && (
                   <PendingCard
@@ -71,8 +80,15 @@ export default function App() {
                   </div>
                 )}
               </Hero>
-            </div>
-            <WhyItMatters />
+              {CounterOrSkeleton}
+            </section>
+
+            {/* Why This Matters section — same padding */}
+            <section
+              style={{ paddingTop: 40, paddingBottom: 40, paddingLeft: 80, paddingRight: 80 }}
+            >
+              <WhyItMatters />
+            </section>
           </main>
 
           <aside
@@ -80,24 +96,14 @@ export default function App() {
             style={{
               top: HEADER_HEIGHT,
               height: `calc(100vh - ${HEADER_HEIGHT}px)`,
-              paddingLeft: RIGHT_PAD,
-              paddingRight: RIGHT_PAD,
-              paddingTop: RIGHT_PAD,
-              paddingBottom: RIGHT_PAD,
+              paddingTop: 40,
+              paddingBottom: 40,
+              paddingLeft: 50,
+              paddingRight: 50,
             }}
           >
-            <div className="h-full flex flex-col gap-4">
+            <div className="h-full flex flex-col justify-center">
               <LogoWall pledges={pledges} />
-              <div className="flex-1" />
-              {state.list === null ? (
-                <PledgeCounterPill loading />
-              ) : !state.listHidden ? (
-                <PledgeCounterPill
-                  pledges={pledges.length}
-                  companies={companyCount}
-                  onOpenList={() => setListOpen(true)}
-                />
-              ) : null}
             </div>
           </aside>
         </div>
