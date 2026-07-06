@@ -1,14 +1,29 @@
 import { ArrowRight } from "lucide-react";
 
-type Props = {
-  pledges: number;
-  companies: number;
-  onOpenList: () => void;
-  visible: boolean;
-};
+type Props =
+  | { loading: true }
+  | {
+      loading?: false;
+      pledges: number;
+      companies: number;
+      onOpenList: () => void;
+    };
 
-export function PledgeCounterPill({ pledges, companies, onOpenList, visible }: Props) {
-  if (!visible) return null;
+export function PledgeCounterPill(props: Props) {
+  if (props.loading) {
+    return (
+      <div
+        aria-hidden="true"
+        className="w-full flex items-center justify-between gap-3 rounded-2xl px-6 py-4 bg-[color:var(--warm-tan)]"
+      >
+        <div className="flex-1 space-y-2">
+          <div className="h-3 w-2/3 rounded-md animate-shimmer" />
+          <div className="h-3 w-1/2 rounded-md animate-shimmer" />
+        </div>
+      </div>
+    );
+  }
+  const { pledges, companies, onOpenList } = props;
   return (
     <button
       onClick={onOpenList}

@@ -70,7 +70,7 @@ export function LogoWall({ pledges }: Props) {
       {showBack && (
         <button
           onClick={() => setPage((p) => Math.max(0, p - 1))}
-          className="bg-card border border-[color:var(--deep-purple)]/15 rounded-xl h-24 flex items-center justify-center p-4 hover:border-[color:var(--deep-purple)] hover:bg-[color:var(--white-purple)] transition-colors group"
+          className="bg-[color:var(--warm-tan)] rounded-xl h-24 flex items-center justify-center p-4 hover:brightness-95 transition group"
           aria-label="Previous page of logos"
         >
           <ChevronLeft className="h-6 w-6 text-[color:var(--deep-purple)] group-hover:-translate-x-0.5 transition-transform" />
@@ -93,7 +93,7 @@ export function LogoWall({ pledges }: Props) {
       {showNext && (
         <button
           onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
-          className="bg-card border border-[color:var(--deep-purple)]/15 rounded-xl h-24 flex items-center justify-center p-4 hover:border-[color:var(--deep-purple)] hover:bg-[color:var(--white-purple)] transition-colors group"
+          className="bg-[color:var(--warm-tan)] rounded-xl h-24 flex items-center justify-center p-4 hover:brightness-95 transition group"
           aria-label="Next page of logos"
         >
           <ChevronRight className="h-6 w-6 text-[color:var(--deep-purple)] group-hover:translate-x-0.5 transition-transform" />
@@ -102,7 +102,7 @@ export function LogoWall({ pledges }: Props) {
       {Array.from({
         length: PAGE_SIZE - pages[safePage].length - (showBack ? 1 : 0) - (showNext ? 1 : 0),
       }).map((_, i) => (
-        <div key={`empty-${i}`} aria-hidden="true" className="h-24 rounded-xl bg-[color:var(--off-white)]" />
+        <div key={`empty-${i}`} aria-hidden="true" className="h-24 rounded-xl bg-[color:var(--warm-tan)]" />
       ))}
     </section>
   );

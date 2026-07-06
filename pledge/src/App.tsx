@@ -46,7 +46,7 @@ export default function App() {
                     />
                   )}
                   {(state.local.kind === "fresh" || state.local.kind === "submitting") && (
-                    <div className="flex flex-col items-start gap-4">
+                    <div className="flex items-center gap-6">
                       <Button
                         size="lg"
                         onClick={() => setFormOpen(true)}
@@ -68,12 +68,15 @@ export default function App() {
 
               <aside className="lg:col-span-5 lg:sticky lg:self-start space-y-6" style={{ top: 88 + 24 }}>
                 <LogoWall pledges={pledges} />
-                <PledgeCounterPill
-                  pledges={pledges.length}
-                  companies={companyCount}
-                  visible={!state.listHidden && state.list !== null}
-                  onOpenList={() => setListOpen(true)}
-                />
+                {state.list === null ? (
+                  <PledgeCounterPill loading />
+                ) : !state.listHidden ? (
+                  <PledgeCounterPill
+                    pledges={pledges.length}
+                    companies={companyCount}
+                    onOpenList={() => setListOpen(true)}
+                  />
+                ) : null}
               </aside>
             </div>
           </div>
