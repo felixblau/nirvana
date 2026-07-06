@@ -22,34 +22,38 @@ const STATS: Array<{ figure: string; heading: string; body: string }> = [
 export function WhyItMatters() {
   return (
     <section className="space-y-10">
-      <header className="space-y-3 max-w-2xl">
+      <header className="space-y-4 max-w-2xl">
         <div className="inline-block rounded-full border border-[color:var(--deep-purple)]/15 bg-card px-4 py-1.5">
           <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[color:var(--deep-purple)]">
             Why this matters
           </span>
         </div>
         <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground leading-[1.1]">
-          Patients deserve to know what they're paying for — before they book.
+          This is commitment to a better patient experience.
         </h2>
         <p className="text-base text-[color:var(--deep-purple)]/70">
           Healthcare should feel like care. Yet millions of patients face surprise bills, coverage confusion, and administrative barriers that push them away from the treatment they need. This pledge is a public commitment to change that.
         </p>
       </header>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <ul className="space-y-4">
         {STATS.map((s) => (
-          <article
+          <li
             key={s.heading}
-            className="bg-card border border-[color:var(--deep-purple)]/10 rounded-2xl p-6 space-y-3"
+            className="bg-card border border-[color:var(--deep-purple)]/10 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row md:items-start md:gap-8"
           >
-            <div className="text-3xl md:text-4xl font-semibold text-[color:var(--deep-purple)] tracking-tight">
+            <div className="md:w-48 md:flex-shrink-0 text-3xl md:text-4xl font-semibold text-[color:var(--deep-purple)] tracking-tight mb-3 md:mb-0">
               {s.figure}
             </div>
-            <div className="text-sm font-semibold text-foreground">{s.heading}</div>
-            <p className="text-sm text-[color:var(--deep-purple)]/70 leading-relaxed">{s.body}</p>
-          </article>
+            <div className="space-y-2 md:pt-1">
+              <div className="text-base font-semibold text-foreground">{s.heading}</div>
+              <p className="text-sm text-[color:var(--deep-purple)]/70 leading-relaxed">
+                {s.body}
+              </p>
+            </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }

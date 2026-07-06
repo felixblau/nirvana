@@ -38,7 +38,8 @@ export default function App() {
             style={{ maxHeight: `calc(100vh - ${HEADER_HEIGHT}px)` }}
           >
             <div className="max-w-2xl mx-auto px-6 lg:px-10 py-16 md:py-20 space-y-24">
-              <Hero>
+              <div className="flex flex-col justify-center" style={{ minHeight: 500 }}>
+                <Hero>
                 {state.local.kind === "pending" && (
                   <PendingCard
                     firstName={state.local.firstName}
@@ -72,13 +73,14 @@ export default function App() {
                   </div>
                 )}
               </Hero>
+              </div>
               <WhyItMatters />
             </div>
             <SiteFooter />
           </main>
 
           <aside
-            className="lg:col-span-5 lg:overflow-y-auto border-l border-[color:var(--deep-purple)]/10"
+            className="lg:col-span-5 lg:overflow-y-auto bg-[color:var(--warm-taupe)]"
             style={{ maxHeight: `calc(100vh - ${HEADER_HEIGHT}px)` }}
           >
             <div className="px-6 lg:px-10 py-10 space-y-6">

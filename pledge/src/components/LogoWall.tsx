@@ -8,23 +8,15 @@ const PLACEHOLDER_LOGOS: string[] = Array.from({ length: 30 }, (_, i) =>
   `${BASE}logos/logo-${String(i + 1).padStart(2, "0")}.svg`
 );
 
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 12;
 
 type LogoTile = { key: string; src: string; label: string };
 
 function paginate<T>(items: T[]): T[][] {
   if (items.length === 0) return [[]];
   const pages: T[][] = [];
-  let i = 0;
-  while (i < items.length) {
-    const isFirstPage = pages.length === 0;
-    const remaining = items.length - i;
-    const backSlot = isFirstPage ? 0 : 1;
-    const willFit = remaining <= PAGE_SIZE - backSlot;
-    const nextSlot = willFit ? 0 : 1;
-    const capacity = PAGE_SIZE - backSlot - nextSlot;
-    pages.push(items.slice(i, i + capacity));
-    i += capacity;
+  for (let i = 0; i < items.length; i += PAGE_SIZE) {
+    pages.push(items.slice(i, i + PAGE_SIZE));
   }
   return pages;
 }
@@ -62,48 +54,57 @@ export function LogoWall({ pledges }: Props) {
   const pages = useMemo(() => paginate(tiles), [tiles]);
   const safePage = Math.min(page, pages.length - 1);
   const totalPages = pages.length;
-  const showBack = safePage > 0;
-  const showNext = safePage < totalPages - 1;
+
+  const goBack = () => setPage((p) => (p - 1 + totalPages) % totalPages);
+  const goNext = () => setPage((p) => (p + 1) % totalPages);
+
+  const visible = pages[safePage];
+  const fillerCount = PAGE_SIZE - visible.length;
 
   return (
-    <section aria-label="Signatory logos" className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-      {showBack && (
-        <button
-          onClick={() => setPage((p) => Math.max(0, p - 1))}
-          className="bg-[color:var(--warm-tan)] rounded-xl h-24 flex items-center justify-center p-4 hover:brightness-95 transition group"
-          aria-label="Previous page of logos"
-        >
-          <ChevronLeft className="h-6 w-6 text-[color:var(--deep-purple)] group-hover:-translate-x-0.5 transition-transform" />
-        </button>
-      )}
-      {pages[safePage].map((tile) => (
-        <div
-          key={tile.key}
-          className="bg-card border border-[color:var(--deep-purple)]/10 rounded-xl h-24 flex items-center justify-center p-6"
-          title={tile.label}
-        >
-          <img
-            src={tile.src}
-            alt={tile.label}
-            className="max-h-8 max-w-full opacity-80 object-contain"
-            loading="lazy"
+    <div className="space-y-4">
+      <section aria-label="Signatory logos" className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        {visible.map((tile) => (
+          <div
+            key={tile.key}
+            className="bg-card border border-[color:var(--deep-purple)]/10 rounded-xl h-24 flex items-center justify-center p-6"
+            title={tile.label}
+          >
+            <img
+              src={tile.src}
+              alt={tile.label}
+              className="max-h-8 max-w-full opacity-80 object-contain"
+              loading="lazy"
+            />
+          </div>
+        ))}
+        {Array.from({ length: fillerCount }).map((_, i) => (
+          <div
+            key={`empty-${i}`}
+            aria-hidden="true"
+            className="h-24 rounded-xl bg-white/10"
           />
+        ))}
+      </section>
+
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-3">
+          <button
+            onClick={goBack}
+            className="w-10 h-10 rounded-lg border border-[color:var(--deep-purple)]/30 bg-white/10 flex items-center justify-center hover:border-[color:var(--deep-purple)] hover:bg-white/20 transition-colors group"
+            aria-label="Previous page of logos"
+          >
+            <ChevronLeft className="h-5 w-5 text-[color:var(--deep-purple)] group-hover:-translate-x-0.5 transition-transform" />
+          </button>
+          <button
+            onClick={goNext}
+            className="w-10 h-10 rounded-lg border border-[color:var(--deep-purple)]/30 bg-white/10 flex items-center justify-center hover:border-[color:var(--deep-purple)] hover:bg-white/20 transition-colors group"
+            aria-label="Next page of logos"
+          >
+            <ChevronRight className="h-5 w-5 text-[color:var(--deep-purple)] group-hover:translate-x-0.5 transition-transform" />
+          </button>
         </div>
-      ))}
-      {showNext && (
-        <button
-          onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
-          className="bg-[color:var(--warm-tan)] rounded-xl h-24 flex items-center justify-center p-4 hover:brightness-95 transition group"
-          aria-label="Next page of logos"
-        >
-          <ChevronRight className="h-6 w-6 text-[color:var(--deep-purple)] group-hover:translate-x-0.5 transition-transform" />
-        </button>
       )}
-      {Array.from({
-        length: PAGE_SIZE - pages[safePage].length - (showBack ? 1 : 0) - (showNext ? 1 : 0),
-      }).map((_, i) => (
-        <div key={`empty-${i}`} aria-hidden="true" className="h-24 rounded-xl bg-[color:var(--warm-tan)]" />
-      ))}
-    </section>
+    </div>
   );
 }
