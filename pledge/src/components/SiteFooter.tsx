@@ -1,5 +1,3 @@
-import { Circle } from "lucide-react";
-
 const COLUMNS: Array<{ heading: string; items: string[] }> = [
   { heading: "Solutions", items: ["Platform overview", "Insurance Discovery", "Cost Estimates", "Enhanced Verification"] },
   { heading: "Who We Serve", items: ["Healthcare Providers", "Digital Health Partners", "EHR Partners"] },
@@ -18,11 +16,19 @@ export function SiteFooter() {
               <img src="/nirvana-logo.svg" alt="Nirvana" className="h-4 invert" />
             </div>
             <div className="flex gap-3">
-              <span className="w-9 h-9 rounded-full bg-[color:var(--lilac)]/20 flex items-center justify-center cursor-default">
-                <Circle className="h-4 w-4 text-[color:var(--lilac)] fill-current" />
+              <span className="w-9 h-9 rounded-full bg-[color:var(--lilac)]/20 flex items-center justify-center cursor-default" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" className="h-4 w-4 text-[color:var(--lilac)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                </svg>
               </span>
-              <span className="w-9 h-9 rounded-full bg-[color:var(--lilac)]/20 flex items-center justify-center cursor-default">
-                <Circle className="h-4 w-4 text-[color:var(--lilac)] fill-current" />
+              <span className="w-9 h-9 rounded-full bg-[color:var(--lilac)]/20 flex items-center justify-center cursor-default" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" className="h-4 w-4 text-[color:var(--lilac)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
               </span>
             </div>
           </div>
