@@ -10,19 +10,21 @@ import { PledgeListModal } from "@/components/PledgeListModal";
 import { PledgeFormDialog } from "@/components/PledgeFormDialog";
 import { PendingCard } from "@/components/PendingCard";
 import { ApprovedCard } from "@/components/ApprovedCard";
+import { LookupSheet } from "@/components/LookupSheet";
 import { usePledgeState } from "@/hooks/usePledgeState";
 
 export default function App() {
   const state = usePledgeState();
   const [formOpen, setFormOpen] = useState(false);
   const [listOpen, setListOpen] = useState(false);
+  const [lookupOpen, setLookupOpen] = useState(false);
 
   const pledges = state.list ?? [];
-  const companies = new Set(pledges.map((p) => p.company)).size;
+  const companyCount = new Set(pledges.map((p) => p.company)).size;
 
   return (
     <PasswordGate>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-background">
         <SiteHeader />
         <main className="flex-1">
           <Hero>
@@ -41,20 +43,28 @@ export default function App() {
               />
             )}
             {(state.local.kind === "fresh" || state.local.kind === "submitting") && (
-              <Button
-                size="lg"
-                onClick={() => setFormOpen(true)}
-                disabled={state.local.kind === "submitting"}
-                className="rounded-full px-8 py-6 text-base font-semibold"
-              >
-                Sign the pledge
-              </Button>
+              <div className="flex flex-col items-center gap-4">
+                <Button
+                  size="lg"
+                  onClick={() => setFormOpen(true)}
+                  disabled={state.local.kind === "submitting"}
+                  className="rounded-full px-8 py-6 text-base font-semibold"
+                >
+                  Sign the pledge
+                </Button>
+                <button
+                  onClick={() => setLookupOpen(true)}
+                  className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
+                >
+                  Already pledged?
+                </button>
+              </div>
             )}
           </Hero>
           <LogoCarousel />
           <PledgeCounterPill
             pledges={pledges.length}
-            companies={companies}
+            companies={companyCount}
             visible={!state.listHidden && pledges.length > 0}
             onOpenList={() => setListOpen(true)}
           />
@@ -72,6 +82,11 @@ export default function App() {
           }}
         />
         <PledgeListModal open={listOpen} onOpenChange={setListOpen} pledges={pledges} />
+        <LookupSheet
+          open={lookupOpen}
+          onOpenChange={setLookupOpen}
+          onLookup={state.lookupByEmail}
+        />
       </div>
     </PasswordGate>
   );
