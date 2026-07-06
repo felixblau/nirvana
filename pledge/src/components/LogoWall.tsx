@@ -4,42 +4,49 @@ import type { PublicPledge } from "@/types";
 
 const BASE = import.meta.env.BASE_URL;
 
-type Tile = { src: string; label: string };
+type Tile = {
+  src: string;
+  label: string;
+  /** Rendered height in px within the 200x102 tile (per Figma spec). */
+  h: number;
+  /** Optional vertical nudge in px for optical centering. */
+  offsetY?: number;
+};
 
 const PAGE_1: Tile[] = [
-  { src: "optum.png", label: "Optum" },
-  { src: "amazon.png", label: "Amazon" },
-  { src: "simple-practice.png", label: "SimplePractice" },
-  { src: "transformations-care-network.png", label: "Transformations Care Network" },
-  { src: "alma.png", label: "Alma" },
-  { src: "sondermind.png", label: "SonderMind" },
-  { src: "resmed.png", label: "ResMed" },
-  { src: "pomelo-care.png", label: "Pomelo Care" },
-  { src: "weight-watchers.png", label: "WeightWatchers" },
-  { src: "eleanor-health.png", label: "Eleanor Health" },
-  { src: "sol-mental-health.png", label: "Sol Mental Health" },
-  { src: "midwest-express-clinic.png", label: "Midwest Express Clinic" },
-  { src: "lifemd.png", label: "LifeMD" },
-  { src: "osmind.png", label: "Osmind" },
-  { src: "radiology-partners.png", label: "Radiology Partners" },
+  { src: "optum.png", label: "Optum", h: 42 },
+  { src: "amazon.png", label: "Amazon", h: 32, offsetY: 8 },
+  { src: "simple-practice.png", label: "SimplePractice", h: 37 },
+  { src: "transformations-care-network.png", label: "Transformations Care Network", h: 42 },
+  { src: "alma.png", label: "Alma", h: 60 },
+  { src: "sondermind.png", label: "SonderMind", h: 32 },
+  { src: "resmed.png", label: "ResMed", h: 60 },
+  { src: "pomelo-care.png", label: "Pomelo Care", h: 40 },
+  { src: "weight-watchers.png", label: "WeightWatchers", h: 60 },
+  { src: "eleanor-health.png", label: "Eleanor Health", h: 32 },
+  { src: "sol-mental-health.png", label: "Sol Mental Health", h: 55 },
+  { src: "midwest-express-clinic.png", label: "Midwest Express Clinic", h: 44 },
+  { src: "lifemd.png", label: "LifeMD", h: 60 },
+  { src: "osmind.png", label: "Osmind", h: 32 },
+  { src: "radiology-partners.png", label: "Radiology Partners", h: 32 },
 ];
 
 const PAGE_2: Tile[] = [
-  { src: "headlight.png", label: "Headlight" },
-  { src: "clear.png", label: "CLEAR" },
-  { src: "octave.png", label: "Octave" },
-  { src: "headspace.png", label: "Headspace" },
-  { src: "fastpace-health.png", label: "Fastpace Health" },
-  { src: "brave-health.png", label: "Brave Health" },
-  { src: "happier-living.png", label: "Happier Living" },
-  { src: "geode.png", label: "Geode" },
-  { src: "modern.png", label: "Modern" },
-  { src: "cerebral.png", label: "Cerebral" },
-  { src: "grow-therapy.png", label: "Grow Therapy" },
-  { src: "thriveworks.png", label: "Thriveworks" },
-  { src: "doctronic.png", label: "Doctronic" },
-  { src: "lifestance.png", label: "LifeStance" },
-  { src: "nocd.png", label: "NOCD" },
+  { src: "headlight.png", label: "Headlight", h: 24 },
+  { src: "clear.png", label: "CLEAR", h: 32 },
+  { src: "octave.png", label: "Octave", h: 48 },
+  { src: "headspace.png", label: "Headspace", h: 40 },
+  { src: "fastpace-health.png", label: "Fastpace Health", h: 32 },
+  { src: "brave-health.png", label: "Brave Health", h: 24 },
+  { src: "happier-living.png", label: "Happier Living", h: 32 },
+  { src: "geode.png", label: "Geode", h: 24 },
+  { src: "modern.png", label: "Modern", h: 24 },
+  { src: "cerebral.png", label: "Cerebral", h: 24 },
+  { src: "grow-therapy.png", label: "Grow Therapy", h: 28 },
+  { src: "thriveworks.png", label: "Thriveworks", h: 40 },
+  { src: "doctronic.png", label: "Doctronic", h: 36 },
+  { src: "lifestance.png", label: "LifeStance", h: 37 },
+  { src: "nocd.png", label: "NOCD", h: 40 },
 ];
 
 const AUTOPLAY_MS = 15_000;
@@ -51,7 +58,7 @@ function tilesFromPledges(pledges: PublicPledge[]): Tile[] | null {
     if (!p.logoUrl) continue;
     if (seen.has(p.company)) continue;
     seen.add(p.company);
-    tiles.push({ src: p.logoUrl, label: p.company });
+    tiles.push({ src: p.logoUrl, label: p.company, h: 40 });
   }
   return tiles.length > 0 ? tiles : null;
 }
@@ -125,7 +132,12 @@ export function LogoWall({ pledges }: Props) {
               src={tile.src.startsWith("http") ? tile.src : `${BASE}logos/${tile.src}`}
               alt={tile.label}
               className="object-contain"
-              style={{ maxWidth: "100%", maxHeight: "100%" }}
+              style={{
+                height: `${tile.h}px`,
+                maxWidth: "100%",
+                width: "auto",
+                transform: tile.offsetY ? `translateY(${tile.offsetY}px)` : undefined,
+              }}
               loading="lazy"
             />
           </div>
