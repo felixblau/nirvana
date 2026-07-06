@@ -81,6 +81,17 @@ export function LogoWall({ pledges }: Props) {
   const safePage = Math.min(page, pages.length - 1);
   const totalPages = pages.length;
 
+  // Preload every logo image once so page flips are instant (no lazy pop-in).
+  useEffect(() => {
+    const all = pages.flat();
+    for (const tile of all) {
+      const src = tile.src.startsWith("http") ? tile.src : `${BASE}logos/${tile.src}`;
+      const img = new Image();
+      img.decoding = "async";
+      img.src = src;
+    }
+  }, [pages]);
+
   const [progress, setProgress] = useState(0);
   const [playing, setPlaying] = useState(true);
   const startedAtRef = useRef<number>(performance.now());
@@ -123,7 +134,7 @@ export function LogoWall({ pledges }: Props) {
       >
         {visible.map((tile, i) => (
           <div
-            key={`${safePage}-${i}-${tile.src}`}
+            key={`slot-${i}`}
             className="bg-white rounded-lg flex items-center justify-center overflow-hidden"
             style={{ aspectRatio: "200.485 / 102.4", padding: 16 }}
             title={tile.label}
@@ -138,7 +149,7 @@ export function LogoWall({ pledges }: Props) {
                 width: "auto",
                 transform: tile.offsetY ? `translateY(${tile.offsetY}px)` : undefined,
               }}
-              loading="lazy"
+              decoding="async"
             />
           </div>
         ))}

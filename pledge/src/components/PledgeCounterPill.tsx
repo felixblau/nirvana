@@ -38,7 +38,7 @@ export function PledgeCounterPill(props: Props) {
         <span className="font-bold">{companies} companies</span>
       </span>
       <span
-        className="flex items-baseline gap-2 flex-shrink-0 text-[18px] whitespace-nowrap"
+        className="flex items-center gap-2 flex-shrink-0 text-[18px] whitespace-nowrap"
         style={{ color: "#9073F2", lineHeight: "24px" }}
       >
         <span className="font-semibold" style={{ letterSpacing: "-0.36px" }}>View list</span>
