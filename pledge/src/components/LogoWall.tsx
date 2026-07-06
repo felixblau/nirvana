@@ -81,19 +81,9 @@ export function LogoWall({ pledges }: Props) {
   const safePage = Math.min(page, pages.length - 1);
   const totalPages = pages.length;
 
-  // Preload every logo image once so page flips are instant (no lazy pop-in).
-  useEffect(() => {
-    const all = pages.flat();
-    for (const tile of all) {
-      const src = tile.src.startsWith("http") ? tile.src : `${BASE}logos/${tile.src}`;
-      const img = new Image();
-      img.decoding = "async";
-      img.src = src;
-    }
-  }, [pages]);
 
   const [progress, setProgress] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false);
   const startedAtRef = useRef<number>(performance.now());
   useEffect(() => {
     if (totalPages < 2 || !playing) return;
@@ -124,36 +114,47 @@ export function LogoWall({ pledges }: Props) {
   const goNext = () => { setPage((p) => (p + 1) % totalPages); resetTimer(); };
   const togglePlay = () => setPlaying((p) => !p);
 
-  const visible = pages[safePage];
-
   return (
     <div className="flex flex-col items-center gap-4 w-full">
-      <section
-        aria-label="Signatory logos"
-        className="grid grid-cols-3 gap-2 w-full"
-      >
-        {visible.map((tile, i) => (
-          <div
-            key={`slot-${i}`}
-            className="bg-white rounded-lg flex items-center justify-center overflow-hidden"
-            style={{ aspectRatio: "200.485 / 102.4", padding: 16 }}
-            title={tile.label}
+      {/* Stack all pages absolutely; only the active one is visible. Every image
+          stays in the DOM after first paint so page flips have no fetch flash. */}
+      <div className="relative w-full" style={{ aspectRatio: "617.455 / 544" }}>
+        {pages.map((tiles, pi) => (
+          <section
+            key={`page-${pi}`}
+            aria-label="Signatory logos"
+            aria-hidden={pi !== safePage}
+            className="absolute inset-0 grid grid-cols-3 gap-2"
+            style={{
+              opacity: pi === safePage ? 1 : 0,
+              pointerEvents: pi === safePage ? "auto" : "none",
+              transition: "opacity 200ms ease-out",
+            }}
           >
-            <img
-              src={tile.src.startsWith("http") ? tile.src : `${BASE}logos/${tile.src}`}
-              alt={tile.label}
-              className="object-contain"
-              style={{
-                height: `${tile.h}px`,
-                maxWidth: "100%",
-                width: "auto",
-                transform: tile.offsetY ? `translateY(${tile.offsetY}px)` : undefined,
-              }}
-              decoding="async"
-            />
-          </div>
+            {tiles.map((tile, i) => (
+              <div
+                key={`p${pi}-slot-${i}`}
+                className="bg-white rounded-lg flex items-center justify-center overflow-hidden"
+                style={{ aspectRatio: "200.485 / 102.4", padding: 16 }}
+                title={tile.label}
+              >
+                <img
+                  src={tile.src.startsWith("http") ? tile.src : `${BASE}logos/${tile.src}`}
+                  alt={tile.label}
+                  className="object-contain"
+                  style={{
+                    height: `${tile.h}px`,
+                    maxWidth: "100%",
+                    width: "auto",
+                    transform: tile.offsetY ? `translateY(${tile.offsetY}px)` : undefined,
+                  }}
+                  decoding="async"
+                />
+              </div>
+            ))}
+          </section>
         ))}
-      </section>
+      </div>
 
       {totalPages > 1 && (
         <TimerPill
