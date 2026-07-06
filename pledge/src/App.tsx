@@ -7,18 +7,15 @@ import { LogoCarousel } from "@/components/LogoCarousel";
 import { PledgeCounterPill } from "@/components/PledgeCounterPill";
 import { PledgeListModal } from "@/components/PledgeListModal";
 import { PledgeFormDialog } from "@/components/PledgeFormDialog";
-import type { PublicPledge } from "@/types";
-
-const MOCK: PublicPledge[] = [
-  { company: "Acme Health", firstName: "Jane", lastInitial: "D", role: "CFO" },
-  { company: "Acme Health", firstName: "Marcus", lastInitial: "P", role: "COO" },
-  { company: "Better Care", firstName: "Mike", lastInitial: "R", role: "VP Revenue" },
-  { company: "Clarity Med", firstName: "Sam", lastInitial: "L", role: "CEO" },
-];
+import { usePledgeState } from "@/hooks/usePledgeState";
 
 export default function App() {
-  const [listOpen, setListOpen] = useState(false);
+  const state = usePledgeState();
   const [formOpen, setFormOpen] = useState(false);
+  const [listOpen, setListOpen] = useState(false);
+
+  const pledges = state.list ?? [];
+  const companies = new Set(pledges.map((p) => p.company)).size;
 
   return (
     <PasswordGate>
@@ -28,24 +25,25 @@ export default function App() {
           <Hero onSignClick={() => setFormOpen(true)} />
           <LogoCarousel />
           <PledgeCounterPill
-            pledges={MOCK.length}
-            companies={new Set(MOCK.map((p) => p.company)).size}
-            visible={true}
+            pledges={pledges.length}
+            companies={companies}
+            visible={!state.listHidden && pledges.length > 0}
             onOpenList={() => setListOpen(true)}
           />
         </main>
         <SiteFooter />
-        <PledgeListModal open={listOpen} onOpenChange={setListOpen} pledges={MOCK} />
+
         <PledgeFormDialog
           open={formOpen}
           onOpenChange={setFormOpen}
-          submitting={false}
-          submitError={null}
+          submitting={state.local.kind === "submitting"}
+          submitError={state.submitError}
           onSubmit={async (data) => {
-            console.log("submit", data);
+            await state.submit(data);
             setFormOpen(false);
           }}
         />
+        <PledgeListModal open={listOpen} onOpenChange={setListOpen} pledges={pledges} />
       </div>
     </PasswordGate>
   );
