@@ -3,9 +3,10 @@ import { ChevronDown } from "lucide-react";
 const BASE = import.meta.env.BASE_URL;
 
 const NAV: Array<{ label: string; hasChevron?: boolean }> = [
-  { label: "Enterprise", hasChevron: true },
+  { label: "Solutions", hasChevron: true },
+  { label: "Who We Serve", hasChevron: true },
+  { label: "Why Nirvana", hasChevron: true },
   { label: "Resources", hasChevron: true },
-  { label: "Private Practice" },
 ];
 
 export function SiteHeader() {
