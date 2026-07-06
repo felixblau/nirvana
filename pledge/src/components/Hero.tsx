@@ -6,8 +6,11 @@ type HeroProps = { children?: ReactNode; onSignClick?: () => void };
 export function Hero({ children, onSignClick }: HeroProps) {
   return (
     <div className="animate-fade-in space-y-8">
-      <div className="inline-block rounded-full border border-[color:var(--deep-purple)]/15 bg-card px-4 py-1.5">
-        <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[color:var(--deep-purple)]">
+      <div className="inline-block rounded-full border border-[color:var(--warm-tan)] bg-white px-4 py-2">
+        <span
+          className="uppercase text-[color:var(--deep-purple)]"
+          style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.25 }}
+        >
           The Price Transparency Pledge
         </span>
       </div>
