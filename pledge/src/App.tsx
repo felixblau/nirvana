@@ -6,6 +6,7 @@ import { Hero } from "@/components/Hero";
 import { LogoCarousel } from "@/components/LogoCarousel";
 import { PledgeCounterPill } from "@/components/PledgeCounterPill";
 import { PledgeListModal } from "@/components/PledgeListModal";
+import { PledgeFormDialog } from "@/components/PledgeFormDialog";
 import type { PublicPledge } from "@/types";
 
 const MOCK: PublicPledge[] = [
@@ -17,13 +18,14 @@ const MOCK: PublicPledge[] = [
 
 export default function App() {
   const [listOpen, setListOpen] = useState(false);
+  const [formOpen, setFormOpen] = useState(false);
 
   return (
     <PasswordGate>
       <div className="min-h-screen flex flex-col">
         <SiteHeader />
         <main className="flex-1">
-          <Hero onSignClick={() => console.log("sign clicked")} />
+          <Hero onSignClick={() => setFormOpen(true)} />
           <LogoCarousel />
           <PledgeCounterPill
             pledges={MOCK.length}
@@ -34,6 +36,16 @@ export default function App() {
         </main>
         <SiteFooter />
         <PledgeListModal open={listOpen} onOpenChange={setListOpen} pledges={MOCK} />
+        <PledgeFormDialog
+          open={formOpen}
+          onOpenChange={setFormOpen}
+          submitting={false}
+          submitError={null}
+          onSubmit={async (data) => {
+            console.log("submit", data);
+            setFormOpen(false);
+          }}
+        />
       </div>
     </PasswordGate>
   );
