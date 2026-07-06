@@ -10,8 +10,8 @@ export function SiteHeader() {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         <div className="flex items-center gap-2 select-none">
-          <img src="/nirvana-glyph.svg" alt="" className="h-7 w-7" onError={(e) => (e.currentTarget.src = "/nirvana-glyph.png")} />
-          <img src="/nirvana-logo.svg" alt="Nirvana" className="h-4 invert" />
+          <img src={`${import.meta.env.BASE_URL}nirvana-glyph.svg`} alt="" className="h-7 w-7" onError={(e) => (e.currentTarget.src = `${import.meta.env.BASE_URL}nirvana-glyph.png`)} />
+          <img src={`${import.meta.env.BASE_URL}nirvana-logo.svg`} alt="Nirvana" className="h-4 invert" />
         </div>
         <nav className="hidden md:flex items-center gap-8 select-none">
           {NAV.map((label) => (

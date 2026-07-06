@@ -34,7 +34,7 @@ export function PasswordGate({ children }: { children: ReactNode }) {
         onSubmit={handleSubmit}
         className="w-full max-w-sm bg-card border border-border rounded-xl p-8 space-y-6 animate-fade-in"
       >
-        <img src="/nirvana-logo.svg" alt="Nirvana" className="h-4 opacity-70" />
+        <img src={`${import.meta.env.BASE_URL}nirvana-logo.svg`} alt="Nirvana" className="h-4 opacity-70" />
         <div className="space-y-2">
           <p className="text-sm text-muted-foreground">This page is private.</p>
           <Input

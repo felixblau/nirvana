@@ -12,8 +12,8 @@ export function SiteFooter() {
         <div className="grid grid-cols-1 md:grid-cols-6 gap-10 mb-16">
           <div className="md:col-span-2 space-y-6">
             <div className="flex items-center gap-2">
-              <img src="/nirvana-glyph.svg" alt="" className="h-7 w-7" onError={(e) => (e.currentTarget.src = "/nirvana-glyph.png")} />
-              <img src="/nirvana-logo.svg" alt="Nirvana" className="h-4 invert" />
+              <img src={`${import.meta.env.BASE_URL}nirvana-glyph.svg`} alt="" className="h-7 w-7" onError={(e) => (e.currentTarget.src = `${import.meta.env.BASE_URL}nirvana-glyph.png`)} />
+              <img src={`${import.meta.env.BASE_URL}nirvana-logo.svg`} alt="Nirvana" className="h-4 invert" />
             </div>
             <div className="flex gap-3">
               <span className="w-9 h-9 rounded-full bg-[color:var(--lilac)]/20 flex items-center justify-center cursor-default" aria-label="Instagram">

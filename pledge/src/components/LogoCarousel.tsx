@@ -1,10 +1,11 @@
+const BASE = import.meta.env.BASE_URL;
 const LOGOS = [
-  "/logos/placeholder-1.svg",
-  "/logos/placeholder-2.svg",
-  "/logos/placeholder-3.svg",
-  "/logos/placeholder-4.svg",
-  "/logos/placeholder-5.svg",
-  "/logos/placeholder-6.svg",
+  `${BASE}logos/placeholder-1.svg`,
+  `${BASE}logos/placeholder-2.svg`,
+  `${BASE}logos/placeholder-3.svg`,
+  `${BASE}logos/placeholder-4.svg`,
+  `${BASE}logos/placeholder-5.svg`,
+  `${BASE}logos/placeholder-6.svg`,
 ];
 
 export function LogoCarousel() {
