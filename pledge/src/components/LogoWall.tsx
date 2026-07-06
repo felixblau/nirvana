@@ -91,10 +91,11 @@ export function LogoWall({ pledges }: Props) {
       const now = performance.now();
       const elapsed = now - startedAtRef.current;
       const p = Math.min(1, elapsed / AUTOPLAY_MS);
-      setProgress(p);
       if (p >= 1) {
+        setProgress(0);
         setPage((prev) => (prev + 1) % totalPages);
       } else {
+        setProgress(p);
         raf = requestAnimationFrame(tick);
       }
     };
