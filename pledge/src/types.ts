@@ -5,6 +5,7 @@ export type PublicPledge = {
   firstName: string;
   lastInitial: string;
   role: string;
+  logoUrl?: string;
 };
 
 export type PrivatePledge = {

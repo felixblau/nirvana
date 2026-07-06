@@ -10,8 +10,13 @@
 - Row 1 headers (exact order):
 
   ```
-  id  timestamp  firstName  lastName  email  company  role  status  reviewedAt  reviewedBy
+  id  timestamp  firstName  lastName  email  company  role  status  reviewedAt  reviewedBy  logoUrl
   ```
+
+  Column K (`logoUrl`) holds an optional public image URL for the
+  company's logo. When present on an approved row, the site shows it
+  in the logo wall on the right column. If empty, the pledge still
+  appears in the text list but not the logo wall.
 
 ## Deployment
 
@@ -37,14 +42,15 @@
 1. Open the sheet, tab `Pledges`
 2. Filter/sort by `status = pending`
 3. To approve: change the `status` cell for that row to `approved`
-4. Optionally fill `reviewedAt` and `reviewedBy`
-5. To reject: leave as `pending` or set to any non-approved value — the row won't appear in the public list either way
+4. Optionally paste a company logo image URL into column K (`logoUrl`) — that URL is what the site will load into the logo wall. Prefer transparent PNG/SVG; ~160×40 or wider aspect ratios read cleanest.
+5. Optionally fill `reviewedAt` and `reviewedBy`
+6. To reject: leave as `pending` or set to any non-approved value — the row won't appear in the public list either way
 
 ## Endpoints
 
 | Action | Method | Payload | Returns |
 |---|---|---|---|
-| `list` | GET `?action=list` | — | `[{ company, firstName, lastInitial, role }]` (approved-only) |
+| `list` | GET `?action=list` | — | `[{ company, firstName, lastInitial, role, logoUrl }]` (approved-only; `logoUrl` may be empty) |
 | `submit` | POST | `{action:"submit", firstName, lastName, email, company, role}` | fire-and-forget; server dedupes by email |
 | `lookup` | GET (JSONP) `?action=lookup&email=…&callback=…` | — | `{id, status, firstName, company} \| null` |
 | `rescind` | GET (JSONP) `?action=rescind&id=…&email=…&callback=…` | — | `{ok:true} \| {error}` |

@@ -67,7 +67,7 @@ export default function App() {
               </div>
 
               <aside className="lg:col-span-5 lg:sticky lg:top-8 lg:self-start space-y-6">
-                <LogoWall />
+                <LogoWall pledges={pledges} />
                 <PledgeCounterPill
                   pledges={pledges.length}
                   companies={companyCount}

@@ -1,36 +1,69 @@
 import { useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import type { PublicPledge } from "@/types";
 
 const BASE = import.meta.env.BASE_URL;
 
-const LOGOS: string[] = Array.from({ length: 30 }, (_, i) =>
+const PLACEHOLDER_LOGOS: string[] = Array.from({ length: 30 }, (_, i) =>
   `${BASE}logos/logo-${String(i + 1).padStart(2, "0")}.svg`
 );
 
 const PAGE_SIZE = 15;
 
-function paginate(logos: string[]): string[][] {
-  const pages: string[][] = [];
+type LogoTile = { key: string; src: string; label: string };
+
+function paginate<T>(items: T[]): T[][] {
+  if (items.length === 0) return [[]];
+  const pages: T[][] = [];
   let i = 0;
-  while (i < logos.length) {
+  while (i < items.length) {
     const isFirstPage = pages.length === 0;
-    const remaining = logos.length - i;
+    const remaining = items.length - i;
     const backSlot = isFirstPage ? 0 : 1;
     const willFit = remaining <= PAGE_SIZE - backSlot;
     const nextSlot = willFit ? 0 : 1;
     const capacity = PAGE_SIZE - backSlot - nextSlot;
-    pages.push(logos.slice(i, i + capacity));
+    pages.push(items.slice(i, i + capacity));
     i += capacity;
   }
   return pages;
 }
 
-export function LogoWall() {
+function tilesFromPledges(pledges: PublicPledge[]): LogoTile[] {
+  const seen = new Set<string>();
+  const tiles: LogoTile[] = [];
+  for (const p of pledges) {
+    if (!p.logoUrl) continue;
+    if (seen.has(p.company)) continue;
+    seen.add(p.company);
+    tiles.push({ key: `real-${p.company}`, src: p.logoUrl, label: p.company });
+  }
+  return tiles;
+}
+
+function fallbackTiles(): LogoTile[] {
+  return PLACEHOLDER_LOGOS.map((src, i) => ({
+    key: `ph-${i}`,
+    src,
+    label: `Logo ${i + 1}`,
+  }));
+}
+
+type Props = {
+  pledges: PublicPledge[];
+};
+
+export function LogoWall({ pledges }: Props) {
   const [page, setPage] = useState(0);
-  const pages = useMemo(() => paginate(LOGOS), []);
+  const tiles = useMemo(() => {
+    const real = tilesFromPledges(pledges);
+    return real.length > 0 ? real : fallbackTiles();
+  }, [pledges]);
+  const pages = useMemo(() => paginate(tiles), [tiles]);
+  const safePage = Math.min(page, pages.length - 1);
   const totalPages = pages.length;
-  const showBack = page > 0;
-  const showNext = page < totalPages - 1;
+  const showBack = safePage > 0;
+  const showNext = safePage < totalPages - 1;
 
   return (
     <section aria-label="Signatory logos" className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -43,12 +76,18 @@ export function LogoWall() {
           <ChevronLeft className="h-6 w-6 text-[color:var(--deep-purple)] group-hover:-translate-x-0.5 transition-transform" />
         </button>
       )}
-      {pages[page].map((src) => (
+      {pages[safePage].map((tile) => (
         <div
-          key={src}
+          key={tile.key}
           className="bg-card border border-[color:var(--deep-purple)]/10 rounded-xl h-24 flex items-center justify-center p-6"
+          title={tile.label}
         >
-          <img src={src} alt="" className="max-h-8 max-w-full opacity-80" />
+          <img
+            src={tile.src}
+            alt={tile.label}
+            className="max-h-8 max-w-full opacity-80 object-contain"
+            loading="lazy"
+          />
         </div>
       ))}
       {showNext && (

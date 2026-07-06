@@ -62,6 +62,7 @@ function handleList() {
       firstName: r.firstName,
       lastInitial: String(r.lastName || "").charAt(0),
       role: r.role,
+      logoUrl: r.logoUrl || "",
     }));
 }
 
@@ -87,6 +88,7 @@ function handleSubmit(body) {
     body.company || "",
     body.role || "",
     "pending",
+    "",
     "",
     "",
   ]);
