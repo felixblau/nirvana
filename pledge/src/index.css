@@ -1,1 +1,108 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Nirvana canonical palette (from pt-checkin/theme.js) */
+  --deep-purple: #2c1f45;
+  --lilac: #ae9bea;
+  --vibrant-purple: #7447ff;
+  --lilac-light: #e1dff4;
+  --white-purple: #f8f7ff;
+  --off-white: #f3efeb;
+  --green: #1D7A4A;
+  --green-light: #E8F5EE;
+  --amber: #BA7517;
+  --red: #c0392b;
+
+  /* shadcn/tailwind semantic vars mapped to Nirvana palette */
+  --background: var(--off-white);
+  --foreground: var(--deep-purple);
+  --card: #ffffff;
+  --card-foreground: var(--deep-purple);
+  --popover: #ffffff;
+  --popover-foreground: var(--deep-purple);
+  --primary: var(--vibrant-purple);
+  --primary-foreground: #ffffff;
+  --secondary: var(--white-purple);
+  --secondary-foreground: var(--deep-purple);
+  --muted: var(--lilac-light);
+  --muted-foreground: var(--lilac);
+  --accent: var(--lilac-light);
+  --accent-foreground: var(--deep-purple);
+  --destructive: var(--red);
+  --border: var(--lilac-light);
+  --input: var(--lilac-light);
+  --ring: var(--vibrant-purple);
+  --radius: 0.75rem;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@utility animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+@utility animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee { animation: none; }
+  .animate-fade-in { animation: none; }
+}
+
+body {
+  margin: 0;
+  background: var(--off-white);
+  color: var(--deep-purple);
+  font-family: 'PP Mori', 'Geist Variable', 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@theme inline {
+  --font-sans: 'PP Mori', 'Geist Variable', 'Inter', system-ui, sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    font-family: 'PP Mori', 'Geist Variable', 'Inter', system-ui, sans-serif;
+  }
+}
