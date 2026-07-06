@@ -8,7 +8,7 @@ const PLACEHOLDER_LOGOS: string[] = Array.from({ length: 30 }, (_, i) =>
   `${BASE}logos/logo-${String(i + 1).padStart(2, "0")}.svg`
 );
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 15;
 
 type LogoTile = { key: string; src: string; label: string };
 

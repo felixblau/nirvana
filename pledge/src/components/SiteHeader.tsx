@@ -16,12 +16,18 @@ export function SiteHeader() {
       style={{ height: 88 }}
       aria-label="Site navigation (decorative)"
     >
-      <div className="w-full h-full flex items-center justify-between" style={{ paddingLeft: 50, paddingRight: 50 }}>
-        <div className="flex items-center select-none">
+      <div className="w-full h-full flex items-center justify-between" style={{ paddingLeft: 150, paddingRight: 150 }}>
+        <div className="flex items-center gap-2 select-none">
+          <img
+            src={`${BASE}footer-nirvana-logo.svg`}
+            alt=""
+            style={{ height: 24, width: 22 }}
+            aria-hidden="true"
+          />
           <img
             src={`${BASE}nirvana-logo.svg`}
             alt="Nirvana"
-            style={{ height: 24, width: "auto", filter: "brightness(0) invert(1)" }}
+            style={{ height: 18, width: "auto", filter: "brightness(0) invert(1)" }}
           />
         </div>
 
