@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 type Props =
   | { loading: true }
@@ -14,7 +14,7 @@ export function PledgeCounterPill(props: Props) {
     return (
       <div
         aria-hidden="true"
-        className="w-full flex items-center justify-between gap-3 rounded-2xl px-6 py-4 bg-[color:var(--warm-tan)]"
+        className="w-full flex items-center justify-between gap-2 rounded-lg p-4 bg-[color:var(--warm-tan)]"
       >
         <div className="flex-1 space-y-2">
           <div className="h-3 w-2/3 rounded-md animate-shimmer" />
@@ -27,15 +27,22 @@ export function PledgeCounterPill(props: Props) {
   return (
     <button
       onClick={onOpenList}
-      className="group w-full flex items-center justify-between gap-3 bg-card border border-[color:var(--deep-purple)]/15 rounded-2xl px-6 py-4 hover:border-[color:var(--deep-purple)] transition-colors text-left"
+      className="group w-full flex items-center justify-center gap-2 rounded-lg p-4 border border-[color:var(--lilac-light)] text-left"
+      style={{
+        backgroundImage: "linear-gradient(to right, var(--lilac-light), #ffffff)",
+      }}
     >
-      <span className="text-sm md:text-base">
-        <span className="font-semibold text-foreground">{pledges} pledges</span>
-        <span className="text-muted-foreground"> from </span>
-        <span className="font-semibold text-foreground">{companies} companies</span>
+      <span className="flex-1 min-w-0 text-[18px] text-[color:var(--deep-purple)]" style={{ lineHeight: "24px" }}>
+        <span className="font-bold">{pledges} pledges</span>
+        <span> from </span>
+        <span className="font-bold">{companies} companies</span>
       </span>
-      <span className="text-sm text-[color:var(--deep-purple)] font-semibold flex items-center gap-1 flex-shrink-0">
-        View list <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+      <span
+        className="flex items-baseline gap-2 flex-shrink-0 text-[18px] whitespace-nowrap"
+        style={{ color: "#9073F2", lineHeight: "24px" }}
+      >
+        <span className="font-semibold" style={{ letterSpacing: "-0.36px" }}>View list</span>
+        <ChevronRight className="h-5 w-5 group-hover:translate-x-0.5 transition-transform" />
       </span>
     </button>
   );

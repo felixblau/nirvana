@@ -83,8 +83,9 @@ export default function App() {
               {CounterOrSkeleton}
             </section>
 
-            {/* Why This Matters section — same padding */}
+            {/* Why This Matters section — lila-light bg per Figma */}
             <section
+              className="bg-[color:var(--lilac-light)]"
               style={{ paddingTop: 40, paddingBottom: 40, paddingLeft: 80, paddingRight: 80 }}
             >
               <WhyItMatters />

@@ -165,35 +165,12 @@ function TimerPill({
   // Note: the path is 4 arcs+straights split so top-center is index 0.
   // The path length equals the perimeter (halfStraight + arc + straight + arc + halfStraight = 2 straights + 2 arcs).
 
+  const STROKE = 1.5;
+
   return (
     <div className="relative group" style={{ width: W, height: H }}>
-      {/* Base pill fill/outline layer: white border, no timer stroke */}
-      <div
-        className="absolute inset-0 rounded-full border border-white bg-transparent"
-        aria-hidden="true"
-      />
-
-      {/* Timer stroke traced OVER the base border, starting at top-center clockwise */}
-      <svg
-        className="absolute pointer-events-none"
-        width={W}
-        height={H}
-        viewBox={`-1 -1 ${W + 2} ${H + 2}`}
-        aria-hidden="true"
-        style={{ overflow: "visible" }}
-      >
-        <path
-          d={path}
-          fill="none"
-          stroke="#2c1f45"
-          strokeWidth={2}
-          strokeDasharray={perimeter}
-          strokeDashoffset={perimeter * (1 - progress)}
-          strokeLinecap="butt"
-        />
-      </svg>
-
-      <div className="relative w-full h-full flex items-stretch rounded-full overflow-hidden">
+      {/* Buttons layer — clipped inside the pill so hover fill respects the pill shape */}
+      <div className="absolute inset-0 flex items-stretch rounded-full overflow-hidden">
         <button
           onClick={onBack}
           className="flex-1 flex items-center justify-center text-white hover:bg-[color:var(--warm-tan)] transition-colors"
@@ -209,6 +186,29 @@ function TimerPill({
           <ChevronRight className="h-5 w-5" />
         </button>
       </div>
+
+      {/* Border layer — single SVG draws both the white base and the deep-purple timer stroke,
+          so they're the same width and align pixel-for-pixel. */}
+      <svg
+        className="absolute inset-0 pointer-events-none"
+        width={W}
+        height={H}
+        viewBox={`0 0 ${W} ${H}`}
+        aria-hidden="true"
+      >
+        {/* Full white base */}
+        <path d={path} fill="none" stroke="#ffffff" strokeWidth={STROKE} />
+        {/* Deep-purple overlay — same width, dashed by progress */}
+        <path
+          d={path}
+          fill="none"
+          stroke="#2c1f45"
+          strokeWidth={STROKE}
+          strokeDasharray={perimeter}
+          strokeDashoffset={perimeter * (1 - progress)}
+          strokeLinecap="butt"
+        />
+      </svg>
     </div>
   );
 }

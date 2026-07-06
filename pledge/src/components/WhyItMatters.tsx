@@ -1,19 +1,21 @@
-const STATS: Array<{ figure: string; heading: string; body: string }> = [
+const BASE = import.meta.env.BASE_URL;
+
+const CARDS: Array<{ illustration: string; heading: string; body: string }> = [
   {
-    figure: "20–30%",
-    heading: "of coverage data is wrong",
+    illustration: "card-1.png",
+    heading: "20-30% of coverage data is wrong",
     body:
       "Patient and provider records disagree on member IDs, demographics, or active coverage. The result: surprise bills, denials, and appointments that never should have been booked.",
   },
   {
-    figure: "$1B+",
-    heading: "in avoidable patient debt",
+    illustration: "card-2.png",
+    heading: "$1B+ in avoidable patient debt",
     body:
       "When patients don't know what care costs — or whether they're covered — they either delay booking or discover the bill after the fact. Neither outcome serves the patient or the practice.",
   },
   {
-    figure: "0 patients",
-    heading: "should be surprised by a bill",
+    illustration: "card-3.png",
+    heading: "0 patients should be surprised by a bill",
     body:
       "Price transparency isn't a nice-to-have. It's the foundation of a healthcare relationship that patients can actually trust. Signing this pledge is a public commitment to make that the norm, not the exception.",
   },
@@ -21,39 +23,53 @@ const STATS: Array<{ figure: string; heading: string; body: string }> = [
 
 export function WhyItMatters() {
   return (
-    <section className="space-y-10">
-      <header className="space-y-4 max-w-2xl">
-        <div className="inline-block rounded-full border border-[color:var(--deep-purple)]/15 bg-card px-4 py-1.5">
-          <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[color:var(--deep-purple)]">
-            Why this matters
+    <div className="flex flex-col items-start gap-6">
+      <header className="flex flex-col items-start gap-4 w-full">
+        <div className="bg-white border border-[color:var(--warm-tan)] rounded-full px-4 py-2">
+          <span
+            className="text-[14px] font-semibold text-[color:var(--deep-purple)]"
+            style={{ lineHeight: 1.25 }}
+          >
+            WHY THIS MATTERS
           </span>
         </div>
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground leading-[1.1]">
+        <h2
+          className="text-[color:var(--deep-purple)] w-full"
+          style={{ fontWeight: 500, fontSize: 38, lineHeight: 1.25 }}
+        >
           This is commitment to a better patient experience.
         </h2>
-        <p className="text-base text-[color:var(--deep-purple)]/70">
-          Healthcare should feel like care. Yet millions of patients face surprise bills, coverage confusion, and administrative barriers that push them away from the treatment they need. This pledge is a public commitment to change that.
-        </p>
       </header>
 
-      <ul className="space-y-4">
-        {STATS.map((s) => (
-          <li
-            key={s.heading}
-            className="bg-card border border-[color:var(--deep-purple)]/10 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row md:items-start md:gap-8"
-          >
-            <div className="md:w-48 md:flex-shrink-0 text-3xl md:text-4xl font-semibold text-[color:var(--deep-purple)] tracking-tight mb-3 md:mb-0">
-              {s.figure}
-            </div>
-            <div className="space-y-2 md:pt-1">
-              <div className="text-base font-semibold text-foreground">{s.heading}</div>
-              <p className="text-sm text-[color:var(--deep-purple)]/70 leading-relaxed">
-                {s.body}
-              </p>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </section>
+      <p
+        className="text-[color:var(--deep-purple)] w-full opacity-75"
+        style={{ fontSize: 18, lineHeight: 1.5, fontWeight: 400 }}
+      >
+        Healthcare should feel like care. Yet millions of patients face surprise bills,
+        coverage confusion, and administrative barriers that push them away from the treatment
+        they need. This pledge is a public commitment to change that.
+      </p>
+
+      {CARDS.map((card) => (
+        <article
+          key={card.heading}
+          className="bg-white border border-[color:var(--warm-tan)] rounded-2xl p-6 flex items-start gap-6 w-full"
+        >
+          <img
+            src={`${BASE}illustrations/${card.illustration}`}
+            alt=""
+            aria-hidden="true"
+            className="flex-shrink-0"
+            style={{ width: 53.333, height: 53.333 }}
+          />
+          <div className="flex-1 min-w-0 flex flex-col justify-center gap-2 text-[color:var(--deep-purple)]">
+            <div style={{ fontWeight: 500, fontSize: 20, lineHeight: 1.25 }}>{card.heading}</div>
+            <p className="opacity-75" style={{ fontWeight: 400, fontSize: 18, lineHeight: 1.5 }}>
+              {card.body}
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
   );
 }
