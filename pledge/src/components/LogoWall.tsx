@@ -99,6 +99,11 @@ export function LogoWall({ pledges }: Props) {
           <ChevronRight className="h-6 w-6 text-[color:var(--deep-purple)] group-hover:translate-x-0.5 transition-transform" />
         </button>
       )}
+      {Array.from({
+        length: PAGE_SIZE - pages[safePage].length - (showBack ? 1 : 0) - (showNext ? 1 : 0),
+      }).map((_, i) => (
+        <div key={`empty-${i}`} aria-hidden="true" className="h-24 rounded-xl bg-[color:var(--off-white)]" />
+      ))}
     </section>
   );
 }
