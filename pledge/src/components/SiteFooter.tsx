@@ -7,7 +7,7 @@ const COLUMNS: Array<{ heading: string; items: string[] }> = [
 
 export function SiteFooter() {
   return (
-    <footer className="w-full bg-[color:var(--deep-purple)] text-white mt-24">
+    <footer className="w-full bg-[color:var(--deep-purple)] text-white">
       <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-10 mb-16">
           <div className="md:col-span-2 space-y-6">
@@ -46,7 +46,12 @@ export function SiteFooter() {
         </div>
 
         <div className="flex items-end justify-between gap-8 mb-10">
-          <div>
+          <div className="flex items-center gap-4">
+            <img
+              src={`${import.meta.env.BASE_URL}hipaa-badge.png`}
+              alt="HIPAA Compliant"
+              className="h-16 w-auto"
+            />
             <img
               src={`${import.meta.env.BASE_URL}footer-compliance-badges.png`}
               alt="AICPA SOC certified"

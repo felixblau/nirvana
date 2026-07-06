@@ -4,42 +4,42 @@ import type { PublicPledge } from "@/types";
 
 const BASE = import.meta.env.BASE_URL;
 
-type Tile = { src: string; label: string; hPct: number };
+type Tile = { src: string; label: string };
 
 const PAGE_1: Tile[] = [
-  { src: "amazon.png", label: "Amazon", hPct: 32 / 102.4 },
-  { src: "simple-practice.png", label: "SimplePractice", hPct: 36.6 / 102.4 },
-  { src: "transformations-care-network.png", label: "Transformations Care Network", hPct: 42.3 / 102.4 },
-  { src: "alma.png", label: "Alma", hPct: 82.7 / 102.4 },
-  { src: "sondermind.png", label: "SonderMind", hPct: 32 / 102.4 },
-  { src: "resmed.png", label: "ResMed", hPct: 70 / 102.4 },
-  { src: "pomelo-care.png", label: "Pomelo Care", hPct: 48.5 / 102.4 },
-  { src: "weight-watchers.png", label: "WeightWatchers", hPct: 60 / 102.4 },
-  { src: "eleanor-health.png", label: "Eleanor Health", hPct: 32 / 102.4 },
-  { src: "sol-mental-health.png", label: "Sol Mental Health", hPct: 59.4 / 102.4 },
-  { src: "midwest-express-clinic.png", label: "Midwest Express Clinic", hPct: 55 / 102.4 },
-  { src: "lifemd.png", label: "LifeMD", hPct: 67.8 / 102.4 },
-  { src: "osmind.png", label: "Osmind", hPct: 32 / 102.4 },
-  { src: "radiology-partners.png", label: "Radiology Partners", hPct: 32 / 102.4 },
-  { src: "headlight.png", label: "Headlight", hPct: 24 / 102.4 },
+  { src: "optum.png", label: "Optum" },
+  { src: "amazon.png", label: "Amazon" },
+  { src: "simple-practice.png", label: "SimplePractice" },
+  { src: "transformations-care-network.png", label: "Transformations Care Network" },
+  { src: "alma.png", label: "Alma" },
+  { src: "sondermind.png", label: "SonderMind" },
+  { src: "resmed.png", label: "ResMed" },
+  { src: "pomelo-care.png", label: "Pomelo Care" },
+  { src: "weight-watchers.png", label: "WeightWatchers" },
+  { src: "eleanor-health.png", label: "Eleanor Health" },
+  { src: "sol-mental-health.png", label: "Sol Mental Health" },
+  { src: "midwest-express-clinic.png", label: "Midwest Express Clinic" },
+  { src: "lifemd.png", label: "LifeMD" },
+  { src: "osmind.png", label: "Osmind" },
+  { src: "radiology-partners.png", label: "Radiology Partners" },
 ];
 
 const PAGE_2: Tile[] = [
-  { src: "octave.png", label: "Octave", hPct: 48.3 / 102.4 },
-  { src: "headspace.png", label: "Headspace", hPct: 53 / 102.4 },
-  { src: "fastpace-health.png", label: "Fastpace Health", hPct: 58.4 / 102.4 },
-  { src: "brave-health.png", label: "Brave Health", hPct: 32 / 102.4 },
-  { src: "happier-living.png", label: "Happier Living", hPct: 32 / 102.4 },
-  { src: "geode.png", label: "Geode", hPct: 24 / 102.4 },
-  { src: "modern.png", label: "Modern", hPct: 25.4 / 102.4 },
-  { src: "cerebral.png", label: "Cerebral", hPct: 23.8 / 102.4 },
-  { src: "grow-therapy.png", label: "Grow Therapy", hPct: 34.2 / 102.4 },
-  { src: "brightside-health.png", label: "Brightside Health", hPct: 35 / 102.4 },
-  { src: "thriveworks.png", label: "Thriveworks", hPct: 38.9 / 102.4 },
-  { src: "doctronic.png", label: "Doctronic", hPct: 60 / 102.4 },
-  { src: "lifestance.png", label: "LifeStance", hPct: 36.6 / 102.4 },
-  { src: "nocd.png", label: "NOCD", hPct: 70.6 / 102.4 },
-  { src: "clear.png", label: "CLEAR", hPct: 32 / 102.4 },
+  { src: "headlight.png", label: "Headlight" },
+  { src: "clear.png", label: "CLEAR" },
+  { src: "octave.png", label: "Octave" },
+  { src: "headspace.png", label: "Headspace" },
+  { src: "fastpace-health.png", label: "Fastpace Health" },
+  { src: "brave-health.png", label: "Brave Health" },
+  { src: "happier-living.png", label: "Happier Living" },
+  { src: "geode.png", label: "Geode" },
+  { src: "modern.png", label: "Modern" },
+  { src: "cerebral.png", label: "Cerebral" },
+  { src: "grow-therapy.png", label: "Grow Therapy" },
+  { src: "thriveworks.png", label: "Thriveworks" },
+  { src: "doctronic.png", label: "Doctronic" },
+  { src: "lifestance.png", label: "LifeStance" },
+  { src: "nocd.png", label: "NOCD" },
 ];
 
 const AUTOPLAY_MS = 15_000;
@@ -51,7 +51,7 @@ function tilesFromPledges(pledges: PublicPledge[]): Tile[] | null {
     if (!p.logoUrl) continue;
     if (seen.has(p.company)) continue;
     seen.add(p.company);
-    tiles.push({ src: p.logoUrl, label: p.company, hPct: 40 / 102.4 });
+    tiles.push({ src: p.logoUrl, label: p.company });
   }
   return tiles.length > 0 ? tiles : null;
 }
@@ -122,8 +122,8 @@ export function LogoWall({ pledges }: Props) {
             <img
               src={tile.src.startsWith("http") ? tile.src : `${BASE}logos/${tile.src}`}
               alt={tile.label}
-              className="max-w-full object-contain"
-              style={{ height: `${tile.hPct * 100}%` }}
+              className="object-contain"
+              style={{ maxWidth: "100%", maxHeight: "100%" }}
               loading="lazy"
             />
           </div>
@@ -153,8 +153,6 @@ function TimerPill({
   const arc = Math.PI * R;
   const perimeter = 2 * straight + 2 * arc;
 
-  // Build a path that STARTS at the top-center and goes clockwise around the pill.
-  // Top-center = (W/2, 0). Go right along the top, arc down the right, go left along the bottom, arc up the left, back to the top-center.
   const path =
     `M ${W / 2} 0 ` +
     `H ${W - R} ` +
@@ -162,14 +160,11 @@ function TimerPill({
     `H ${R} ` +
     `A ${R} ${R} 0 0 1 ${R} 0 ` +
     `H ${W / 2}`;
-  // Note: the path is 4 arcs+straights split so top-center is index 0.
-  // The path length equals the perimeter (halfStraight + arc + straight + arc + halfStraight = 2 straights + 2 arcs).
 
   const STROKE = 1.5;
 
   return (
     <div className="relative group" style={{ width: W, height: H }}>
-      {/* Buttons layer — clipped inside the pill so hover fill respects the pill shape */}
       <div className="absolute inset-0 flex items-stretch rounded-full overflow-hidden">
         <button
           onClick={onBack}
@@ -187,8 +182,6 @@ function TimerPill({
         </button>
       </div>
 
-      {/* Border layer — single SVG draws both the white base and the deep-purple timer stroke,
-          so they're the same width and align pixel-for-pixel. */}
       <svg
         className="absolute inset-0 pointer-events-none"
         width={W}
@@ -196,9 +189,7 @@ function TimerPill({
         viewBox={`0 0 ${W} ${H}`}
         aria-hidden="true"
       >
-        {/* Full white base */}
         <path d={path} fill="none" stroke="#ffffff" strokeWidth={STROKE} />
-        {/* Deep-purple overlay — same width, dashed by progress */}
         <path
           d={path}
           fill="none"
