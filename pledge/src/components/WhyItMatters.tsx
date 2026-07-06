@@ -37,7 +37,7 @@ export function WhyItMatters() {
           className="text-[color:var(--deep-purple)] w-full"
           style={{ fontWeight: 500, fontSize: 38, lineHeight: 1.25 }}
         >
-          This is commitment to a better patient experience.
+          This is commitment to a better{" "}patient{" "}experience.
         </h2>
       </header>
 

@@ -124,9 +124,8 @@ export function LogoWall({ pledges }: Props) {
             aria-hidden={pi !== safePage}
             className="absolute inset-0 grid grid-cols-3 gap-2"
             style={{
-              opacity: pi === safePage ? 1 : 0,
+              visibility: pi === safePage ? "visible" : "hidden",
               pointerEvents: pi === safePage ? "auto" : "none",
-              transition: "opacity 200ms ease-out",
             }}
           >
             {tiles.map((tile, i) => (
