@@ -14,7 +14,9 @@ import { ApprovedCard } from "@/components/ApprovedCard";
 import { LookupSheet } from "@/components/LookupSheet";
 import { usePledgeState } from "@/hooks/usePledgeState";
 
-const PAD = 50;
+const HEADER_HEIGHT = 88;
+const LEFT_PAD = 80;
+const RIGHT_PAD = 50;
 
 export default function App() {
   const state = usePledgeState();
@@ -31,7 +33,7 @@ export default function App() {
         <SiteHeader />
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <main
-            style={{ paddingLeft: PAD, paddingRight: PAD, paddingTop: PAD, paddingBottom: PAD }}
+            style={{ paddingLeft: LEFT_PAD, paddingRight: LEFT_PAD, paddingTop: LEFT_PAD, paddingBottom: LEFT_PAD }}
             className="space-y-24"
           >
             <div className="flex flex-col justify-center" style={{ minHeight: 640 }}>
@@ -74,11 +76,19 @@ export default function App() {
           </main>
 
           <aside
-            className="bg-[color:var(--warm-taupe)]"
-            style={{ paddingLeft: PAD, paddingRight: PAD, paddingTop: PAD, paddingBottom: PAD, alignSelf: "start" }}
+            className="bg-[color:var(--warm-taupe)] lg:sticky lg:self-start"
+            style={{
+              top: HEADER_HEIGHT,
+              height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+              paddingLeft: RIGHT_PAD,
+              paddingRight: RIGHT_PAD,
+              paddingTop: RIGHT_PAD,
+              paddingBottom: RIGHT_PAD,
+            }}
           >
-            <div className="space-y-6">
+            <div className="h-full flex flex-col gap-4">
               <LogoWall pledges={pledges} />
+              <div className="flex-1" />
               {state.list === null ? (
                 <PledgeCounterPill loading />
               ) : !state.listHidden ? (
