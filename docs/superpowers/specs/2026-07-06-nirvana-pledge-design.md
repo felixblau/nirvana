@@ -32,7 +32,9 @@ A one-off marketing page that solicits healthcare companies to publicly sign a p
 
 **Deploy:** From `~/nirvana` (root), `vercel --prod --yes`. Never deploy from the `pledge/` sub-directory alone — the root project is what serves custom domains.
 
-**Password gate:** Vercel deployment protection (platform-level, no code). Set on the root `nirvana-virid` project. Anyone with the URL + shared password can view.
+**Password gate:** Client-side gate scoped to `/pledge` only. Shared password: `nirvana` (hardcoded in the built JS — bypassable in devtools, but sufficient for "please don't share this publicly" positioning). Rejected: Vercel deployment protection, since the root `nirvana-virid` project also serves `aidinner2026.meetnirvana.com`, `/invite`, `/pt-checkin`, `/gemmd`, and other live surfaces — a project-level password would block those too.
+
+Implementation: a `PasswordGate` component wraps `<App />`. On success, sets a `localStorage` flag (`nirvana_pledge_unlocked = "1"`) so the visitor doesn't re-enter every visit. The gate itself is a minimal centered card matching the page theme: Nirvana wordmark, a single password input, and an "Enter" button. Wrong password shows an inline error.
 
 ## Stack
 
@@ -184,6 +186,7 @@ src/
 ├── hooks/
 │   └── usePledgeState.ts         (state machine: fresh|submitting|pending|approved|rescinded)
 ├── components/
+│   ├── PasswordGate.tsx          (wraps App; blocks render until password entered)
 │   ├── SiteHeader.tsx            (visual-only replica of prod nav)
 │   ├── SiteFooter.tsx            (visual-only replica of prod footer)
 │   ├── Hero.tsx                  (headline, sub, CTA area — swaps to PendingCard/ApprovedCard by state)
@@ -210,9 +213,9 @@ Each component has one responsibility. `usePledgeState` is the single source of 
 
 **On submit:**
 1. Client-side validate
-2. POST `submit` (no-cors, fire-and-forget)
-3. Optimistically show Pending state, write cookie (with a temporary UUID)
-4. On next `lookup` interval, reconcile with server-generated `id`
+2. POST `submit` (no-cors, fire-and-forget — `mode: "no-cors"` means no response body is readable, so `submit` cannot return the server-generated `id`)
+3. Optimistically show Pending state; write cookie `{id: "temp-<uuid>", email}` — the temp id is throwaway
+4. On next `lookup(email)` interval, replace cookie with the real server-generated `id`. `lookup` is keyed by email (not id), so this reconciliation works even before we know the real id.
 
 **On rescind:**
 1. Confirm dialog
@@ -228,7 +231,7 @@ Each component has one responsibility. `usePledgeState` is the single source of 
 ## Error Handling
 
 **Network / API failures**
-- `list` fails on page load → hide counter pill; retry once after 5s; log to console
+- `list` fails on page load → hide counter pill; retry once after 5s; log to console. If the retry also fails, the pill stays hidden for the rest of the session (60s polling continues silently and un-hides on the first successful fetch)
 - `submit` fails → keep form open, inline error under submit button, form state preserved
 - `lookup` fails → keep current state, no user-visible error (silent)
 - `rescind` fails → inline toast-style error, state unchanged
@@ -239,8 +242,8 @@ Each component has one responsibility. `usePledgeState` is the single source of 
 - Submit button disabled if `pledgeState !== 'fresh'`
 
 **Duplicate submissions**
-- Same browser (cookie present) → button disabled
-- Same email from different browser → server dedupes (updates fields, preserves status), returns same `id`
+- Same browser (cookie present) → CTA is replaced by PendingCard/ApprovedCard; the form dialog isn't reachable
+- Same email from different browser → server dedupes on submit (updates fields, preserves status). The client won't see the duplicate result directly (no-cors), but next `lookup` recovers the existing row's status
 
 **Cookie / storage**
 - Missing/cleared → user appears Fresh; lookup available as recovery
@@ -258,10 +261,10 @@ Each component has one responsibility. `usePledgeState` is the single source of 
 - **Email never public** — the `list` endpoint returns only `{ company, firstName, lastInitial, role }`
 - **Full last name never public** — only first letter with period ("Jane D.")
 - **Rescind auth** — id + email must match. Weak (email is guessable) but sufficient: worst case a rescind can be reversed by the rep in the sheet
-- **Password gate** — Vercel deployment protection; single shared password, platform-level
+- **Password gate** — client-side, scoped to `/pledge` only. Password `nirvana`. Bypassable in devtools; considered acceptable for the "don't share widely" use case.
 - **No PII in logs** — client-side console errors log status codes only, never form contents
 - **CSRF** — not applicable (Apps Script endpoint accepts anonymous, no session)
-- **Rate limiting** — Apps Script has built-in quotas; further limiting via a simple check in `submit` (e.g., last submission by email within 5s = ignore) is a nice-to-have
+- **Rate limiting** — out of scope for the initial cut. Apps Script has built-in quotas; if abuse becomes a real issue, add a same-email-within-5s check in the `submit` handler.
 
 ## Testing
 
