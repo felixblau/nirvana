@@ -1,7 +1,7 @@
 # Nirvana Pledge Backend
 
-**Google Sheet:** _paste sheet URL here_
-**Apps Script URL:** _paste `/exec` URL here after deploy_
+**Google Sheet:** (owned by Felix)
+**Apps Script URL:** `https://script.google.com/macros/s/AKfycbwADm1Wn_WO9I33brWeVOu3Lz4qVTNYMbMM8v6gJZ-r2mhHUfM6qMWiFALm_LGafjK10A/exec`
 
 ## Sheet setup
 
