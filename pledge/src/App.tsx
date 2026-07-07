@@ -112,8 +112,8 @@ export default function App() {
             style={{
               top: HEADER_HEIGHT,
               height: `calc(100vh - ${HEADER_HEIGHT}px)`,
-              paddingTop: 40,
-              paddingBottom: 40,
+              paddingTop: wallVariant === "vertical" ? 0 : 40,
+              paddingBottom: wallVariant === "vertical" ? 0 : 40,
               paddingLeft: 50,
               paddingRight: 50,
             }}
