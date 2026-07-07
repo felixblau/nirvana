@@ -20,7 +20,7 @@ export function Hero({ children, onSignClick }: HeroProps) {
       >
         Patients deserve to know what care costs — and what they're covered for — before they book.
       </h1>
-      <p className="text-[color:var(--deep-purple)]/70 max-w-xl" style={{ fontSize: 24, lineHeight: 1.5 }}>
+      <p className="text-[color:var(--deep-purple)]/70 max-w-xl text-[18px] sm:text-[24px]" style={{ lineHeight: 1.5 }}>
         Sign the pledge and stand with providers committing to price transparency and coverage clarity for every patient.
       </p>
       <div className="pt-2">

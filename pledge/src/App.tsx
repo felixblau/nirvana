@@ -57,10 +57,10 @@ export default function App() {
         <SiteHeader />
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <main>
-            {/* Hero section — 40px top/bottom, 80px left/right, min-h 740, vertically centered */}
+            {/* Hero section — 40px top/bottom, 80px left/right (24px on mobile), min-h 740, vertically centered */}
             <section
-              className="flex flex-col justify-center gap-6"
-              style={{ minHeight: 740, paddingTop: 40, paddingBottom: 40, paddingLeft: 80, paddingRight: 80 }}
+              className="flex flex-col justify-center gap-6 px-6 sm:px-[80px]"
+              style={{ minHeight: 740, paddingTop: 40, paddingBottom: 40 }}
             >
               <Hero>
                 {state.local.kind === "approved" && (
@@ -89,7 +89,7 @@ export default function App() {
                     </Button>
                     <button
                       onClick={() => setLookupOpen(true)}
-                      className="text-base leading-6 text-[color:var(--deep-purple)] font-medium underline underline-offset-4 hover:opacity-70"
+                      className="text-base leading-6 text-[color:var(--deep-purple)] font-medium underline underline-offset-4 hover:opacity-70 whitespace-nowrap"
                     >
                       Already pledged?
                     </button>
@@ -101,8 +101,8 @@ export default function App() {
 
             {/* Why This Matters section — lila-light bg per Figma */}
             <section
-              className="bg-[color:var(--lilac-light)]"
-              style={{ paddingTop: 40, paddingBottom: 40, paddingLeft: 80, paddingRight: 80 }}
+              className="bg-[color:var(--lilac-light)] px-6 sm:px-[80px]"
+              style={{ paddingTop: 40, paddingBottom: 40 }}
             >
               <WhyItMatters />
             </section>

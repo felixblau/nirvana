@@ -3,6 +3,11 @@ import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import type { PublicPledge } from "@/types";
 
 // ─── Mobile marquee (two rows, opposite directions) ──────────────────────────
+// Card size is exactly half the desktop tile: 200.485×102.4 → 100×51
+
+const CARD_W = 100;
+const CARD_H = 51;
+const CARD_GAP = 8;
 
 function MobileLogoMarquee({ tiles }: { tiles: { src: string; label: string }[] }) {
   const half = Math.ceil(tiles.length / 2);
@@ -10,7 +15,7 @@ function MobileLogoMarquee({ tiles }: { tiles: { src: string; label: string }[] 
   const row2 = tiles.slice(half);
 
   return (
-    <div className="flex flex-col gap-3 w-full overflow-hidden">
+    <div className="flex flex-col w-full overflow-hidden" style={{ gap: CARD_GAP }}>
       <MarqueeRow tiles={row1} direction="left" />
       <MarqueeRow tiles={row2} direction="right" />
     </div>
@@ -24,22 +29,25 @@ function MarqueeRow({
   tiles: { src: string; label: string }[];
   direction: "left" | "right";
 }) {
-  // Duplicate for seamless loop
   const doubled = [...tiles, ...tiles];
+  const totalW = tiles.length * (CARD_W + CARD_GAP);
+  const duration = totalW / 40; // px/s → seconds
   return (
-    <div className="flex gap-3" style={{ overflow: "hidden" }}>
+    <div style={{ overflow: "hidden", height: CARD_H }}>
       <div
-        className="flex gap-3 shrink-0"
+        className="flex shrink-0"
         style={{
-          animation: `${direction === "left" ? "marquee" : "marqueeReverse"} ${tiles.length * 2.5}s linear infinite`,
+          gap: CARD_GAP,
+          animation: `${direction === "left" ? "marquee" : "marqueeReverse"} ${duration}s linear infinite`,
           willChange: "transform",
+          width: totalW * 2,
         }}
       >
         {doubled.map((tile, i) => (
           <div
             key={i}
-            className="shrink-0 bg-white rounded-lg flex items-center justify-center"
-            style={{ width: 120, height: 60, padding: 12 }}
+            className="shrink-0 bg-white rounded-lg flex items-center justify-center overflow-hidden"
+            style={{ width: CARD_W, height: CARD_H, padding: 8 }}
             title={tile.label}
           >
             <img
