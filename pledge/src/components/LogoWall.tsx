@@ -48,7 +48,7 @@ const PAGE_2: Tile[] = [
   { src: "nocd.png", label: "NOCD" },
 ];
 
-const AUTOPLAY_MS = 15_000;
+const AUTOPLAY_MS = 10_000;
 
 function tilesFromPledges(pledges: PublicPledge[]): Tile[] | null {
   const seen = new Set<string>();
