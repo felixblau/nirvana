@@ -81,9 +81,7 @@ export function PledgeListModal({ open, onOpenChange, pledges }: Props) {
               className="text-[#2f1d47] font-normal leading-tight"
               style={{ fontSize: 33, lineHeight: 1.25 }}
             >
-              {totalPledges} pledges from
-              <br />
-              {totalCompanies} companies
+              Pledges
             </BaseDialog.Title>
             <BaseDialog.Close
               className="mt-1 shrink-0 w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#dcd2c8]/50 transition-colors"
