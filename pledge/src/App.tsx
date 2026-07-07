@@ -116,7 +116,7 @@ export default function App() {
           </main>
 
           <aside
-            className="bg-[color:var(--warm-taupe)] lg:sticky lg:self-start"
+            className="hidden lg:block bg-[color:var(--warm-taupe)] lg:sticky lg:self-start"
             style={{
               top: HEADER_HEIGHT,
               height: `calc(100vh - ${HEADER_HEIGHT}px)`,
