@@ -48,7 +48,7 @@ export function SiteFooter() {
               className="h-16 w-auto object-contain"
             />
             <img
-              src={`${import.meta.env.BASE_URL}aicpa-soc.svg`}
+              src={`${import.meta.env.BASE_URL}aicpa-soc.png`}
               alt="AICPA SOC certified"
               className="h-16 w-auto object-contain"
             />
