@@ -13,6 +13,7 @@ import { PledgeFormDialog } from "@/components/PledgeFormDialog";
 import { PendingCard } from "@/components/PendingCard";
 import { ApprovedCard } from "@/components/ApprovedCard";
 import { LookupSheet } from "@/components/LookupSheet";
+import { PledgeRecap } from "@/components/PledgeRecap";
 import { usePledgeState } from "@/hooks/usePledgeState";
 
 const HEADER_HEIGHT = 88;
@@ -105,6 +106,8 @@ export default function App() {
             >
               <WhyItMatters />
             </section>
+
+            <PledgeRecap onSignClick={() => setFormOpen(true)} />
           </main>
 
           <aside
