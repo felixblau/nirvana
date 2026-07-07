@@ -102,7 +102,7 @@ export function PledgeListModal({ open, onOpenChange, pledges }: Props) {
           </div>
 
           {/* List */}
-          <div className="flex-1 overflow-y-auto px-6 pb-6" style={{ gap: 16, display: "flex", flexDirection: "column" }}>
+          <div className="flex-1 overflow-y-auto px-6 pb-6" style={{ gap: 24, display: "flex", flexDirection: "column" }}>
             {companies.length === 0 && (
               <p className="text-[color:var(--warm-taupe)] text-center py-16">No pledges yet.</p>
             )}
