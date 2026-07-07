@@ -25,22 +25,17 @@ export function PledgeCounterPill(props: Props) {
   }
   const { pledges, companies, onOpenList } = props;
   return (
-    <div className="group w-full flex items-center justify-between rounded-lg p-4 border border-[color:var(--lilac-light)] animate-pledge-pill-gradient">
-      <span
-        className="text-[18px] text-[color:var(--deep-purple)]"
-        style={{ lineHeight: "24px" }}
-      >
+    <button
+      onClick={onOpenList}
+      className="group w-full flex items-center justify-between rounded-lg px-4 py-4 border border-[color:var(--lilac-light)] animate-pledge-pill-gradient transition-colors hover:border-[color:var(--deep-purple)]"
+      aria-label={`${pledges} pledges from ${companies} companies — view list`}
+    >
+      <span className="flex-1 text-center text-[18px] text-[color:var(--deep-purple)]" style={{ lineHeight: "24px" }}>
         <span className="font-bold">{pledges} pledges</span>
         <span> from </span>
         <span className="font-bold">{companies} companies</span>
       </span>
-      <button
-        onClick={onOpenList}
-        className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-[color:var(--lilac-light)] transition-colors shrink-0"
-        aria-label="View pledge list"
-      >
-        <ChevronRight className="h-5 w-5 text-[color:var(--vibrant-purple)] group-hover:translate-x-0.5 transition-transform" />
-      </button>
-    </div>
+      <ChevronRight className="shrink-0 h-5 w-5 text-[color:var(--vibrant-purple)] group-hover:translate-x-0.5 transition-transform" />
+    </button>
   );
 }

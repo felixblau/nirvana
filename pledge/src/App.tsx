@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Hero } from "@/components/Hero";
 import { WhyItMatters } from "@/components/WhyItMatters";
-import { LogoWall } from "@/components/LogoWall";
+import { LogoWall, MobileLogoMarquee } from "@/components/LogoWall";
 import { LogoWallVertical } from "@/components/LogoWallVertical";
 import { PledgeCounterPill } from "@/components/PledgeCounterPill";
 import { PledgeListModal } from "@/components/PledgeListModal";
@@ -59,7 +59,7 @@ export default function App() {
           <main>
             {/* Hero section — 40px top/bottom, 80px left/right (24px on mobile), min-h 740, vertically centered */}
             <section
-              className="flex flex-col justify-center gap-6 px-6 sm:px-[80px]"
+              className="flex flex-col justify-center gap-6 px-6 lg:px-[80px]"
               style={{ minHeight: 740, paddingTop: 40, paddingBottom: 40 }}
             >
               <Hero>
@@ -99,9 +99,17 @@ export default function App() {
               {CounterOrSkeleton}
             </section>
 
+            {/* Mobile logo marquee — shown only when aside is stacked below (< lg) */}
+            <div className="lg:hidden bg-[color:var(--warm-taupe)] py-6 overflow-hidden">
+              <MobileLogoMarquee tiles={(state.list ?? []).filter(p => p.logoUrl).reduce<{src:string;label:string}[]>((acc, p) => {
+                if (!acc.find(t => t.label === p.company)) acc.push({ src: p.logoUrl!, label: p.company });
+                return acc;
+              }, [])} />
+            </div>
+
             {/* Why This Matters section — lila-light bg per Figma */}
             <section
-              className="bg-[color:var(--lilac-light)] px-6 sm:px-[80px]"
+              className="bg-[color:var(--lilac-light)] px-6 lg:px-[80px]"
               style={{ paddingTop: 40, paddingBottom: 40 }}
             >
               <WhyItMatters />

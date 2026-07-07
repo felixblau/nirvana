@@ -31,7 +31,7 @@ export function PledgeRecap({ onSignClick }: Props) {
   return (
     <section
       ref={rootRef}
-      className="bg-white flex flex-col justify-center px-6 sm:px-[80px]"
+      className="bg-white flex flex-col justify-center px-6 lg:px-[80px]"
       style={{ gap: 24, paddingTop: 40, paddingBottom: 40 }}
     >
       <h2

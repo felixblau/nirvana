@@ -3,13 +3,14 @@ import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import type { PublicPledge } from "@/types";
 
 // ─── Mobile marquee (two rows, opposite directions) ──────────────────────────
-// Card size is exactly half the desktop tile: 200.485×102.4 → 100×51
+// Card matches Figma spec: 166×85px, gap 8px
+// Row 1: right→left (marquee), Row 2: left→right (marqueeReverse)
 
-const CARD_W = 100;
-const CARD_H = 51;
+const CARD_W = 166;
+const CARD_H = 85;
 const CARD_GAP = 8;
 
-function MobileLogoMarquee({ tiles }: { tiles: { src: string; label: string }[] }) {
+export function MobileLogoMarquee({ tiles }: { tiles: { src: string; label: string }[] }) {
   const half = Math.ceil(tiles.length / 2);
   const row1 = tiles.slice(0, half);
   const row2 = tiles.slice(half);
@@ -31,7 +32,7 @@ function MarqueeRow({
 }) {
   const doubled = [...tiles, ...tiles];
   const totalW = tiles.length * (CARD_W + CARD_GAP);
-  const duration = totalW / 40; // px/s → seconds
+  const duration = totalW / 50; // px/s → seconds
   return (
     <div style={{ overflow: "hidden", height: CARD_H }}>
       <div
@@ -46,8 +47,8 @@ function MarqueeRow({
         {doubled.map((tile, i) => (
           <div
             key={i}
-            className="shrink-0 bg-white rounded-lg flex items-center justify-center overflow-hidden"
-            style={{ width: CARD_W, height: CARD_H, padding: 8 }}
+            className="shrink-0 bg-white rounded-[4px] flex items-center justify-center overflow-hidden"
+            style={{ width: CARD_W, height: CARD_H, padding: 16 }}
             title={tile.label}
           >
             <img
@@ -187,18 +188,8 @@ export function LogoWall({ pledges }: Props) {
   const goNext = () => { setPage((p) => (p + 1) % totalPages); resetTimer(); };
   const togglePlay = () => setPlaying((p) => !p);
 
-  // Flat tile list for mobile marquee
-  const allTiles = useMemo(() => pages.flat(), [pages]);
-
   return (
     <div className="flex flex-col items-center gap-4 w-full">
-      {/* Mobile: two-row infinite marquee (≤640px) */}
-      <div className="sm:hidden w-full">
-        <MobileLogoMarquee tiles={allTiles} />
-      </div>
-
-      {/* Desktop: paginated grid */}
-      <div className="hidden sm:flex flex-col items-center gap-4 w-full">
         {/* Stack all pages absolutely; only the active one is visible. Every image
             stays in the DOM after first paint so page flips have no fetch flash. */}
         <div className="relative w-full" style={{ aspectRatio: "617.455 / 544" }}>
@@ -252,7 +243,6 @@ export function LogoWall({ pledges }: Props) {
             progress={progress}
           />
         )}
-      </div>
     </div>
   );
 }
