@@ -52,12 +52,12 @@ export function PledgeListModal({ open, onOpenChange, pledges }: Props) {
           </div>
 
           {/* List */}
-          <div className="flex-1 overflow-y-auto px-6 pb-6 flex flex-col gap-5">
+          <div className="flex-1 overflow-y-auto px-6 pb-6 flex flex-col divide-y divide-[#dcd2c8]">
             {sorted.length === 0 && (
               <p className="text-[color:var(--warm-taupe)] text-center py-16">No pledges yet.</p>
             )}
             {sorted.map((s, i) => (
-              <div key={i} className="flex items-baseline gap-2 min-w-0 whitespace-nowrap">
+              <div key={i} className="flex items-baseline gap-2 min-w-0 whitespace-nowrap py-4">
                 <span className="shrink-0 text-[#2c1f45] opacity-75 font-semibold tracking-tight" style={{ fontSize: 18, lineHeight: "24px" }}>
                   {s.company}
                 </span>
