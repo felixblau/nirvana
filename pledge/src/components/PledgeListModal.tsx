@@ -126,13 +126,13 @@ export function PledgeListModal({ open, onOpenChange, pledges }: Props) {
                   {signers.map((s, i) => (
                     <div
                       key={i}
-                      className="flex items-start justify-between"
+                      className="flex items-baseline justify-between gap-4 min-w-0"
                       style={{ fontSize: 18, lineHeight: 1.5 }}
                     >
-                      <span className="text-[#2c1f45] opacity-75">
+                      <span className="text-[#2c1f45] opacity-75 truncate shrink min-w-0">
                         {s.firstName} {s.lastName}
                       </span>
-                      <span className="text-[#ad9d92] opacity-75 text-right ml-4">{s.role}</span>
+                      <span className="text-[#ad9d92] opacity-75 truncate shrink-0 max-w-[45%]">{s.role}</span>
                     </div>
                   ))}
                 </div>
