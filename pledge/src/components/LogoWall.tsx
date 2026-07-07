@@ -2,6 +2,58 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import type { PublicPledge } from "@/types";
 
+// ─── Mobile marquee (two rows, opposite directions) ──────────────────────────
+
+function MobileLogoMarquee({ tiles }: { tiles: { src: string; label: string }[] }) {
+  const half = Math.ceil(tiles.length / 2);
+  const row1 = tiles.slice(0, half);
+  const row2 = tiles.slice(half);
+
+  return (
+    <div className="flex flex-col gap-3 w-full overflow-hidden">
+      <MarqueeRow tiles={row1} direction="left" />
+      <MarqueeRow tiles={row2} direction="right" />
+    </div>
+  );
+}
+
+function MarqueeRow({
+  tiles,
+  direction,
+}: {
+  tiles: { src: string; label: string }[];
+  direction: "left" | "right";
+}) {
+  // Duplicate for seamless loop
+  const doubled = [...tiles, ...tiles];
+  return (
+    <div className="flex gap-3" style={{ overflow: "hidden" }}>
+      <div
+        className="flex gap-3 shrink-0"
+        style={{
+          animation: `${direction === "left" ? "marquee" : "marqueeReverse"} ${tiles.length * 2.5}s linear infinite`,
+          willChange: "transform",
+        }}
+      >
+        {doubled.map((tile, i) => (
+          <div
+            key={i}
+            className="shrink-0 bg-white rounded-lg flex items-center justify-center"
+            style={{ width: 120, height: 60, padding: 12 }}
+            title={tile.label}
+          >
+            <img
+              src={tile.src.startsWith("http") ? tile.src : `${BASE}logos/${tile.src}`}
+              alt={tile.label}
+              className="object-contain max-w-full max-h-full"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const BASE = import.meta.env.BASE_URL;
 
 type Tile = {
@@ -127,61 +179,72 @@ export function LogoWall({ pledges }: Props) {
   const goNext = () => { setPage((p) => (p + 1) % totalPages); resetTimer(); };
   const togglePlay = () => setPlaying((p) => !p);
 
+  // Flat tile list for mobile marquee
+  const allTiles = useMemo(() => pages.flat(), [pages]);
+
   return (
     <div className="flex flex-col items-center gap-4 w-full">
-      {/* Stack all pages absolutely; only the active one is visible. Every image
-          stays in the DOM after first paint so page flips have no fetch flash. */}
-      <div className="relative w-full" style={{ aspectRatio: "617.455 / 544" }}>
-        {pages.map((tiles, pi) => {
-          const active = pi === safePage;
-          const activation = activations[pi] ?? 0;
-          return (
-            <section
-              key={`page-${pi}`}
-              aria-label="Signatory logos"
-              aria-hidden={!active}
-              className="absolute inset-0 grid grid-cols-3 gap-2"
-              style={{
-                visibility: active ? "visible" : "hidden",
-                pointerEvents: active ? "auto" : "none",
-              }}
-            >
-              {tiles.map((tile, i) => (
-                <div
-                  key={`p${pi}-slot-${i}-a${activation}`}
-                  className="bg-white rounded-lg flex items-center justify-center overflow-hidden"
-                  style={{
-                    aspectRatio: "200.485 / 102.4",
-                    padding: 16,
-                    opacity: 0,
-                    animation: active
-                      ? `fadeIn 0.5s ease-out ${i * 60}ms forwards`
-                      : undefined,
-                  }}
-                  title={tile.label}
-                >
-                  <HalfSizedLogo
-                    src={tile.src.startsWith("http") ? tile.src : `${BASE}logos/${tile.src}`}
-                    alt={tile.label}
-                    offsetY={tile.offsetY}
-                    scale={tile.scale}
-                  />
-                </div>
-              ))}
-            </section>
-          );
-        })}
+      {/* Mobile: two-row infinite marquee (≤640px) */}
+      <div className="sm:hidden w-full">
+        <MobileLogoMarquee tiles={allTiles} />
       </div>
 
-      {totalPages > 1 && (
-        <TimerPill
-          onBack={goBack}
-          onNext={goNext}
-          onTogglePlay={togglePlay}
-          playing={playing}
-          progress={progress}
-        />
-      )}
+      {/* Desktop: paginated grid */}
+      <div className="hidden sm:flex flex-col items-center gap-4 w-full">
+        {/* Stack all pages absolutely; only the active one is visible. Every image
+            stays in the DOM after first paint so page flips have no fetch flash. */}
+        <div className="relative w-full" style={{ aspectRatio: "617.455 / 544" }}>
+          {pages.map((tiles, pi) => {
+            const active = pi === safePage;
+            const activation = activations[pi] ?? 0;
+            return (
+              <section
+                key={`page-${pi}`}
+                aria-label="Signatory logos"
+                aria-hidden={!active}
+                className="absolute inset-0 grid grid-cols-3 gap-2"
+                style={{
+                  visibility: active ? "visible" : "hidden",
+                  pointerEvents: active ? "auto" : "none",
+                }}
+              >
+                {tiles.map((tile, i) => (
+                  <div
+                    key={`p${pi}-slot-${i}-a${activation}`}
+                    className="bg-white rounded-lg flex items-center justify-center overflow-hidden"
+                    style={{
+                      aspectRatio: "200.485 / 102.4",
+                      padding: 16,
+                      opacity: 0,
+                      animation: active
+                        ? `fadeIn 0.5s ease-out ${i * 60}ms forwards`
+                        : undefined,
+                    }}
+                    title={tile.label}
+                  >
+                    <HalfSizedLogo
+                      src={tile.src.startsWith("http") ? tile.src : `${BASE}logos/${tile.src}`}
+                      alt={tile.label}
+                      offsetY={tile.offsetY}
+                      scale={tile.scale}
+                    />
+                  </div>
+                ))}
+              </section>
+            );
+          })}
+        </div>
+
+        {totalPages > 1 && (
+          <TimerPill
+            onBack={goBack}
+            onNext={goNext}
+            onTogglePlay={togglePlay}
+            playing={playing}
+            progress={progress}
+          />
+        )}
+      </div>
     </div>
   );
 }

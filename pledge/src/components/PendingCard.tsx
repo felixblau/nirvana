@@ -27,17 +27,21 @@ export function PendingCard({ company, onRescind }: Props) {
         <div className="w-11 h-11 rounded-full bg-white flex items-center justify-center shrink-0">
           <Clock className="h-[18px] w-[18px] text-[color:var(--warm-taupe,#AD9D92)]" />
         </div>
-        <div className="flex items-baseline gap-6">
-          <p className="text-base text-[color:var(--deep-purple,#2C1F45)] leading-snug whitespace-nowrap">
-            <span className="font-bold">Your pledge is under review</span>
-            <span className="font-medium"> – we'll review your submission shortly.</span>
+        <div className="flex flex-col gap-1">
+          <p className="text-base font-bold text-[color:var(--deep-purple,#2C1F45)] leading-snug">
+            Your pledge is under review
           </p>
-          <button
-            onClick={() => setConfirmOpen(true)}
-            className="text-base text-[color:var(--vibrant-purple,#9073F2)] underline underline-offset-2 font-medium hover:opacity-70 transition-opacity shrink-0"
-          >
-            Rescind
-          </button>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-0.5">
+            <span className="text-base font-medium text-[color:var(--deep-purple,#2C1F45)] leading-snug">
+              We&rsquo;ll review your submission shortly.
+            </span>
+            <button
+              onClick={() => setConfirmOpen(true)}
+              className="text-base text-[color:var(--vibrant-purple,#9073F2)] underline underline-offset-2 font-medium hover:opacity-70 transition-opacity shrink-0"
+            >
+              Rescind pledge
+            </button>
+          </div>
         </div>
       </div>
 

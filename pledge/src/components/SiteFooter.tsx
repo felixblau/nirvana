@@ -1,3 +1,5 @@
+const BASE = import.meta.env.BASE_URL;
+
 const COLUMNS: Array<{ heading: string; items: string[] }> = [
   { heading: "Solutions", items: ["Platform overview", "Insurance Discovery", "Cost Estimates", "Enhanced Verification"] },
   { heading: "Who We Serve", items: ["Healthcare Providers", "Digital Health Partners", "EHR Partners"] },
@@ -9,22 +11,24 @@ export function SiteFooter() {
   return (
     <footer className="w-full bg-[color:var(--deep-purple)] text-white">
       <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-10 mb-16">
-          <div className="md:col-span-2 flex flex-col" style={{ gap: 24 }}>
+        {/* Top grid: logo+social col + 4 link columns */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-x-6 gap-y-10 mb-16">
+          <div className="col-span-2 sm:col-span-3 md:col-span-2 flex flex-col" style={{ gap: 24 }}>
             <img
-              src={`${import.meta.env.BASE_URL}nirvana-color.svg`}
+              src={`${BASE}nirvana-color.svg`}
               alt="Nirvana"
               className="h-6 w-auto object-contain object-left"
             />
             <div className="flex gap-2">
               <span className="w-6 h-6 rounded-full bg-[#ae9bea] flex items-center justify-center cursor-default" aria-label="Instagram">
-                <img src={`${import.meta.env.BASE_URL}icon-instagram.svg`} alt="" aria-hidden="true" className="w-5 h-5 object-contain" />
+                <img src={`${BASE}icon-instagram.svg`} alt="" aria-hidden="true" className="w-5 h-5 object-contain" />
               </span>
               <span className="w-6 h-6 rounded-full bg-[#ae9bea] flex items-center justify-center cursor-default" aria-label="LinkedIn">
-                <img src={`${import.meta.env.BASE_URL}icon-linkedin.svg`} alt="" aria-hidden="true" className="w-5 h-5 object-contain" />
+                <img src={`${BASE}icon-linkedin.svg`} alt="" aria-hidden="true" className="w-5 h-5 object-contain" />
               </span>
             </div>
           </div>
+
           {COLUMNS.map((col) => (
             <div key={col.heading} className="space-y-4">
               <div className="text-xs font-semibold tracking-wider text-[color:var(--lilac)]">{col.heading.toUpperCase()}</div>
@@ -37,15 +41,16 @@ export function SiteFooter() {
           ))}
         </div>
 
-        <div className="flex items-end justify-between gap-8 mb-10">
-          <div className="flex items-center justify-center gap-4">
+        {/* Badges + hiring pill */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
+          <div className="flex items-center gap-4">
             <img
-              src={`${import.meta.env.BASE_URL}hipaa-badge.svg`}
+              src={`${BASE}hipaa-badge.svg`}
               alt="HIPAA Compliant"
               className="h-16 w-auto object-contain"
             />
             <img
-              src={`${import.meta.env.BASE_URL}aicpa-soc.png`}
+              src={`${BASE}aicpa-soc.png`}
               alt="AICPA SOC certified"
               className="h-16 w-auto object-contain"
             />
@@ -56,9 +61,10 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pt-6 border-t border-white/10 text-xs text-white/60">
+        {/* Legal row */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-6 border-t border-white/10 text-xs text-white/60">
           <div>Copyright Meet Nirvana 2026</div>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap gap-4 sm:gap-6">
             <span className="cursor-default">Cookies Preferences</span>
             <span className="cursor-default">Privacy Policy</span>
             <span className="cursor-default">Terms &amp; Conditions</span>

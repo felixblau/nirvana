@@ -16,7 +16,7 @@ export function Hero({ children, onSignClick }: HeroProps) {
       </div>
       <h1
         className="font-semibold tracking-tight text-foreground"
-        style={{ fontSize: "48px", lineHeight: "58px" }}
+        style={{ fontSize: "clamp(40px, 4vw, 48px)", lineHeight: "clamp(52px, 5vw, 58px)" }}
       >
         Patients deserve to know what care costs — and what they're covered for — before they book.
       </h1>
