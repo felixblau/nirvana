@@ -77,12 +77,17 @@ export function PledgeListModal({ open, onOpenChange, pledges }: Props) {
         >
           {/* Header */}
           <div className="flex items-start justify-between p-6 shrink-0">
-            <BaseDialog.Title
-              className="text-[#2f1d47] font-normal leading-tight"
-              style={{ fontSize: 33, lineHeight: 1.25 }}
-            >
-              Pledges
-            </BaseDialog.Title>
+            <div className="flex flex-col">
+              <BaseDialog.Title
+                className="text-[#2f1d47] font-normal leading-tight"
+                style={{ fontSize: 33, lineHeight: 1.25 }}
+              >
+                Pledges
+              </BaseDialog.Title>
+              <p className="text-[#2c1f45] opacity-60 mt-1" style={{ fontSize: 16, lineHeight: 1.5 }}>
+                {totalPledges} pledges from {totalCompanies} companies
+              </p>
+            </div>
             <BaseDialog.Close
               className="mt-1 shrink-0 w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#dcd2c8]/50 transition-colors"
               aria-label="Close"
@@ -105,7 +110,8 @@ export function PledgeListModal({ open, onOpenChange, pledges }: Props) {
                     <img
                       src={logoSrc}
                       alt={company}
-                      className="h-8 w-auto object-contain object-left"
+                      className="w-auto object-contain object-left"
+                      style={{ height: 24 }}
                     />
                   ) : (
                     <p className="text-[#2c1f45] font-medium" style={{ fontSize: 20, lineHeight: 1.25 }}>
