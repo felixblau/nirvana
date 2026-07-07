@@ -73,12 +73,6 @@ export function LogoWallVertical({ pledges }: Props) {
     <div
       aria-label="Signatory logos"
       className="relative w-full h-full overflow-hidden"
-      style={{
-        maskImage:
-          "linear-gradient(to bottom, transparent 0, black 12%, black 88%, transparent 100%)",
-        WebkitMaskImage:
-          "linear-gradient(to bottom, transparent 0, black 12%, black 88%, transparent 100%)",
-      }}
     >
       <div className="grid grid-cols-2 gap-2 h-full">
         <MarqueeColumn tiles={colA} direction="up" durationSec={55} />

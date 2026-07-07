@@ -41,16 +41,16 @@ export function SiteFooter() {
         </div>
 
         <div className="flex items-end justify-between gap-8 mb-10">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center justify-center gap-4">
             <img
               src={`${import.meta.env.BASE_URL}hipaa-badge.png`}
               alt="HIPAA Compliant"
               className="h-16 w-auto object-contain"
             />
             <img
-              src={`${import.meta.env.BASE_URL}footer-compliance-badges.png`}
+              src={`${import.meta.env.BASE_URL}aicpa-soc.svg`}
               alt="AICPA SOC certified"
-              className="h-16 w-16 rounded-full object-contain"
+              className="h-16 w-auto object-contain"
             />
           </div>
           <div className="hidden md:flex items-center gap-4 bg-[color:var(--lilac)]/25 rounded-full pl-6 pr-3 py-2 cursor-default">
