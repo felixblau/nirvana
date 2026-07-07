@@ -27,7 +27,7 @@ export function PledgeCounterPill(props: Props) {
   return (
     <button
       onClick={onOpenList}
-      className="group relative w-full flex items-center justify-center rounded-lg p-4 border border-[color:var(--lilac-light)] animate-pledge-pill-gradient"
+      className="group relative w-full flex items-center justify-center rounded-lg p-4 border border-[color:var(--lilac-light)] hover:border-[color:var(--deep-purple)] animate-pledge-pill-gradient transition-colors"
     >
       <span
         className="text-[18px] text-[color:var(--deep-purple)] text-center"
