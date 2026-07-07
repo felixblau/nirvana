@@ -3,7 +3,7 @@ export type PledgeStatus = "pending" | "approved" | "rescinded";
 export type PublicPledge = {
   company: string;
   firstName: string;
-  lastInitial: string;
+  lastName: string;
   role: string;
   logoUrl?: string;
 };

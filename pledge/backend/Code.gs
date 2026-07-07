@@ -60,7 +60,7 @@ function handleList() {
     .map((r) => ({
       company: r.company,
       firstName: r.firstName,
-      lastInitial: String(r.lastName || "").charAt(0),
+      lastName: String(r.lastName || ""),
       role: r.role,
       logoUrl: r.logoUrl || "",
     }));
