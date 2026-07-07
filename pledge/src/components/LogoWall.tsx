@@ -9,6 +9,7 @@ type Tile = {
   label: string;
   /** Optional vertical nudge in px for optical centering. */
   offsetY?: number;
+  scale?: number;
 };
 
 const PAGE_1: Tile[] = [
@@ -20,7 +21,7 @@ const PAGE_1: Tile[] = [
   { src: "sondermind.png", label: "SonderMind" },
   { src: "resmed.png", label: "ResMed" },
   { src: "pomelo-care.png", label: "Pomelo Care" },
-  { src: "weight-watchers.png", label: "WeightWatchers" },
+  { src: "weight-watchers.png", label: "WeightWatchers", scale: 1.5 },
   { src: "eleanor-health.png", label: "Eleanor Health" },
   { src: "sol-mental-health.png", label: "Sol Mental Health" },
   { src: "midwest-express-clinic.png", label: "Midwest Express Clinic" },
@@ -163,6 +164,7 @@ export function LogoWall({ pledges }: Props) {
                     src={tile.src.startsWith("http") ? tile.src : `${BASE}logos/${tile.src}`}
                     alt={tile.label}
                     offsetY={tile.offsetY}
+                    scale={tile.scale}
                   />
                 </div>
               ))}
@@ -189,10 +191,12 @@ function HalfSizedLogo({
   src,
   alt,
   offsetY,
+  scale = 1,
 }: {
   src: string;
   alt: string;
   offsetY?: number;
+  scale?: number;
 }) {
   const [dims, setDims] = useState<{ w: number; h: number } | null>(null);
   return (
@@ -201,8 +205,8 @@ function HalfSizedLogo({
       alt={alt}
       className="object-contain"
       style={{
-        width: dims ? `${dims.w / 2}px` : "auto",
-        height: dims ? `${dims.h / 2}px` : "auto",
+        width: dims ? `${(dims.w / 2) * scale}px` : "auto",
+        height: dims ? `${(dims.h / 2) * scale}px` : "auto",
         maxWidth: "100%",
         maxHeight: "100%",
         transform: offsetY ? `translateY(${offsetY}px)` : undefined,
