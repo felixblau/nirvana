@@ -1,6 +1,6 @@
 import type { PublicPledge, PrivatePledge } from "@/types";
 
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwADm1Wn_WO9I33brWeVOu3Lz4qVTNYMbMM8v6gJZ-r2mhHUfM6qMWiFALm_LGafjK10A/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx3Ol5gXIS3d0rwY7vnl73l8a5mIwpBk311MFC2Eogv7qI7K88KNRRVCWP6NgdXXocppw/exec";
 
 export async function apiList(): Promise<PublicPledge[]> {
   const res = await fetch(`${APPS_SCRIPT_URL}?action=list`, { redirect: "follow" });
