@@ -102,7 +102,15 @@ export function usePledgeState() {
   const rescind = useCallback(async () => {
     if (local.kind !== "pending" && local.kind !== "approved") return;
     try {
-      const result = await apiRescind(local.id, local.email);
+      let id = local.id;
+      // Temp ids are local-only placeholders — resolve the real sheet row id first.
+      if (id.startsWith("temp-")) {
+        const row = await apiLookup(local.email);
+        if (!row) throw new Error("pledge not found yet — try again in a moment");
+        id = row.id;
+        writePledgeCookie({ id: row.id, email: local.email });
+      }
+      const result = await apiRescind(id, local.email);
       if (result.ok) {
         clearPledgeCookie();
         setLocal({ kind: "fresh" });
