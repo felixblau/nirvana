@@ -4,46 +4,50 @@ import type { PublicPledge } from "@/types";
 
 const BASE = import.meta.env.BASE_URL;
 
-const LOGO_MAP: Record<string, string> = {
-  "optum": "optum.png",
-  "amazon": "amazon.png",
-  "simplepractice": "simple-practice.png",
-  "simple practice": "simple-practice.png",
-  "transformations care network": "transformations-care-network.png",
-  "alma": "alma.png",
-  "sondermind": "sondermind.png",
-  "resmed": "resmed.png",
-  "pomelo care": "pomelo-care.png",
-  "weightwatchers": "weight-watchers.png",
-  "weight watchers": "weight-watchers.png",
-  "eleanor health": "eleanor-health.png",
-  "sol mental health": "sol-mental-health.png",
-  "midwest express clinic": "midwest-express-clinic.png",
-  "lifemd": "lifemd.png",
-  "osmind": "osmind.png",
-  "radiology partners": "radiology-partners.png",
-  "headlight": "headlight.png",
-  "clear": "clear.png",
-  "octave": "octave.png",
-  "headspace": "headspace.png",
-  "fastpace health": "fastpace-health.png",
-  "brave health": "brave-health.png",
-  "happier living": "happier-living.png",
-  "geode": "geode.png",
-  "modern": "modern.png",
-  "cerebral": "cerebral.png",
-  "grow therapy": "grow-therapy.png",
-  "thriveworks": "thriveworks.png",
-  "doctronic": "doctronic.png",
-  "lifestance": "lifestance.png",
-  "lifestance health": "lifestance.png",
-  "nocd": "nocd.png",
+type LogoEntry = { file: string; square?: true };
+
+// square=true → constrain by width (92px); otherwise constrain by height (24px)
+// Aspect ratios computed from natural PNG dimensions; square = ratio < 2.5
+const LOGO_MAP: Record<string, LogoEntry> = {
+  "optum":                          { file: "optum.png" },             // 273×85 = 3.21
+  "amazon":                         { file: "amazon.png" },            // 213×64 = 3.33
+  "simplepractice":                 { file: "simple-practice.png", square: true },   // 317×166 = 1.91
+  "simple practice":                { file: "simple-practice.png", square: true },
+  "transformations care network":   { file: "transformations-care-network.png" },    // 259×64 = 4.05
+  "alma":                           { file: "alma.png" },              // 187×64 = 2.92
+  "sondermind":                     { file: "sondermind.png" },        // 312×98 = 3.18
+  "resmed":                         { file: "resmed.png", square: true },           // 195×142 = 1.37
+  "pomelo care":                    { file: "pomelo-care.png" },       // 220×64 = 3.44
+  "weightwatchers":                 { file: "weight-watchers.png", square: true },  // 123×64 = 1.92
+  "weight watchers":                { file: "weight-watchers.png", square: true },
+  "eleanor health":                 { file: "eleanor-health.png" },    // 299×64 = 4.67
+  "sol mental health":              { file: "sol-mental-health.png", square: true }, // 227×119 = 1.91
+  "midwest express clinic":         { file: "midwest-express-clinic.png" }, // 251×64 = 3.92
+  "lifemd":                         { file: "lifemd.png", square: true },           // 243×136 = 1.79
+  "osmind":                         { file: "osmind.png" },            // 249×64 = 3.89
+  "radiology partners":             { file: "radiology-partners.png" },// 311×39 = 7.97
+  "headlight":                      { file: "headlight.png", square: true },        // 248×130 = 1.91
+  "clear":                          { file: "clear.png" },             // 273×74 = 3.69
+  "octave":                         { file: "octave.png", square: true },           // 229×121 = 1.89
+  "headspace":                      { file: "headspace.png" },         // 317×70 = 4.53
+  "fastpace health":                { file: "fastpace-health.png" },   // 300×69 = 4.35
+  "brave health":                   { file: "brave-health.png" },      // 356×48 = 7.42
+  "happier living":                 { file: "happier-living.png" },    // 311×78 = 3.99
+  "geode":                          { file: "geode.png" },             // 293×51 = 5.75
+  "modern":                         { file: "modern.png" },            // 303×40 = 7.58
+  "cerebral":                       { file: "cerebral.png" },          // 322×64 = 5.03
+  "grow therapy":                   { file: "grow-therapy.png" },      // 312×64 = 4.88
+  "thriveworks":                    { file: "thriveworks.png", square: true },      // 211×117 = 1.80
+  "doctronic":                      { file: "doctronic.png", square: true },        // 203×107 = 1.90
+  "lifestance":                     { file: "lifestance.png" },        // 273×74 = 3.69
+  "lifestance health":              { file: "lifestance.png" },
+  "nocd":                           { file: "nocd.png", square: true },             // 242×97 = 2.49
 };
 
-function getLogoSrc(company: string): string | null {
+function getLogo(company: string): { src: string; square: boolean } | null {
   const key = company.toLowerCase().trim();
-  const file = LOGO_MAP[key];
-  return file ? `${BASE}logos/${file}` : null;
+  const entry = LOGO_MAP[key];
+  return entry ? { src: `${BASE}logos/${entry.file}`, square: !!entry.square } : null;
 }
 
 type Props = {
@@ -104,15 +108,15 @@ export function PledgeListModal({ open, onOpenChange, pledges }: Props) {
             )}
             {companies.map((company) => {
               const signers = byCompany.get(company)!;
-              const logoSrc = getLogoSrc(company);
+              const logo = getLogo(company);
               return (
                 <div key={company} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  {logoSrc ? (
+                  {logo ? (
                     <img
-                      src={logoSrc}
+                      src={logo.src}
                       alt={company}
-                      className="w-auto object-contain object-left"
-                      style={{ height: 24 }}
+                      className="object-contain object-left"
+                      style={logo.square ? { width: 92, height: "auto" } : { height: 24, width: "auto" }}
                     />
                   ) : (
                     <p className="text-[#2c1f45] font-medium" style={{ fontSize: 20, lineHeight: 1.25 }}>
