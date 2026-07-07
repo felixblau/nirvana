@@ -149,11 +149,11 @@ function HalfSizedLogo({
       alt={alt}
       className="object-contain"
       style={{
-        width: dims ? `${dims.w / 2}px` : "auto",
-        height: dims ? `${dims.h / 2}px` : "auto",
+        width: dims ? `${(dims.w / 2) * 1.5}px` : "auto",
+        height: dims ? `${(dims.h / 2) * 1.5}px` : "auto",
         maxWidth: "100%",
         maxHeight: "100%",
-        transform: offsetY ? `translateY(${offsetY}px)` : undefined,
+        transform: offsetY ? `translateY(${offsetY * 1.5}px)` : undefined,
       }}
       onLoad={(e) => {
         const img = e.currentTarget;
