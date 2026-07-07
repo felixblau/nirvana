@@ -130,7 +130,7 @@ export function PledgeListModal({ open, onOpenChange, pledges }: Props) {
                       style={{ fontSize: 18, lineHeight: 1.5 }}
                     >
                       <span className="text-[#2c1f45] opacity-75">
-                        {s.firstName} {s.lastInitial}.
+                        {s.firstName} {s.lastName}
                       </span>
                       <span className="text-[#ad9d92] opacity-75 text-right ml-4">{s.role}</span>
                     </div>
