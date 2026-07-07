@@ -2,6 +2,49 @@ import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { X } from "lucide-react";
 import type { PublicPledge } from "@/types";
 
+const BASE = import.meta.env.BASE_URL;
+
+const LOGO_MAP: Record<string, string> = {
+  "optum": "optum.png",
+  "amazon": "amazon.png",
+  "simplepractice": "simple-practice.png",
+  "simple practice": "simple-practice.png",
+  "transformations care network": "transformations-care-network.png",
+  "alma": "alma.png",
+  "sondermind": "sondermind.png",
+  "resmed": "resmed.png",
+  "pomelo care": "pomelo-care.png",
+  "weightwatchers": "weight-watchers.png",
+  "weight watchers": "weight-watchers.png",
+  "eleanor health": "eleanor-health.png",
+  "sol mental health": "sol-mental-health.png",
+  "midwest express clinic": "midwest-express-clinic.png",
+  "lifemd": "lifemd.png",
+  "osmind": "osmind.png",
+  "radiology partners": "radiology-partners.png",
+  "headlight": "headlight.png",
+  "clear": "clear.png",
+  "octave": "octave.png",
+  "headspace": "headspace.png",
+  "fastpace health": "fastpace-health.png",
+  "brave health": "brave-health.png",
+  "happier living": "happier-living.png",
+  "geode": "geode.png",
+  "modern": "modern.png",
+  "cerebral": "cerebral.png",
+  "grow therapy": "grow-therapy.png",
+  "thriveworks": "thriveworks.png",
+  "doctronic": "doctronic.png",
+  "lifestance": "lifestance.png",
+  "nocd": "nocd.png",
+};
+
+function getLogoSrc(company: string): string | null {
+  const key = company.toLowerCase().trim();
+  const file = LOGO_MAP[key];
+  return file ? `${BASE}logos/${file}` : null;
+}
+
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -57,14 +100,20 @@ export function PledgeListModal({ open, onOpenChange, pledges }: Props) {
             )}
             {companies.map((company) => {
               const signers = byCompany.get(company)!;
+              const logoSrc = getLogoSrc(company);
               return (
                 <div key={company} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  <p
-                    className="text-[#2c1f45] font-medium"
-                    style={{ fontSize: 20, lineHeight: 1.25 }}
-                  >
-                    {company}
-                  </p>
+                  {logoSrc ? (
+                    <img
+                      src={logoSrc}
+                      alt={company}
+                      className="h-8 w-auto object-contain object-left"
+                    />
+                  ) : (
+                    <p className="text-[#2c1f45] font-medium" style={{ fontSize: 20, lineHeight: 1.25 }}>
+                      {company}
+                    </p>
+                  )}
                   {signers.map((s, i) => (
                     <div
                       key={i}
