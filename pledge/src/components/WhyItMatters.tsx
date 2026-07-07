@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+
 const BASE = import.meta.env.BASE_URL;
 
 const CARDS: Array<{ illustration: string; heading: string; body: string }> = [
@@ -21,11 +23,49 @@ const CARDS: Array<{ illustration: string; heading: string; body: string }> = [
   },
 ];
 
+const STEP_MS = 120;
+
 export function WhyItMatters() {
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            io.disconnect();
+            break;
+          }
+        }
+      },
+      { threshold: 0.15 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const stepStyle = (i: number): React.CSSProperties => ({
+    opacity: 0,
+    ...(visible
+      ? { animation: `fadeIn 0.6s ease-out ${i * STEP_MS}ms forwards` }
+      : null),
+  });
+
   return (
-    <div className="flex flex-col items-start gap-6">
+    <div ref={rootRef} className="flex flex-col items-start gap-6">
       <header className="flex flex-col items-start gap-4 w-full">
-        <div className="bg-white border border-[color:var(--warm-tan)] rounded-full px-4 py-2">
+        <div
+          className="bg-white border border-[color:var(--warm-tan)] rounded-full px-4 py-2"
+          style={stepStyle(0)}
+        >
           <span
             className="text-[14px] font-semibold text-[color:var(--deep-purple)]"
             style={{ lineHeight: 1.25 }}
@@ -35,25 +75,28 @@ export function WhyItMatters() {
         </div>
         <h2
           className="text-[color:var(--deep-purple)] w-full"
-          style={{ fontWeight: 500, fontSize: 38, lineHeight: 1.25 }}
+          style={{ fontWeight: 500, fontSize: 38, lineHeight: 1.25, ...stepStyle(1) }}
         >
-          This is commitment to a better{" "}patient{" "}experience.
+          This is commitment to a better{" "}patient{" "}experience.
         </h2>
       </header>
 
-      <p
-        className="text-[color:var(--deep-purple)] w-full opacity-75"
-        style={{ fontSize: 18, lineHeight: 1.5, fontWeight: 400 }}
-      >
-        Healthcare should feel like care. Yet millions of patients face surprise bills,
-        coverage confusion, and administrative barriers that push them away from the treatment
-        they need. This pledge is a public commitment to change that.
-      </p>
+      <div className="w-full" style={stepStyle(2)}>
+        <p
+          className="text-[color:var(--deep-purple)] w-full opacity-75"
+          style={{ fontSize: 18, lineHeight: 1.5, fontWeight: 400 }}
+        >
+          Healthcare should feel like care. Yet millions of patients face surprise bills,
+          coverage confusion, and administrative barriers that push them away from the treatment
+          they need. This pledge is a public commitment to change that.
+        </p>
+      </div>
 
-      {CARDS.map((card) => (
+      {CARDS.map((card, i) => (
         <article
           key={card.heading}
           className="bg-white border border-[color:var(--warm-tan)] rounded-2xl p-6 flex items-start gap-6 w-full"
+          style={stepStyle(3 + i)}
         >
           <img
             src={`${BASE}illustrations/${card.illustration}`}

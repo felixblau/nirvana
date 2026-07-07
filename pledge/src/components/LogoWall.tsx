@@ -78,6 +78,13 @@ export function LogoWall({ pledges }: Props) {
   }, [pledges]);
   const safePage = Math.min(page, pages.length - 1);
   const totalPages = pages.length;
+  const firstPaintRef = useRef(true);
+  useEffect(() => {
+    const t = window.setTimeout(() => {
+      firstPaintRef.current = false;
+    }, 2000);
+    return () => window.clearTimeout(t);
+  }, []);
 
 
   const [progress, setProgress] = useState(0);
@@ -129,20 +136,32 @@ export function LogoWall({ pledges }: Props) {
               pointerEvents: pi === safePage ? "auto" : "none",
             }}
           >
-            {tiles.map((tile, i) => (
-              <div
-                key={`p${pi}-slot-${i}`}
-                className="bg-white rounded-lg flex items-center justify-center overflow-hidden"
-                style={{ aspectRatio: "200.485 / 102.4", padding: 16 }}
-                title={tile.label}
-              >
-                <HalfSizedLogo
-                  src={tile.src.startsWith("http") ? tile.src : `${BASE}logos/${tile.src}`}
-                  alt={tile.label}
-                  offsetY={tile.offsetY}
-                />
-              </div>
-            ))}
+            {tiles.map((tile, i) => {
+              const shouldStagger = pi === 0 && firstPaintRef.current;
+              return (
+                <div
+                  key={`p${pi}-slot-${i}`}
+                  className="bg-white rounded-lg flex items-center justify-center overflow-hidden"
+                  style={{
+                    aspectRatio: "200.485 / 102.4",
+                    padding: 16,
+                    ...(shouldStagger
+                      ? {
+                          opacity: 0,
+                          animation: `fadeIn 0.5s ease-out ${i * 60}ms forwards`,
+                        }
+                      : null),
+                  }}
+                  title={tile.label}
+                >
+                  <HalfSizedLogo
+                    src={tile.src.startsWith("http") ? tile.src : `${BASE}logos/${tile.src}`}
+                    alt={tile.label}
+                    offsetY={tile.offsetY}
+                  />
+                </div>
+              );
+            })}
           </section>
         ))}
       </div>
