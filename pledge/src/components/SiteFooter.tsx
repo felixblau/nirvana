@@ -10,21 +10,18 @@ export function SiteFooter() {
     <footer className="w-full bg-[color:var(--deep-purple)] text-white">
       <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-10 mb-16">
-          <div className="md:col-span-2 space-y-6">
-            <div className="flex gap-3">
-              <span className="w-9 h-9 rounded-full bg-[color:var(--lilac)]/20 flex items-center justify-center cursor-default" aria-label="Instagram">
-                <svg viewBox="0 0 24 24" className="h-4 w-4 text-[color:var(--lilac)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                </svg>
+          <div className="md:col-span-2 flex flex-col" style={{ gap: 24 }}>
+            <img
+              src={`${import.meta.env.BASE_URL}footer-nirvana-logo.svg`}
+              alt="Nirvana"
+              className="h-6 w-auto object-contain object-left"
+            />
+            <div className="flex gap-2">
+              <span className="w-6 h-6 rounded-full bg-[#ae9bea] flex items-center justify-center cursor-default" aria-label="Instagram">
+                <img src={`${import.meta.env.BASE_URL}icon-instagram.png`} alt="" aria-hidden="true" className="w-[13px] h-[13px] object-contain" />
               </span>
-              <span className="w-9 h-9 rounded-full bg-[color:var(--lilac)]/20 flex items-center justify-center cursor-default" aria-label="LinkedIn">
-                <svg viewBox="0 0 24 24" className="h-4 w-4 text-[color:var(--lilac)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" />
-                  <rect x="2" y="9" width="4" height="12" />
-                  <circle cx="4" cy="4" r="2" />
-                </svg>
+              <span className="w-6 h-6 rounded-full bg-[#ae9bea] flex items-center justify-center cursor-default" aria-label="LinkedIn">
+                <img src={`${import.meta.env.BASE_URL}icon-linkedin.png`} alt="" aria-hidden="true" className="w-[11px] h-[11px] object-contain" />
               </span>
             </div>
           </div>
