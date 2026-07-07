@@ -42,7 +42,7 @@ export function PledgeRecap({ onSignClick }: Props) {
       </h2>
       <p
         className="text-[color:var(--deep-purple)] opacity-75"
-        style={{ fontSize: 18, lineHeight: 1.5, maxWidth: 480, ...stepStyle(1) }}
+        style={{ fontSize: 18, lineHeight: 1.5, ...stepStyle(1) }}
       >
         Price transparency isn't just good policy — it's what patients deserve.
         When providers commit publicly, it builds trust, reduces billing surprises,
