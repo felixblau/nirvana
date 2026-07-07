@@ -30,10 +30,28 @@ function isEmail(v: string) {
 export function PledgeFormDialog({ open, onOpenChange, onSubmit, submitting, submitError }: Props) {
   const [values, setValues] = useState<PledgeFormData>(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<keyof PledgeFormData, string>>>({});
+  const [emailTouched, setEmailTouched] = useState(false);
 
   const update = (k: keyof PledgeFormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues((v) => ({ ...v, [k]: e.target.value }));
-    setErrors((e2) => ({ ...e2, [k]: undefined }));
+    const val = e.target.value;
+    setValues((v) => ({ ...v, [k]: val }));
+    if (k === "email" && emailTouched) {
+      setErrors((prev) => ({
+        ...prev,
+        email: val.trim() === "" ? "Required" : !isEmail(val.trim()) ? "Enter a valid email address" : undefined,
+      }));
+    } else {
+      setErrors((prev) => ({ ...prev, [k]: undefined }));
+    }
+  };
+
+  const handleEmailBlur = () => {
+    setEmailTouched(true);
+    const val = values.email.trim();
+    setErrors((prev) => ({
+      ...prev,
+      email: val === "" ? "Required" : !isEmail(val) ? "Enter a valid email address" : undefined,
+    }));
   };
 
   const allFilled =
@@ -84,7 +102,7 @@ export function PledgeFormDialog({ open, onOpenChange, onSubmit, submitting, sub
               </Field>
             </div>
             <Field label="Email" error={errors.email}>
-              <Input type="email" value={values.email} onChange={update("email")} required />
+              <Input type="email" value={values.email} onChange={update("email")} onBlur={handleEmailBlur} required />
             </Field>
             <Field label="Company" error={errors.company}>
               <Input value={values.company} onChange={update("company")} required />
