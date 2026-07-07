@@ -43,7 +43,7 @@ export function SiteFooter() {
         <div className="flex items-end justify-between gap-8 mb-10">
           <div className="flex items-center justify-center gap-4">
             <img
-              src={`${import.meta.env.BASE_URL}hipaa-badge.png`}
+              src={`${import.meta.env.BASE_URL}hipaa-badge.svg`}
               alt="HIPAA Compliant"
               className="h-16 w-auto object-contain"
             />
