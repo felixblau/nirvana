@@ -2,67 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import type { PublicPledge } from "@/types";
 
-// ─── Mobile marquee (two rows, opposite directions) ──────────────────────────
-// Card matches Figma spec: 166×85px, gap 8px
-// Row 1: right→left (marquee), Row 2: left→right (marqueeReverse)
-
-const CARD_W = 166;
-const CARD_H = 85;
-const CARD_GAP = 8;
-
-export function MobileLogoMarquee({ tiles }: { tiles: { src: string; label: string }[] }) {
-  const half = Math.ceil(tiles.length / 2);
-  const row1 = tiles.slice(0, half);
-  const row2 = tiles.slice(half);
-
-  return (
-    <div className="flex flex-col w-full overflow-hidden" style={{ gap: CARD_GAP }}>
-      <MarqueeRow tiles={row1} direction="left" />
-      <MarqueeRow tiles={row2} direction="right" />
-    </div>
-  );
-}
-
-function MarqueeRow({
-  tiles,
-  direction,
-}: {
-  tiles: { src: string; label: string }[];
-  direction: "left" | "right";
-}) {
-  const doubled = [...tiles, ...tiles];
-  const totalW = tiles.length * (CARD_W + CARD_GAP);
-  const duration = totalW / 50; // px/s → seconds
-  return (
-    <div style={{ overflow: "hidden", height: CARD_H }}>
-      <div
-        className="flex shrink-0"
-        style={{
-          gap: CARD_GAP,
-          animation: `${direction === "left" ? "marquee" : "marqueeReverse"} ${duration}s linear infinite`,
-          willChange: "transform",
-          width: totalW * 2,
-        }}
-      >
-        {doubled.map((tile, i) => (
-          <div
-            key={i}
-            className="shrink-0 bg-white rounded-[4px] flex items-center justify-center overflow-hidden"
-            style={{ width: CARD_W, height: CARD_H, padding: 16 }}
-            title={tile.label}
-          >
-            <img
-              src={tile.src.startsWith("http") ? tile.src : `${BASE}logos/${tile.src}`}
-              alt={tile.label}
-              className="object-contain max-w-full max-h-full"
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 const BASE = import.meta.env.BASE_URL;
 
 type Tile = {
@@ -108,6 +47,76 @@ const PAGE_2: Tile[] = [
   { src: "lifestance.png", label: "LifeStance" },
   { src: "nocd.png", label: "NOCD" },
 ];
+
+// ─── Mobile marquee (two rows, opposite directions) ──────────────────────────
+// Card matches Figma spec: 166×85px, gap 8px
+// Row 1: right→left, Row 2: left→right
+
+const CARD_W = 166;
+const CARD_H = 85;
+const CARD_GAP = 8;
+
+const ALL_STATIC_TILES: Tile[] = [...PAGE_1, ...PAGE_2];
+
+export function MobileLogoMarquee({ pledges }: { pledges: PublicPledge[] }) {
+  const tiles = useMemo(() => {
+    const seen = new Set<string>();
+    const out: Tile[] = [];
+    for (const p of pledges) {
+      if (!p.logoUrl || seen.has(p.company)) continue;
+      seen.add(p.company);
+      out.push({ src: p.logoUrl, label: p.company });
+    }
+    return out.length > 0 ? out : ALL_STATIC_TILES;
+  }, [pledges]);
+
+  const half = Math.ceil(tiles.length / 2);
+  const row1 = tiles.slice(0, half);
+  const row2 = tiles.slice(half);
+
+  return (
+    <div className="flex flex-col w-full overflow-hidden" style={{ gap: CARD_GAP }}>
+      <MarqueeRow tiles={row1} direction="left" />
+      <MarqueeRow tiles={row2} direction="right" />
+    </div>
+  );
+}
+
+function MarqueeRow({ tiles, direction }: { tiles: Tile[]; direction: "left" | "right" }) {
+  const doubled = [...tiles, ...tiles];
+  const totalW = tiles.length * (CARD_W + CARD_GAP);
+  const duration = totalW / 50;
+  return (
+    <div style={{ overflow: "hidden", height: CARD_H }}>
+      <div
+        className="flex shrink-0"
+        style={{
+          gap: CARD_GAP,
+          animation: `${direction === "left" ? "marquee" : "marqueeReverse"} ${duration}s linear infinite`,
+          willChange: "transform",
+          width: totalW * 2,
+        }}
+      >
+        {doubled.map((tile, i) => (
+          <div
+            key={i}
+            className="shrink-0 bg-white rounded-[4px] flex items-center justify-center overflow-hidden"
+            style={{ width: CARD_W, height: CARD_H, padding: 16 }}
+            title={tile.label}
+          >
+            <img
+              src={tile.src.startsWith("http") ? tile.src : `${BASE}logos/${tile.src}`}
+              alt={tile.label}
+              className="object-contain max-w-full max-h-full"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 const AUTOPLAY_MS = 10_000;
 

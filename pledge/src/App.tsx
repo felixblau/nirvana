@@ -101,10 +101,7 @@ export default function App() {
 
             {/* Mobile logo marquee — shown only when aside is stacked below (< lg) */}
             <div className="lg:hidden bg-[color:var(--warm-taupe)] py-6 overflow-hidden">
-              <MobileLogoMarquee tiles={(state.list ?? []).filter(p => p.logoUrl).reduce<{src:string;label:string}[]>((acc, p) => {
-                if (!acc.find(t => t.label === p.company)) acc.push({ src: p.logoUrl!, label: p.company });
-                return acc;
-              }, [])} />
+              <MobileLogoMarquee pledges={pledges} />
             </div>
 
             {/* Why This Matters section — lila-light bg per Figma */}
