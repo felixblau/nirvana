@@ -27,18 +27,18 @@ export function PledgeCounterPill(props: Props) {
   return (
     <button
       onClick={onOpenList}
-      className="group w-full flex items-center justify-center gap-2 rounded-lg p-4 border border-[color:var(--lilac-light)] text-left"
-      style={{
-        backgroundImage: "linear-gradient(to right, var(--lilac-light), #ffffff)",
-      }}
+      className="group relative w-full flex items-center justify-center rounded-lg p-4 border border-[color:var(--lilac-light)] animate-pledge-pill-gradient"
     >
-      <span className="flex-1 min-w-0 text-[18px] text-[color:var(--deep-purple)]" style={{ lineHeight: "24px" }}>
+      <span
+        className="text-[18px] text-[color:var(--deep-purple)] text-center"
+        style={{ lineHeight: "24px" }}
+      >
         <span className="font-bold">{pledges} pledges</span>
         <span> from </span>
         <span className="font-bold">{companies} companies</span>
       </span>
       <span
-        className="flex items-center gap-2 flex-shrink-0 text-[18px] whitespace-nowrap"
+        className="absolute right-4 flex items-center gap-2 text-[18px] whitespace-nowrap"
         style={{ color: "#9073F2", lineHeight: "24px" }}
       >
         <span className="font-semibold" style={{ letterSpacing: "-0.36px" }}>View list</span>

@@ -47,6 +47,16 @@
   to { transform: translateX(-50%); }
 }
 
+@keyframes logoMarqueeUp {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+
+@keyframes logoMarqueeDown {
+  from { transform: translateY(-50%); }
+  to { transform: translateY(0); }
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
@@ -55,6 +65,12 @@
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
+}
+
+@keyframes pledgePillGradient {
+  0%   { background-position:   0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position:   0% 50%; }
 }
 
 @utility animate-marquee {
@@ -76,10 +92,24 @@
   animation: shimmer 1.6s linear infinite;
 }
 
+@utility animate-pledge-pill-gradient {
+  background-image: linear-gradient(
+    90deg,
+    var(--lilac-light) 0%,
+    #ffffff 50%,
+    var(--lilac-light) 100%
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  animation: pledgePillGradient 12s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee { animation: none; }
   .animate-fade-in { animation: none; }
   .animate-shimmer { animation: none; }
+  .animate-pledge-pill-gradient { animation: none; }
+  [style*="logoMarqueeUp"], [style*="logoMarqueeDown"] { animation: none !important; }
 }
 
 body {

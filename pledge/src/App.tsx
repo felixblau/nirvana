@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PasswordGate } from "@/components/PasswordGate";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -6,6 +6,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { Hero } from "@/components/Hero";
 import { WhyItMatters } from "@/components/WhyItMatters";
 import { LogoWall } from "@/components/LogoWall";
+import { LogoWallVertical } from "@/components/LogoWallVertical";
 import { PledgeCounterPill } from "@/components/PledgeCounterPill";
 import { PledgeListModal } from "@/components/PledgeListModal";
 import { PledgeFormDialog } from "@/components/PledgeFormDialog";
@@ -21,6 +22,20 @@ export default function App() {
   const [formOpen, setFormOpen] = useState(false);
   const [listOpen, setListOpen] = useState(false);
   const [lookupOpen, setLookupOpen] = useState(false);
+  const [wallVariant, setWallVariant] = useState<"paginated" | "vertical">(
+    () =>
+      typeof window !== "undefined" && window.location.hash.includes("wall=v2")
+        ? "vertical"
+        : "paginated",
+  );
+  useEffect(() => {
+    const onHash = () =>
+      setWallVariant(
+        window.location.hash.includes("wall=v2") ? "vertical" : "paginated",
+      );
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
 
   const pledges = state.list ?? [];
   const companyCount = new Set(pledges.map((p) => p.company)).size;
@@ -104,7 +119,11 @@ export default function App() {
             }}
           >
             <div className="h-full flex flex-col justify-center">
-              <LogoWall pledges={pledges} />
+              {wallVariant === "vertical" ? (
+                <LogoWallVertical pledges={pledges} />
+              ) : (
+                <LogoWall pledges={pledges} />
+              )}
             </div>
           </aside>
         </div>
