@@ -88,7 +88,7 @@ export default function App() {
                     </Button>
                     <button
                       onClick={() => setLookupOpen(true)}
-                      className="text-sm text-[color:var(--deep-purple)] font-medium underline underline-offset-4 hover:opacity-70"
+                      className="text-base leading-6 text-[color:var(--deep-purple)] font-medium underline underline-offset-4 hover:opacity-70"
                     >
                       Already pledged?
                     </button>
