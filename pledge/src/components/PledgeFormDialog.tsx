@@ -36,6 +36,13 @@ export function PledgeFormDialog({ open, onOpenChange, onSubmit, submitting, sub
     setErrors((e2) => ({ ...e2, [k]: undefined }));
   };
 
+  const allFilled =
+    values.firstName.trim() !== "" &&
+    values.lastName.trim() !== "" &&
+    values.email.trim() !== "" &&
+    values.company.trim() !== "" &&
+    values.role.trim() !== "";
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed: PledgeFormData = {
@@ -89,7 +96,7 @@ export function PledgeFormDialog({ open, onOpenChange, onSubmit, submitting, sub
               <p className="text-sm text-destructive" role="alert">{submitError}</p>
             )}
             <div className="pt-2 space-y-3">
-              <Button type="submit" disabled={submitting} className="w-full rounded-full py-6 text-base font-semibold">
+              <Button type="submit" disabled={submitting || !allFilled} className="w-full rounded-full py-6 text-base font-semibold relative overflow-hidden before:absolute before:inset-0 before:rounded-full before:bg-white/0 hover:before:bg-white/10 before:transition-colors before:pointer-events-none">
                 {submitting ? "Submitting…" : "Sign the pledge"}
               </Button>
               <p className="text-xs text-muted-foreground text-center">
