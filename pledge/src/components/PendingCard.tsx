@@ -27,18 +27,16 @@ export function PendingCard({ company, onRescind }: Props) {
         <div className="w-11 h-11 rounded-full bg-white flex items-center justify-center shrink-0">
           <Clock className="h-[18px] w-[18px] text-[color:var(--warm-taupe,#AD9D92)]" />
         </div>
-        <div className="flex flex-col" style={{ gap: 16 }}>
-          <p className="text-base text-[color:var(--deep-purple,#2C1F45)] leading-snug">
-            <span className="font-bold">Your pledge is under review</span>
-            <span className="font-medium"> – we'll review your submission shortly.</span>
-          </p>
+        <p className="text-base text-[color:var(--deep-purple,#2C1F45)] leading-snug">
+          <span className="font-bold">Your pledge is under review</span>
+          <span className="font-medium"> – we'll review your submission shortly. </span>
           <button
             onClick={() => setConfirmOpen(true)}
-            className="text-base text-[color:var(--vibrant-purple,#9073F2)] underline underline-offset-2 font-medium hover:opacity-70 transition-opacity text-left"
+            className="text-base text-[color:var(--vibrant-purple,#9073F2)] underline underline-offset-2 font-medium hover:opacity-70 transition-opacity"
           >
-            Rescind pledge
+            Rescind
           </button>
-        </div>
+        </p>
       </div>
 
       <BaseDialog.Root open={confirmOpen} onOpenChange={setConfirmOpen}>
