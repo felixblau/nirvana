@@ -273,12 +273,12 @@ function TimerPill({
         height={H}
         viewBox={`0 0 ${W} ${H}`}
         aria-hidden="true"
+        shapeRendering="geometricPrecision"
       >
-        <path d={path} fill="none" stroke="#ffffff" strokeWidth={STROKE} />
         <path
           d={path}
           fill="none"
-          stroke="#2c1f45"
+          stroke="#ffffff"
           strokeWidth={STROKE}
           strokeDasharray={perimeter}
           strokeDashoffset={perimeter * (1 - progress)}
