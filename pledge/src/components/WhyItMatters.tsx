@@ -77,7 +77,7 @@ export function WhyItMatters() {
           className="text-[color:var(--deep-purple)] w-full"
           style={{ fontWeight: 500, fontSize: 38, lineHeight: 1.25, ...stepStyle(1) }}
         >
-          This is commitment to a better{" "}patient{" "}experience.
+          This is commitment to a better patient{" "}experience.
         </h2>
       </header>
 
@@ -88,7 +88,7 @@ export function WhyItMatters() {
         >
           Healthcare should feel like care. Yet millions of patients face surprise bills,
           coverage confusion, and administrative barriers that push them away from the treatment
-          they need. This pledge is a public commitment to change that.
+          they need. This pledge is a public commitment to change{" "}that.
         </p>
       </div>
 
