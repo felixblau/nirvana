@@ -78,13 +78,19 @@ export function LogoWall({ pledges }: Props) {
   }, [pledges]);
   const safePage = Math.min(page, pages.length - 1);
   const totalPages = pages.length;
-  const firstPaintRef = useRef(true);
+
+  // Bump per-page activation counter each time a page becomes visible, so its
+  // tiles remount with a fresh cascade animation.
+  const [activations, setActivations] = useState<number[]>(() =>
+    Array(pages.length).fill(0),
+  );
   useEffect(() => {
-    const t = window.setTimeout(() => {
-      firstPaintRef.current = false;
-    }, 2000);
-    return () => window.clearTimeout(t);
-  }, []);
+    setActivations((prev) => {
+      const next = prev.length === pages.length ? [...prev] : Array(pages.length).fill(0);
+      next[safePage] = (next[safePage] ?? 0) + 1;
+      return next;
+    });
+  }, [safePage, pages.length]);
 
 
   const [progress, setProgress] = useState(0);
@@ -125,32 +131,31 @@ export function LogoWall({ pledges }: Props) {
       {/* Stack all pages absolutely; only the active one is visible. Every image
           stays in the DOM after first paint so page flips have no fetch flash. */}
       <div className="relative w-full" style={{ aspectRatio: "617.455 / 544" }}>
-        {pages.map((tiles, pi) => (
-          <section
-            key={`page-${pi}`}
-            aria-label="Signatory logos"
-            aria-hidden={pi !== safePage}
-            className="absolute inset-0 grid grid-cols-3 gap-2"
-            style={{
-              visibility: pi === safePage ? "visible" : "hidden",
-              pointerEvents: pi === safePage ? "auto" : "none",
-            }}
-          >
-            {tiles.map((tile, i) => {
-              const shouldStagger = pi === 0 && firstPaintRef.current;
-              return (
+        {pages.map((tiles, pi) => {
+          const active = pi === safePage;
+          const activation = activations[pi] ?? 0;
+          return (
+            <section
+              key={`page-${pi}`}
+              aria-label="Signatory logos"
+              aria-hidden={!active}
+              className="absolute inset-0 grid grid-cols-3 gap-2"
+              style={{
+                visibility: active ? "visible" : "hidden",
+                pointerEvents: active ? "auto" : "none",
+              }}
+            >
+              {tiles.map((tile, i) => (
                 <div
-                  key={`p${pi}-slot-${i}`}
+                  key={`p${pi}-slot-${i}-a${activation}`}
                   className="bg-white rounded-lg flex items-center justify-center overflow-hidden"
                   style={{
                     aspectRatio: "200.485 / 102.4",
                     padding: 16,
-                    ...(shouldStagger
-                      ? {
-                          opacity: 0,
-                          animation: `fadeIn 0.5s ease-out ${i * 60}ms forwards`,
-                        }
-                      : null),
+                    opacity: 0,
+                    animation: active
+                      ? `fadeIn 0.5s ease-out ${i * 60}ms forwards`
+                      : undefined,
                   }}
                   title={tile.label}
                 >
@@ -160,10 +165,10 @@ export function LogoWall({ pledges }: Props) {
                     offsetY={tile.offsetY}
                   />
                 </div>
-              );
-            })}
-          </section>
-        ))}
+              ))}
+            </section>
+          );
+        })}
       </div>
 
       {totalPages > 1 && (
