@@ -25,8 +25,8 @@ export function PledgeListModal({ open, onOpenChange, pledges }: Props) {
         <BaseDialog.Backdrop className="fixed inset-0 bg-[color:var(--deep-purple)]/40 backdrop-blur-sm z-40" />
         <BaseDialog.Popup
           className="fixed left-0 top-0 bottom-0 z-50 w-full bg-white border-r border-[#dcd2c8] flex flex-col shadow-2xl overflow-hidden"
-          style={{ maxWidth: 440 }}
           style={{
+            maxWidth: 440,
             animation: open
               ? "slideInLeft 0.35s cubic-bezier(0.32,0,0.15,1) forwards"
               : "slideOutLeft 0.3s cubic-bezier(0.32,0,0.15,1) forwards",
