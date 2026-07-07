@@ -64,7 +64,7 @@ export function PledgeListModal({ open, onOpenChange, pledges }: Props) {
                 <span className="shrink-0 text-[#2c1f45] opacity-75" style={{ fontSize: 18, lineHeight: 1.5 }}>
                   {s.firstName} {s.lastName}
                 </span>
-                <span className="truncate min-w-0 text-[#ad9d92] opacity-75" style={{ fontSize: 14, lineHeight: 1.5 }}>
+                <span className="flex-1 min-w-0 truncate text-right text-[#ad9d92] opacity-75" style={{ fontSize: 14, lineHeight: 1.5 }}>
                   {s.role}
                 </span>
               </div>
