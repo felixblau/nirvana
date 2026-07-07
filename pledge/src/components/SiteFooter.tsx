@@ -18,10 +18,10 @@ export function SiteFooter() {
             />
             <div className="flex gap-2">
               <span className="w-6 h-6 rounded-full bg-[#ae9bea] flex items-center justify-center cursor-default" aria-label="Instagram">
-                <img src={`${import.meta.env.BASE_URL}icon-instagram.svg`} alt="" aria-hidden="true" className="w-[13px] h-[13px] object-contain" />
+                <img src={`${import.meta.env.BASE_URL}icon-instagram.svg`} alt="" aria-hidden="true" className="w-5 h-5 object-contain" />
               </span>
               <span className="w-6 h-6 rounded-full bg-[#ae9bea] flex items-center justify-center cursor-default" aria-label="LinkedIn">
-                <img src={`${import.meta.env.BASE_URL}icon-linkedin.svg`} alt="" aria-hidden="true" className="w-[11px] h-[11px] object-contain" />
+                <img src={`${import.meta.env.BASE_URL}icon-linkedin.svg`} alt="" aria-hidden="true" className="w-5 h-5 object-contain" />
               </span>
             </div>
           </div>
