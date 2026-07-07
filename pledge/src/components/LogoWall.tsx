@@ -81,7 +81,7 @@ export function LogoWall({ pledges }: Props) {
 
 
   const [progress, setProgress] = useState(0);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(true);
   const startedAtRef = useRef<number>(performance.now());
   useEffect(() => {
     if (totalPages < 2 || !playing) return;
