@@ -82,7 +82,7 @@ export default function App() {
                       size="lg"
                       onClick={() => setFormOpen(true)}
                       disabled={state.local.kind === "submitting"}
-                      className="rounded-full px-8 py-6 text-base font-semibold"
+                      className="rounded-full px-8 py-6 text-base font-semibold hover:bg-white/10"
                     >
                       Sign the pledge
                     </Button>
