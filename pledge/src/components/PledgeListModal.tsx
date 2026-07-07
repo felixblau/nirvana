@@ -36,6 +36,7 @@ const LOGO_MAP: Record<string, string> = {
   "thriveworks": "thriveworks.png",
   "doctronic": "doctronic.png",
   "lifestance": "lifestance.png",
+  "lifestance health": "lifestance.png",
   "nocd": "nocd.png",
 };
 
