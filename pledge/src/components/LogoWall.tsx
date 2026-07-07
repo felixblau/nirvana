@@ -248,11 +248,14 @@ function TimerPill({
     `A ${R} ${R} 0 0 1 ${R} 0 ` +
     `H ${W / 2}`;
 
-  const STROKE = 1.5;
+  const STROKE = 1;
 
   return (
-    <div className="relative group" style={{ width: W, height: H }}>
-      <div className="absolute inset-0 flex items-stretch rounded-full overflow-hidden">
+    <div className="relative group" style={{ width: W, height: H, transform: "translateZ(0)" }}>
+      <div
+        className="absolute inset-0 flex items-stretch rounded-full overflow-hidden"
+        style={{ outline: "1px solid rgba(255,255,255,0.5)", outlineOffset: 0 }}
+      >
         <button
           onClick={onBack}
           className="flex-1 flex items-center justify-center text-white hover:bg-[color:var(--warm-tan)] transition-colors"
@@ -282,7 +285,8 @@ function TimerPill({
         height={H}
         viewBox={`0 0 ${W} ${H}`}
         aria-hidden="true"
-        shapeRendering="geometricPrecision"
+        shapeRendering="crispEdges"
+        style={{ imageRendering: "crisp-edges" }}
       >
         <path
           d={path}
