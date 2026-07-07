@@ -12,16 +12,16 @@ export function SiteFooter() {
         <div className="grid grid-cols-1 md:grid-cols-6 gap-10 mb-16">
           <div className="md:col-span-2 flex flex-col" style={{ gap: 24 }}>
             <img
-              src={`${import.meta.env.BASE_URL}footer-nirvana-logo.svg`}
+              src={`${import.meta.env.BASE_URL}nirvana-color.svg`}
               alt="Nirvana"
               className="h-6 w-auto object-contain object-left"
             />
             <div className="flex gap-2">
               <span className="w-6 h-6 rounded-full bg-[#ae9bea] flex items-center justify-center cursor-default" aria-label="Instagram">
-                <img src={`${import.meta.env.BASE_URL}icon-instagram.png`} alt="" aria-hidden="true" className="w-[13px] h-[13px] object-contain" />
+                <img src={`${import.meta.env.BASE_URL}icon-instagram.svg`} alt="" aria-hidden="true" className="w-[13px] h-[13px] object-contain" />
               </span>
               <span className="w-6 h-6 rounded-full bg-[#ae9bea] flex items-center justify-center cursor-default" aria-label="LinkedIn">
-                <img src={`${import.meta.env.BASE_URL}icon-linkedin.png`} alt="" aria-hidden="true" className="w-[11px] h-[11px] object-contain" />
+                <img src={`${import.meta.env.BASE_URL}icon-linkedin.svg`} alt="" aria-hidden="true" className="w-[11px] h-[11px] object-contain" />
               </span>
             </div>
           </div>
