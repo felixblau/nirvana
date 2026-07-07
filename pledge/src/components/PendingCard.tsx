@@ -9,7 +9,7 @@ type Props = {
   onRescind: () => Promise<void>;
 };
 
-export function PendingCard({ firstName, company, onRescind }: Props) {
+export function PendingCard({ company, onRescind }: Props) {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [rescinding, setRescinding] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,23 +22,21 @@ export function PendingCard({ firstName, company, onRescind }: Props) {
   };
 
   return (
-    <div className="max-w-xl mx-auto bg-card border border-border rounded-2xl p-8 space-y-4 animate-fade-in">
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-[color:var(--amber)]/10 flex items-center justify-center">
-          <Clock className="h-5 w-5 text-[color:var(--amber)]" />
+    <>
+      <div className="flex items-center gap-4">
+        <div className="w-11 h-11 rounded-full bg-white flex items-center justify-center shrink-0">
+          <Clock className="h-[18px] w-[18px] text-[color:var(--warm-taupe,#AD9D92)]" />
         </div>
-        <div className="text-left">
-          <div className="text-sm font-semibold text-foreground">Your pledge is under review</div>
-          <div className="text-xs text-muted-foreground">Thanks {firstName} — Nirvana will review your submission shortly.</div>
-        </div>
-      </div>
-      <div className="pt-2">
-        <button
-          onClick={() => setConfirmOpen(true)}
-          className="text-xs text-muted-foreground underline underline-offset-4 hover:text-destructive transition-colors"
-        >
-          Rescind pledge
-        </button>
+        <p className="text-base text-[color:var(--deep-purple,#2C1F45)] leading-snug">
+          <span className="font-bold">Your pledge is under review</span>
+          <span className="font-medium"> – we'll review your submission shortly. </span>
+          <button
+            onClick={() => setConfirmOpen(true)}
+            className="text-[color:var(--vibrant-purple,#9073F2)] underline underline-offset-2 font-medium hover:opacity-70 transition-opacity"
+          >
+            Rescind pledge
+          </button>
+        </p>
       </div>
 
       <BaseDialog.Root open={confirmOpen} onOpenChange={setConfirmOpen}>
@@ -59,6 +57,6 @@ export function PendingCard({ firstName, company, onRescind }: Props) {
           </BaseDialog.Popup>
         </BaseDialog.Portal>
       </BaseDialog.Root>
-    </div>
+    </>
   );
 }

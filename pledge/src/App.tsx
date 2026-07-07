@@ -62,18 +62,18 @@ export default function App() {
               style={{ minHeight: 740, paddingTop: 40, paddingBottom: 40, paddingLeft: 80, paddingRight: 80 }}
             >
               <Hero>
-                {state.local.kind === "pending" && (
-                  <PendingCard
-                    firstName={state.local.firstName}
-                    company={state.local.company}
-                    onRescind={state.rescind}
-                  />
-                )}
                 {state.local.kind === "approved" && (
                   <ApprovedCard
                     firstName={state.local.firstName}
                     company={state.local.company}
                     onViewList={() => setListOpen(true)}
+                  />
+                )}
+                {state.local.kind === "pending" && (
+                  <PendingCard
+                    firstName={state.local.firstName}
+                    company={state.local.company}
+                    onRescind={state.rescind}
                   />
                 )}
                 {(state.local.kind === "fresh" || state.local.kind === "submitting") && (
