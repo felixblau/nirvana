@@ -965,19 +965,36 @@
       });
     }
 
+    // Ensure the clip is buffered enough to render a frame before we play it.
+    function ensureReady(){
+      return new Promise(function(resolve){
+        if (video.readyState >= 2) return resolve();   // HAVE_CURRENT_DATA — a frame exists
+        var done = false;
+        function ok(){ if (done) return; done = true; resolve(); }
+        video.addEventListener('loadeddata', ok, { once:true });
+        video.addEventListener('canplay', ok, { once:true });
+        try { video.load(); } catch(e) {}
+        setTimeout(ok, 8000);   // safety net
+      });
+    }
+
     // Play the clip (with sound) and resolve when it truly ends.
-    function playToEnd(){
+    async function playToEnd(){
+      await ensureReady();
       return new Promise(function(resolve){
         var settled = false;
         function fin(){ if (settled) return; settled = true; video.removeEventListener('ended', fin); resolve(); }
         video.addEventListener('ended', fin, { once:true });
-        video.currentTime = 0;
-        video.play();
+        try { video.currentTime = 0; } catch(e) {}
+        var p = video.play();
+        if (p && p.catch) p.catch(function(){ /* if play fails, guard/ended still resolve */ });
         var guard = setInterval(function(){
           if (isFinite(video.duration) && video.duration > 0 && video.currentTime >= video.duration - 0.15) {
             clearInterval(guard); fin();
           }
         }, 200);
+        // absolute fallback so we never sit on black forever
+        setTimeout(function(){ clearInterval(guard); fin(); }, 20000);
       });
     }
 
