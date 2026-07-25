@@ -124,8 +124,8 @@
     #win {
       position: relative;
       z-index: 3;
-      width: min(1120px, 92vw);
-      height: min(720px, 88vh);
+      width: 90vw;
+      height: 90vh;
       background: #fff;
       border-radius: 14px;
       box-shadow: 0 40px 120px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.3);
@@ -251,7 +251,8 @@
 
     .thread {
       flex: 1;
-      overflow: hidden;
+      overflow-y: auto;
+      scroll-behavior: smooth;
       padding: 26px 32px 8px;
     }
     .thread-inner {
@@ -295,6 +296,80 @@
     .reveal { opacity: 0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; }
     .reveal.show { opacity: 1; transform: none; }
 
+    /* ---------- Composer ---------- */
+    .composer {
+      flex-shrink: 0;
+      padding: 10px 32px 16px;
+      border-top: 1px solid var(--gpt-line);
+      background: #fff;
+    }
+    .composer-inner { max-width: 720px; margin: 0 auto; }
+    .composer-box {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 24px;
+      padding: 12px 10px 12px 16px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .composer-box.focus {
+      border-color: #c9c9c9;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .composer-plus {
+      font-size: 20px; color: var(--gpt-muted);
+      width: 22px; text-align: center; flex-shrink: 0;
+    }
+    .composer-text {
+      flex: 1;
+      font-size: 14.5px;
+      line-height: 1.55;
+      color: var(--gpt-text);
+      min-height: 22px;
+      max-height: 132px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      align-self: center;
+    }
+    .composer-text .placeholder { color: var(--gpt-faint); }
+    .composer-text .placeholder.hide { display: none; }
+    .caret-blink {
+      display: none;
+      width: 1.5px; height: 16px;
+      background: var(--gpt-text);
+      vertical-align: -3px;
+      margin-left: 1px;
+      animation: blink 1s step-end infinite;
+    }
+    .caret-blink.on { display: inline-block; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .composer-send {
+      width: 34px; height: 34px; flex-shrink: 0;
+      border-radius: 50%;
+      background: #0d0d0d;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0.25;
+      transition: opacity .2s;
+    }
+    .composer-send svg { width: 17px; height: 17px; }
+    .composer-send.ready { opacity: 1; }
+    .composer-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+      padding: 9px 6px 0;
+    }
+    .conn {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: #4a4a4a; font-weight: 500;
+      flex-shrink: 0;
+    }
+    .conn .nv { width: 14px; height: 14px; }
+    .conn .ok { color: var(--green); font-weight: 600; }
+    .disclaimer { font-size: 11px; color: var(--gpt-faint); text-align: right; }
+
     /* ---------- Nirvana tool-call panel ---------- */
     .tool {
       border: 1px solid #e6e2f7;
@@ -336,15 +411,18 @@
       font-size: 12.5px; color: #4a4a4a;
     }
     .bar {
-      flex: 1; height: 5px; border-radius: 3px;
-      background: #ece8fb; overflow: hidden;
+      display: block;
+      flex: 1; height: 8px; border-radius: 5px;
+      background: #e7e1fb; overflow: hidden;
     }
     .bar-fill {
+      display: block;
       height: 100%; width: 0%;
-      background: linear-gradient(90deg, var(--nirvana), #9d84ff);
-      transition: width .4s ease;
+      background: #5b34d6;
+      border-radius: 5px;
+      transition: width .35s ease;
     }
-    .tool-count-num { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--nirvana); }
+    .tool-count-num { font-variant-numeric: tabular-nums; font-weight: 700; color: #5b34d6; }
 
     .powered {
       display: flex; align-items: center; gap: 5px; justify-content: flex-end;
@@ -495,8 +573,8 @@
 
         <div class="side-spacer"></div>
         <div class="side-user">
-          <div class="avatar">MC</div>
-          <span class="name">Maya Chen</span>
+          <div class="avatar">MS</div>
+          <span class="name">Maya Smith</span>
           <span class="gift">◇</span>
         </div>
       </aside>
@@ -513,14 +591,14 @@
 
             <!-- 1. specialist's ask -->
             <div class="msg-user reveal" id="m-ask">
-              Here's tomorrow's imaging schedule — 12 patients. Verify each one's coverage, check prior-auth rules, and estimate what every patient will owe. Flag anything that isn't intake-ready.
+              Here's tomorrow's imaging schedule — 12 patients. For each one, confirm their coverage is still active and estimate what they'll owe. One to watch: <strong>Jordan Rivera</strong> is in for a knee MRI, but the only insurance card we have on file is from last year — I don't know if his plan is still active, whether it needs prior authorization, or what it'll cost. Verify everyone against the payer and flag anything that isn't intake-ready.
             </div>
 
             <!-- 2. assistant acknowledges + runs Nirvana -->
             <div class="msg-ai reveal" id="m-run">
               <div class="ai-glyph"><svg viewBox="0 0 24 24" fill="#0d0d0d"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3a7 7 0 110 14 7 7 0 010-14z"/></svg></div>
               <div class="ai-body">
-                <p>On it — running all 12 through the payer systems now.</p>
+                <p>I can't confirm any of that from your records alone — that has to come live from each payer. I'm calling <strong>Nirvana</strong> to re-verify all 12 plans directly with the insurers, apply their prior-auth rules, and price each visit. Running now:</p>
                 <div class="tool">
                   <div class="tool-head">
                     <img class="nv" src="nirvana-glyph.png" alt="" />
@@ -579,6 +657,23 @@
 
           </div>
         </div>
+
+        <!-- Composer -->
+        <div class="composer">
+          <div class="composer-inner">
+            <div class="composer-box">
+              <span class="composer-plus">+</span>
+              <div class="composer-text" id="composer-text"><span class="placeholder" id="composer-ph">Message ChatGPT Work…</span><span id="typed"></span><span class="caret-blink" id="caret"></span></div>
+              <span class="composer-send" id="send-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              </span>
+            </div>
+            <div class="composer-foot">
+              <span class="conn"><img class="nv" src="nirvana-glyph.png" alt="" /> Nirvana · <span class="ok">Connected</span></span>
+              <span class="disclaimer">ChatGPT can make mistakes. Coverage verified live with payer via Nirvana.</span>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   </div>
@@ -626,8 +721,50 @@
     // ---- Timeline helpers ----
     var stage = document.getElementById('stage');
     var video = document.getElementById('bg');
+    var thread = document.querySelector('.thread');
     function wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
-    function show(id){ document.getElementById(id).classList.add('show'); }
+    function show(id){ document.getElementById(id).classList.add('show'); scrollDown(); }
+    function scrollDown(){ thread.scrollTop = thread.scrollHeight; }
+
+    // Type text into the composer, char by char.
+    function typeInComposer(text){
+      return new Promise(function(resolve){
+        var box = document.querySelector('.composer-box');
+        var ph  = document.getElementById('composer-ph');
+        var typed = document.getElementById('typed');
+        var caret = document.getElementById('caret');
+        var send = document.getElementById('send-btn');
+        box.classList.add('focus');
+        ph.classList.add('hide');
+        caret.classList.add('on');
+        typed.textContent = '';
+        var i = 0;
+        (function tick(){
+          if (i <= text.length){
+            typed.textContent = text.slice(0, i);
+            if (text.length) send.classList.add('ready');
+            i++;
+            setTimeout(tick, 14 + Math.random()*22);
+          } else {
+            resolve();
+          }
+        })();
+      });
+    }
+
+    // Clear composer back to placeholder.
+    function resetComposer(){
+      var box = document.querySelector('.composer-box');
+      var ph  = document.getElementById('composer-ph');
+      var typed = document.getElementById('typed');
+      var caret = document.getElementById('caret');
+      var send = document.getElementById('send-btn');
+      typed.textContent = '';
+      ph.classList.remove('hide');
+      caret.classList.remove('on');
+      box.classList.remove('focus');
+      send.classList.remove('ready');
+    }
 
     async function runCounter(){
       var count = document.getElementById('count');
@@ -706,6 +843,8 @@
       });
     }
 
+    var ASK_TEXT = "Here's tomorrow's imaging schedule — 12 patients. For each one, confirm their coverage is still active and estimate what they'll owe. One to watch: Jordan Rivera is in for a knee MRI, but the only insurance card on file is from last year — I don't know if his plan is still active, whether it needs prior auth, or what it'll cost. Verify everyone against the payer and flag anything that isn't intake-ready.";
+
     async function sequence(){
       // 1. wait for the clip to be genuinely ready, THEN reveal + play it
       await whenReady();
@@ -717,20 +856,31 @@
       stage.classList.add('superimposed');
       await wait(900);
 
-      // 3. specialist asks
+      // 3. Maya types her request into the composer
+      await wait(400);
+      await typeInComposer(ASK_TEXT);
+      await wait(550);
+
+      // 4. she "sends" it — composer clears, message bubbles up into the thread
+      resetComposer();
       show('m-ask');
-      await wait(1100);
+      await wait(1200);
 
-      // 4. assistant + Nirvana engine
+      // 5. assistant replies that it's calling Nirvana + runs the engine
       show('m-run');
-      await wait(650);
+      await wait(750);
       await runCounter();
-      await wait(700);
+      await wait(800);
 
-      // 5. deliverable
+      // 6. deliverable
       show('m-out');
       await wait(500);
       await buildSheet();
+      await wait(600);
+
+      // 7. scroll the thread back up so the viewer can read the full result
+      thread.scrollTo({ top: 0, behavior: 'smooth' });
+      await wait(400);
       document.getElementById('replay').classList.add('show');
     }
 
@@ -748,6 +898,8 @@
       ['p-scan','p-rules','p-est'].forEach(function(id){ document.getElementById(id).className='pipe-ic'; });
       document.getElementById('count').textContent='0 / 12';
       document.getElementById('bar').style.width='0%';
+      resetComposer();
+      thread.scrollTop = 0;
       started = false;
       go();
     });
