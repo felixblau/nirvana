@@ -884,7 +884,7 @@
 
     // ---- TEMP debug ----
     var _dbg = document.getElementById('dbg');
-    function dbg(msg){ if(_dbg){ _dbg.textContent = 'dbg: ' + msg + '\nreadyState=' + video.readyState + ' paused=' + video.paused + ' t=' + (video.currentTime||0).toFixed(2) + ' dur=' + (video.duration||0) + ' err=' + (video.error ? video.error.code : 'none') + ' net=' + video.networkState + ' src=' + (video.currentSrc||'').split('/').pop(); } }
+    function dbg(msg){ if(_dbg){ _dbg.textContent = 'dbg: ' + msg + '\nreadyState=' + video.readyState + ' paused=' + video.paused + ' t=' + (video.currentTime||0).toFixed(2) + ' dur=' + (video.duration||0) + ' err=' + (video.error ? video.error.code : 'none') + ' net=' + video.networkState + ' src=' + (video.currentSrc||'').split('/').pop() + '\nmsg=' + (video.error ? (video.error.message||'(none)') : '-') + '\ncanH264=' + video.canPlayType('video/mp4; codecs="avc1.64002A"') + '/' + video.canPlayType('video/mp4'); } }
     window.addEventListener('error', function(e){ if(_dbg) _dbg.textContent = 'JS ERROR: ' + (e.message||'') + ' @ ' + (e.filename||'').split('/').pop() + ':' + e.lineno; });
     video.addEventListener('error', function(){ dbg('video error event'); });
     ['loadedmetadata','loadeddata','canplay','playing','pause','stalled','waiting','ended'].forEach(function(ev){
