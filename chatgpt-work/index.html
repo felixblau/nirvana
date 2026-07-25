@@ -139,11 +139,11 @@
     #closing.show .cc-inner { opacity: 1; transform: none; }
     .cc-line {
       color: #fff;
-      font-size: 30px;
+      font-size: 27px;
       font-weight: 600;
-      line-height: 1.4;
+      line-height: 1.5;
       letter-spacing: -0.01em;
-      max-width: 820px;
+      white-space: nowrap;
     }
     .cc-nirvana { height: 40px; width: auto; }
 
@@ -631,6 +631,8 @@
 <body>
   <div id="stage">
     <video id="bg" src="bg.mp4" playsinline preload="auto"></video>
+    <!-- quiet background music track; loops under the whole demo. Drop an Artlist mp3 at music.mp3 -->
+    <audio id="bgm" src="music.mp3" loop preload="auto"></audio>
     <div id="scrim"></div>
 
     <!-- start screen: branded title card as keyframe + play button (gesture needed for audio) -->
@@ -1032,7 +1034,8 @@
       document.getElementById('m-out').scrollIntoView({ behavior: 'smooth', block: 'start' });
       await wait(500);
       await buildSheet();
-      await wait(300);
+      // hold on the full worksheet (top text still visible) before scrolling down
+      await wait(2300);
       thread.scrollTo({ top: thread.scrollHeight, behavior: 'smooth' });
 
       // 7. explicit "Do you want to download this report?" prompt
@@ -1055,8 +1058,13 @@
     whenReady().then(function(){
       startBtn.classList.add('show');
     });
+    var bgm = document.getElementById('bgm');
     startBtn.addEventListener('click', function(){
       startScreen.classList.add('hidden');
+      // quiet background music for the whole demo
+      bgm.volume = 0.18;
+      var bp = bgm.play();
+      if (bp && bp.catch) bp.catch(function(){ /* no music file present — ignore */ });
       go();
     });
 
@@ -1075,6 +1083,7 @@
       document.getElementById('bar').style.width='0%';
       resetComposer();
       thread.scrollTop = 0;
+      try { bgm.currentTime = 0; bgm.volume = 0.18; bgm.play(); } catch(e) {}
       started = false;
       go();
     });
