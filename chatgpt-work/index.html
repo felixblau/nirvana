@@ -67,21 +67,15 @@
       position: fixed;
       inset: 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #000;
+      gap: 56px;
+      background: #2c1f45;
       z-index: 8;
       transition: opacity .5s ease;
     }
     #start.hidden { opacity: 0; pointer-events: none; }
-    .start-card { display: flex; flex-direction: column; align-items: center; gap: 20px; }
-    .spinner {
-      width: 34px; height: 34px;
-      border: 3px solid rgba(255,255,255,0.18);
-      border-top-color: rgba(255,255,255,0.85);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
     @keyframes spin { to { transform: rotate(360deg); } }
     #start-btn {
       width: 84px; height: 84px;
@@ -98,10 +92,6 @@
     #start-btn:hover { background: rgba(255,255,255,0.15); }
     #start-btn:active { transform: scale(0.96); }
     #start-btn svg { width: 34px; height: 34px; margin-left: 4px; }
-    .start-label {
-      font-size: 13px; color: rgba(255,255,255,0.55);
-      letter-spacing: .02em;
-    }
 
     #replay {
       position: fixed;
@@ -123,29 +113,12 @@
     #replay.show { opacity: 1; }
 
     /* ---------- Branded title card ---------- */
-    #titlecard {
-      position: fixed;
-      inset: 0;
-      z-index: 12;
-      background: #2c1f45;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.7s ease;
-    }
-    #titlecard.show { opacity: 1; }
     .tc-inner {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 34px;
-      transform: translateY(8px);
-      opacity: 0;
-      transition: opacity 0.9s ease 0.2s, transform 0.9s ease 0.2s;
     }
-    #titlecard.show .tc-inner { opacity: 1; transform: none; }
     .tc-nirvana { height: 46px; width: auto; }
     .tc-x {
       color: rgba(255,255,255,0.85);
@@ -605,20 +578,9 @@
     <video id="bg" src="bg.mp4" playsinline preload="auto"></video>
     <div id="scrim"></div>
 
-    <!-- start screen: click to play with sound (gesture needed for audio) -->
+    <!-- start screen: branded title card as keyframe + play button (gesture needed for audio) -->
     <div id="start">
-      <div class="start-card">
-        <div class="spinner" id="start-spin"></div>
-        <button id="start-btn" aria-label="Play demo">
-          <svg viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-        <p class="start-label" id="start-label">Loading…</p>
-      </div>
-    </div>
-
-    <!-- Branded title card (intro) -->
-    <div id="titlecard">
-      <div class="tc-inner">
+      <div class="tc-inner" id="start-titlecard">
         <svg class="tc-nirvana" viewBox="0 0 57 11" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12.6143 8.59812V1.55595C12.6143 1.52699 12.6383 1.50318 12.6676 1.50318H13.8616C13.8883 1.50318 13.911 1.52313 13.9143 1.54952L14.0261 2.41249C14.0326 2.46076 14.0943 2.47556 14.1223 2.43566C14.5942 1.75738 15.4652 1.2876 16.4832 1.2876C18.0224 1.2876 19.0306 2.31274 19.0306 3.91771V8.59876C19.0306 8.62772 19.0065 8.65153 18.9773 8.65153H17.4764C17.4471 8.65153 17.4231 8.62772 17.4231 8.59876V3.99879C17.4231 3.20339 16.892 2.67698 15.9924 2.67698C14.9433 2.67698 14.2354 3.39195 14.2218 4.32249V8.59876C14.2218 8.62772 14.1977 8.65153 14.1685 8.65153H12.6676C12.6383 8.65089 12.6143 8.62707 12.6143 8.59812Z" fill="#fff"/>
           <path d="M19.9238 8.59835V1.55619C19.9238 1.52723 19.9479 1.50342 19.9771 1.50342H21.478C21.5073 1.50342 21.5313 1.52723 21.5313 1.55619V8.59835C21.5313 8.62731 21.5073 8.65112 21.478 8.65112H19.9771C19.9479 8.65112 19.9238 8.62731 19.9238 8.59835Z" fill="#fff"/>
@@ -643,6 +605,9 @@
           <span class="tc-chatgpt">ChatGPT</span><span class="tc-work">Work</span>
         </div>
       </div>
+      <button id="start-btn" aria-label="Play demo">
+        <svg viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+      </button>
     </div>
 
     <!-- replay pill -->
@@ -917,8 +882,6 @@
 
     var startScreen = document.getElementById('start');
     var startBtn    = document.getElementById('start-btn');
-    var startSpin   = document.getElementById('start-spin');
-    var startLabel  = document.getElementById('start-label');
 
     // Reveal the play button once the clip is buffered.
     function whenReady(){
@@ -950,15 +913,7 @@
 
     var ASK_TEXT = "Here's tomorrow's imaging schedule — 12 patients. For each one, confirm their coverage is still active and estimate what they'll owe. One to watch: Jordan Rivera is in for a knee MRI, but the only insurance card on file is from last year — I don't know if his plan is still active, whether it needs prior auth, or what it'll cost. Verify everyone against the payer and flag anything that isn't intake-ready.";
 
-    var titlecard = document.getElementById('titlecard');
-
     async function sequence(){
-      // 0. branded title card
-      titlecard.classList.add('show');
-      await wait(2600);
-      titlecard.classList.remove('show');
-      await wait(750);
-
       // 1. play the clinic clip WITH SOUND, then freeze
       video.muted = false;
       video.volume = 1;
@@ -1013,9 +968,7 @@
 
     // Show the play button once buffered; the demo starts on click (needed for audio).
     whenReady().then(function(){
-      startSpin.style.display = 'none';
       startBtn.classList.add('show');
-      startLabel.textContent = 'Play with sound';
     });
     startBtn.addEventListener('click', function(){
       startScreen.classList.add('hidden');
@@ -1026,7 +979,6 @@
     document.getElementById('replay').addEventListener('click', function(e){
       e.stopPropagation();
       this.classList.remove('show');
-      titlecard.classList.remove('show');
       stage.classList.remove('superimposed');
       document.querySelectorAll('.reveal').forEach(function(el){ el.classList.remove('show'); });
       document.getElementById('calling').classList.remove('show');
