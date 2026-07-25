@@ -961,7 +961,7 @@
         function fin(){ if (settled) return; settled = true; video.removeEventListener('ended', fin); resolve(); }
         video.addEventListener('ended', fin, { once:true });
         var guard = setInterval(function(){
-          if (isFinite(video.duration) && video.duration > 0 && video.currentTime >= video.duration - 0.15) {
+          if (isFinite(video.duration) && video.duration > 0 && video.currentTime >= video.duration - 1.5) {
             clearInterval(guard); fin();
           }
         }, 150);
