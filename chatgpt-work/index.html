@@ -391,18 +391,11 @@
     .composer-send svg { width: 17px; height: 17px; }
     .composer-send.ready { opacity: 1; }
     .composer-foot {
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex; align-items: center; justify-content: center;
       gap: 12px;
       padding: 9px 6px 0;
     }
-    .conn {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 12px; color: #4a4a4a; font-weight: 500;
-      flex-shrink: 0;
-    }
-    .conn .nv { width: 14px; height: 14px; }
-    .conn .ok { color: var(--green); font-weight: 600; }
-    .disclaimer { font-size: 11px; color: var(--gpt-faint); text-align: right; }
+    .disclaimer { font-size: 11px; color: var(--gpt-faint); text-align: center; }
 
     /* ---------- "Calling on Nirvana…" loading state ---------- */
     .calling {
@@ -744,7 +737,6 @@
               </span>
             </div>
             <div class="composer-foot">
-              <span class="conn"><img class="nv" src="nirvana-glyph.png" alt="" /> Nirvana · <span class="ok">Connected</span></span>
               <span class="disclaimer">ChatGPT can make mistakes. Coverage verified live with payer via Nirvana.</span>
             </div>
           </div>
