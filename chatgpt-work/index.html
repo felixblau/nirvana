@@ -63,7 +63,7 @@
     #stage.superimposed #scrim { opacity: 1; }
 
     /* ---------- Loader / play / replay ---------- */
-    #loader {
+    #start {
       position: fixed;
       inset: 0;
       display: flex;
@@ -73,7 +73,8 @@
       z-index: 8;
       transition: opacity .5s ease;
     }
-    #loader.hidden { opacity: 0; pointer-events: none; }
+    #start.hidden { opacity: 0; pointer-events: none; }
+    .start-card { display: flex; flex-direction: column; align-items: center; gap: 20px; }
     .spinner {
       width: 34px; height: 34px;
       border: 3px solid rgba(255,255,255,0.18);
@@ -82,23 +83,25 @@
       animation: spin 0.8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    #play-btn {
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%) scale(0.9);
-      width: 72px; height: 72px;
+    #start-btn {
+      width: 84px; height: 84px;
       border-radius: 50%;
-      background: rgba(0,0,0,0.55);
-      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.4);
       backdrop-filter: blur(6px);
       display: none;
       align-items: center; justify-content: center;
       cursor: pointer;
-      z-index: 9;
+      transition: background .15s, transform .1s;
     }
-    #play-btn.show { display: flex; }
-    #play-btn svg { width: 30px; height: 30px; margin-left: 3px; }
+    #start-btn.show { display: flex; }
+    #start-btn:hover { background: rgba(255,255,255,0.15); }
+    #start-btn:active { transform: scale(0.96); }
+    #start-btn svg { width: 34px; height: 34px; margin-left: 4px; }
+    .start-label {
+      font-size: 13px; color: rgba(255,255,255,0.55);
+      letter-spacing: .02em;
+    }
 
     #replay {
       position: fixed;
@@ -118,6 +121,38 @@
     }
     #stage.superimposed ~ #replay,
     #replay.show { opacity: 1; }
+
+    /* TEMP scrubber */
+    #scrubber {
+      position: fixed;
+      left: 50%; bottom: 16px;
+      transform: translateX(-50%);
+      z-index: 20;
+      display: flex; align-items: center; gap: 12px;
+      width: min(680px, 80vw);
+      padding: 10px 16px;
+      background: rgba(15,12,24,0.82);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 30px;
+      font-family: 'Inter', monospace;
+    }
+    #scrubber .scrub-time {
+      font-size: 12px; color: rgba(255,255,255,0.8);
+      font-variant-numeric: tabular-nums; min-width: 52px; text-align: center;
+    }
+    #scrub-range {
+      flex: 1; height: 4px; -webkit-appearance: none; appearance: none;
+      background: rgba(255,255,255,0.25); border-radius: 3px; cursor: pointer;
+    }
+    #scrub-range::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: #c4b5fd; cursor: pointer;
+    }
+    #scrub-range::-moz-range-thumb {
+      width: 14px; height: 14px; border: none; border-radius: 50%; background: #c4b5fd;
+    }
     #replay:hover { background: rgba(40,36,54,0.7); }
 
     /* ---------- ChatGPT Work window ---------- */
@@ -256,12 +291,15 @@
       padding: 26px 32px 8px;
     }
     .thread-inner {
-      max-width: 720px;
+      max-width: 760px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
+    /* the worksheet message breaks out wider than the chat bubbles */
+    .msg-ai.wide { max-width: none; }
+    .msg-ai.wide .ai-body { max-width: 980px; }
 
     /* user bubble (right) */
     .msg-user {
@@ -310,17 +348,13 @@
       gap: 12px;
       border: 1px solid #e0e0e0;
       border-radius: 24px;
-      padding: 12px 10px 12px 16px;
+      padding: 12px 10px 12px 18px;
       box-shadow: 0 1px 2px rgba(0,0,0,0.03);
       transition: border-color .2s, box-shadow .2s;
     }
     .composer-box.focus {
       border-color: #c9c9c9;
       box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-    }
-    .composer-plus {
-      font-size: 20px; color: var(--gpt-muted);
-      width: 22px; text-align: center; flex-shrink: 0;
     }
     .composer-text {
       flex: 1;
@@ -370,14 +404,33 @@
     .conn .ok { color: var(--green); font-weight: 600; }
     .disclaimer { font-size: 11px; color: var(--gpt-faint); text-align: right; }
 
+    /* ---------- "Calling on Nirvana…" loading state ---------- */
+    .calling {
+      display: none;
+      align-items: center; gap: 9px;
+      font-size: 13.5px; color: #4a4a4a;
+      padding: 4px 0 2px;
+    }
+    .calling.show { display: flex; }
+    .mini-spin {
+      width: 15px; height: 15px;
+      border: 2px solid #e0d8fb;
+      border-top-color: var(--nirvana);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+
     /* ---------- Nirvana tool-call panel ---------- */
     .tool {
+      display: none;
       border: 1px solid #e6e2f7;
       background: #faf9ff;
       border-radius: 14px;
       padding: 14px 16px;
       max-width: 560px;
     }
+    .tool.show { display: block; }
     .tool-head {
       display: flex; align-items: center; gap: 8px;
       font-size: 13px; font-weight: 600; color: #3a3a3a;
@@ -440,7 +493,7 @@
     .sheet {
       border: 1px solid var(--gpt-line);
       border-radius: 14px;
-      overflow: hidden;
+      overflow-x: auto;
       box-shadow: 0 8px 30px rgba(0,0,0,0.06);
       background: #fff;
     }
@@ -458,10 +511,21 @@
       font-size: 9px; font-weight: 700;
     }
     .sheet-bar .ext { color: var(--gpt-muted); font-weight: 500; }
-    .sheet-bar .dl { margin-left: auto; color: var(--gpt-muted); }
-    .sheet-bar .dl svg { width: 15px; height: 15px; }
+    .dl-btn {
+      margin-left: auto;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 13px;
+      border: none; border-radius: 8px;
+      background: #0d0d0d; color: #fff;
+      font-family: inherit; font-size: 12.5px; font-weight: 600;
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+    .dl-btn:hover { background: #262626; }
+    .dl-btn:active { transform: scale(0.97); }
+    .dl-btn svg { width: 14px; height: 14px; }
 
-    table.grid { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    table.grid { width: 100%; min-width: 860px; border-collapse: collapse; font-size: 12.5px; }
     table.grid th {
       text-align: left;
       padding: 8px 12px;
@@ -485,13 +549,13 @@
 
     .pill {
       display: inline-flex; align-items: center; gap: 5px;
-      padding: 3px 9px; border-radius: 20px;
-      font-size: 11px; font-weight: 600;
+      padding: 4px 10px; border-radius: 20px;
+      font-size: 11px; font-weight: 600; line-height: 1;
       background: #e9f7ee; color: #0f8a45;
       white-space: nowrap;
     }
     .pill.flag { background: #fdeecf; color: #a5670a; }
-    .pill.dot::before { content:""; width:6px; height:6px; border-radius:50%; background: currentColor; display:inline-block; }
+    .pill.dot::before { content:""; width:6px; height:6px; border-radius:50%; background: currentColor; display:inline-block; flex-shrink:0; }
 
     /* Jordan's resolved row highlight */
     tr.resolved td {
@@ -516,24 +580,33 @@
       font-size: 12.5px; font-weight: 600; color: var(--gpt-text);
     }
     .sheet-foot .ready { color: var(--green); }
-    .sheet-foot .nohuman { color: var(--nirvana); margin-left: auto; }
   </style>
 </head>
 <body>
   <div id="stage">
-    <video id="bg" src="bg.mp4" muted playsinline preload="auto"></video>
+    <video id="bg" src="bg.mp4" playsinline preload="auto"></video>
     <div id="scrim"></div>
 
-    <!-- loading spinner shown until the clip is buffered -->
-    <div id="loader"><div class="spinner"></div></div>
-
-    <!-- manual play button if autoplay is blocked -->
-    <button id="play-btn" aria-label="Play">
-      <svg viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
-    </button>
+    <!-- start screen: click to play with sound (gesture needed for audio) -->
+    <div id="start">
+      <div class="start-card">
+        <div class="spinner" id="start-spin"></div>
+        <button id="start-btn" aria-label="Play demo">
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <p class="start-label" id="start-label">Loading…</p>
+      </div>
+    </div>
 
     <!-- replay pill -->
     <button id="replay">↻ Replay</button>
+
+    <!-- TEMP video scrubber (for troubleshooting; remove before final) -->
+    <div id="scrubber">
+      <span class="scrub-time" id="scrub-cur">0:00.0</span>
+      <input type="range" id="scrub-range" min="0" max="1000" value="0" step="1" />
+      <span class="scrub-time" id="scrub-dur">0:00.0</span>
+    </div>
 
     <div id="win">
       <div class="win-chrome">
@@ -598,8 +671,12 @@
             <div class="msg-ai reveal" id="m-run">
               <div class="ai-glyph"><svg viewBox="0 0 24 24" fill="#0d0d0d"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3a7 7 0 110 14 7 7 0 010-14z"/></svg></div>
               <div class="ai-body">
-                <p>I can't confirm any of that from your records alone — that has to come live from each payer. I'm calling <strong>Nirvana</strong> to re-verify all 12 plans directly with the insurers, apply their prior-auth rules, and price each visit. Running now:</p>
-                <div class="tool">
+                <p>I can't confirm any of that from your records alone — that has to come live from each payer. I'm calling <strong>Nirvana</strong> to re-verify all 12 plans directly with the insurers, apply their prior-auth rules, and price each visit.</p>
+                <div class="calling" id="calling">
+                  <span class="mini-spin"></span>
+                  <span>Calling on <strong>Nirvana</strong>…</span>
+                </div>
+                <div class="tool" id="tool-panel">
                   <div class="tool-head">
                     <img class="nv" src="nirvana-glyph.png" alt="" />
                     Coverage engine <span class="via">· via Nirvana</span>
@@ -631,15 +708,15 @@
             </div>
 
             <!-- 3. summary + worksheet artifact -->
-            <div class="msg-ai reveal" id="m-out">
+            <div class="msg-ai reveal wide" id="m-out">
               <div class="ai-glyph"><svg viewBox="0 0 24 24" fill="#0d0d0d"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3a7 7 0 110 14 7 7 0 010-14z"/></svg></div>
               <div class="ai-body">
-                <p class="summary">All 12 verified. <strong>10 were clean.</strong> <span class="hl">Nirvana caught the hard one</span> — Jordan Rivera's card on file read <em>Inactive</em>; it found his active plan, re-verified live, and priced it. Here's the finished worksheet:</p>
+                <p class="summary">All 12 verified. <strong>10 were clean.</strong> <span class="hl">Nirvana caught the hard one</span> — Jordan Rivera's card on file read <em>Inactive</em>; it found his active plan, re-verified live, and priced it. Here's a report file with all the imaging patients for tomorrow:</p>
                 <div class="sheet" id="sheet">
                   <div class="sheet-bar">
                     <span class="xls">XLS</span>
                     imaging-coverage-tomorrow<span class="ext">.xlsx</span>
-                    <span class="dl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg></span>
+                    <button class="dl-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>Download</button>
                   </div>
                   <table class="grid">
                     <thead>
@@ -649,7 +726,6 @@
                   </table>
                   <div class="sheet-foot">
                     <span class="ready">✓ 12 / 12 intake-ready</span>
-                    <span class="nohuman">No human in the loop</span>
                   </div>
                 </div>
               </div>
@@ -662,7 +738,6 @@
         <div class="composer">
           <div class="composer-inner">
             <div class="composer-box">
-              <span class="composer-plus">+</span>
               <div class="composer-text" id="composer-text"><span class="placeholder" id="composer-ph">Message ChatGPT Work…</span><span id="typed"></span><span class="caret-blink" id="caret"></span></div>
               <span class="composer-send" id="send-btn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
@@ -765,22 +840,23 @@
       send.classList.remove('ready');
     }
 
+    // The stepper + counter progress over ~6 seconds total.
     async function runCounter(){
       var count = document.getElementById('count');
       var bar   = document.getElementById('bar');
       var scan  = document.getElementById('p-scan');
       var rules = document.getElementById('p-rules');
       var est   = document.getElementById('p-est');
-      // light the pipe stages
+      // light the pipe stages, spaced out (~1.5s of the 6s)
       scan.classList.add('active');
-      await wait(500); scan.classList.add('done'); scan.classList.remove('active'); rules.classList.add('active');
-      await wait(500); rules.classList.add('done'); rules.classList.remove('active'); est.classList.add('active');
-      await wait(400); est.classList.add('done'); est.classList.remove('active');
-      // tick 0 -> 12
+      await wait(650); scan.classList.add('done'); scan.classList.remove('active'); rules.classList.add('active');
+      await wait(650); rules.classList.add('done'); rules.classList.remove('active'); est.classList.add('active');
+      await wait(550); est.classList.add('done'); est.classList.remove('active');
+      // tick 0 -> 12 over the remaining ~4.3s (≈360ms per patient)
       for (var i = 1; i <= 12; i++){
         count.textContent = i + ' / 12';
         bar.style.width = (i/12*100) + '%';
-        await wait(150);
+        await wait(360);
       }
     }
 
@@ -792,48 +868,31 @@
       }
     }
 
-    var loader = document.getElementById('loader');
-    var playBtn = document.getElementById('play-btn');
+    var startScreen = document.getElementById('start');
+    var startBtn    = document.getElementById('start-btn');
+    var startSpin   = document.getElementById('start-spin');
+    var startLabel  = document.getElementById('start-label');
 
-    // Wait until the clip has buffered enough to play through (or timeout safety net).
+    // Reveal the play button once the clip is buffered.
     function whenReady(){
       return new Promise(function(resolve){
-        // readyState 4 == HAVE_ENOUGH_DATA
-        if (video.readyState >= 4) return resolve();
+        if (video.readyState >= 3) return resolve();
         var done = false;
-        function ok(){ if (done) return; done = true; cleanup(); resolve(); }
-        function cleanup(){
-          video.removeEventListener('canplaythrough', ok);
-          video.removeEventListener('loadeddata', ok);
-        }
-        video.addEventListener('canplaythrough', ok, { once:true });
+        function ok(){ if (done) return; done = true; resolve(); }
+        video.addEventListener('canplay', ok, { once:true });
         video.addEventListener('loadeddata', ok, { once:true });
-        // safety net: 15s max wait so it never hangs forever
         setTimeout(ok, 15000);
       });
     }
 
-    // Play the clip and resolve when it truly ends.
+    // Play the clip (with sound) and resolve when it truly ends.
     function playToEnd(){
       return new Promise(function(resolve){
         var settled = false;
         function fin(){ if (settled) return; settled = true; video.removeEventListener('ended', fin); resolve(); }
         video.addEventListener('ended', fin, { once:true });
         video.currentTime = 0;
-        var p = video.play();
-        if (p && p.catch) {
-          p.catch(function(){
-            // autoplay blocked — offer a manual play button
-            loader.classList.add('hidden');
-            playBtn.classList.add('show');
-            playBtn.onclick = function(){
-              playBtn.classList.remove('show');
-              loader.classList.add('hidden');
-              video.play();
-            };
-          });
-        }
-        // fallback: if 'ended' never fires (rare), resolve off duration
+        video.play();
         var guard = setInterval(function(){
           if (isFinite(video.duration) && video.duration > 0 && video.currentTime >= video.duration - 0.15) {
             clearInterval(guard); fin();
@@ -845,9 +904,9 @@
     var ASK_TEXT = "Here's tomorrow's imaging schedule — 12 patients. For each one, confirm their coverage is still active and estimate what they'll owe. One to watch: Jordan Rivera is in for a knee MRI, but the only insurance card on file is from last year — I don't know if his plan is still active, whether it needs prior auth, or what it'll cost. Verify everyone against the payer and flag anything that isn't intake-ready.";
 
     async function sequence(){
-      // 1. wait for the clip to be genuinely ready, THEN reveal + play it
-      await whenReady();
-      loader.classList.add('hidden');
+      // 1. play the clinic clip WITH SOUND, then freeze
+      video.muted = false;
+      video.volume = 1;
       await playToEnd();
       video.pause();
 
@@ -865,10 +924,15 @@
       show('m-ask');
       await wait(1200);
 
-      // 5. assistant replies that it's calling Nirvana + runs the engine
+      // 5. assistant replies + "Calling on Nirvana…" for 2s, THEN the stepper
       show('m-run');
-      await wait(750);
-      await runCounter();
+      await wait(700);
+      document.getElementById('calling').classList.add('show');
+      await wait(2000);                                  // hold the calling state
+      document.getElementById('calling').classList.remove('show');
+      document.getElementById('tool-panel').classList.add('show');
+      await wait(400);
+      await runCounter();                                // ~6s stepper
       await wait(800);
 
       // 6. deliverable — only now do we auto-scroll, bringing the worksheet into view
@@ -878,15 +942,50 @@
       await wait(500);
       await buildSheet();
       await wait(300);
-      // nudge so the full worksheet (incl. Jordan at row 10 + footer) is visible
       thread.scrollTo({ top: thread.scrollHeight, behavior: 'smooth' });
       await wait(400);
       document.getElementById('replay').classList.add('show');
     }
 
+    // ---- TEMP scrubber wiring (remove before final) ----
+    var scrubRange = document.getElementById('scrub-range');
+    var scrubCur   = document.getElementById('scrub-cur');
+    var scrubDur   = document.getElementById('scrub-dur');
+    function fmt(t){
+      if (!isFinite(t)) t = 0;
+      var m = Math.floor(t / 60);
+      var s = (t % 60).toFixed(1);
+      if (s < 10) s = '0' + s;
+      return m + ':' + s;
+    }
+    video.addEventListener('loadedmetadata', function(){ scrubDur.textContent = fmt(video.duration); });
+    video.addEventListener('timeupdate', function(){
+      scrubCur.textContent = fmt(video.currentTime);
+      if (isFinite(video.duration) && video.duration > 0) {
+        scrubRange.value = Math.round(video.currentTime / video.duration * 1000);
+      }
+    });
+    var scrubbing = false;
+    scrubRange.addEventListener('input', function(){
+      if (isFinite(video.duration) && video.duration > 0) {
+        video.currentTime = (scrubRange.value / 1000) * video.duration;
+        scrubCur.textContent = fmt(video.currentTime);
+      }
+    });
+
     var started = false;
     function go(){ if (started) return; started = true; sequence(); }
-    go();
+
+    // Show the play button once buffered; the demo starts on click (needed for audio).
+    whenReady().then(function(){
+      startSpin.style.display = 'none';
+      startBtn.classList.add('show');
+      startLabel.textContent = 'Play with sound';
+    });
+    startBtn.addEventListener('click', function(){
+      startScreen.classList.add('hidden');
+      go();
+    });
 
     // replay on the replay pill (not the whole document, so scrolling the sheet is fine)
     document.getElementById('replay').addEventListener('click', function(e){
@@ -894,6 +993,8 @@
       this.classList.remove('show');
       stage.classList.remove('superimposed');
       document.querySelectorAll('.reveal').forEach(function(el){ el.classList.remove('show'); });
+      document.getElementById('calling').classList.remove('show');
+      document.getElementById('tool-panel').classList.remove('show');
       rowsEl.querySelectorAll('tr').forEach(function(t){ t.classList.remove('in'); });
       ['p-scan','p-rules','p-est'].forEach(function(id){ document.getElementById(id).className='pipe-ic'; });
       document.getElementById('count').textContent='0 / 12';
