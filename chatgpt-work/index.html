@@ -279,7 +279,7 @@
       flex: 1;
       overflow-y: auto;
       scroll-behavior: smooth;
-      padding: 26px 32px 8px;
+      padding: 26px 24px 8px;
     }
     .thread-inner {
       max-width: 760px;
@@ -289,8 +289,14 @@
       gap: 20px;
     }
     /* the worksheet message breaks out wider than the chat bubbles */
-    .msg-ai.wide { max-width: none; }
-    .msg-ai.wide .ai-body { max-width: 980px; }
+    .msg-ai.wide {
+      max-width: none;
+      width: calc(100vw * 0.9 - 262px - 48px);
+      max-width: 1080px;
+      margin-left: 50%;
+      transform: translateX(-50%);
+    }
+    .msg-ai.wide .ai-body { max-width: none; }
 
     /* user bubble (right) */
     .msg-user {
@@ -516,7 +522,7 @@
     }
     .dl-btn.big svg { width: 16px; height: 16px; }
 
-    table.grid { width: 100%; min-width: 860px; border-collapse: collapse; font-size: 12.5px; }
+    table.grid { width: 100%; border-collapse: collapse; font-size: 12.5px; table-layout: fixed; }
     table.grid th {
       text-align: left;
       padding: 8px 12px;
@@ -533,7 +539,17 @@
       border-bottom: 1px solid #f4f4f4;
       color: #2b2b2b;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
+    /* column widths (fixed layout) */
+    table.grid th:nth-child(1), table.grid td:nth-child(1) { width: 40px; }   /* # */
+    table.grid th:nth-child(2), table.grid td:nth-child(2) { width: 22%; }    /* Patient */
+    table.grid th:nth-child(3), table.grid td:nth-child(3) { width: 17%; }    /* Plan */
+    table.grid th:nth-child(4), table.grid td:nth-child(4) { width: 68px; }   /* CPT */
+    table.grid th:nth-child(5), table.grid td:nth-child(5) { width: 130px; }  /* Prior auth */
+    table.grid th:nth-child(6), table.grid td:nth-child(6) { width: 190px; }  /* Status (wide) */
+    table.grid th:nth-child(7), table.grid td:nth-child(7) { width: 92px; }   /* Est. resp. */
     table.grid tr:last-child td { border-bottom: none; }
     table.grid .pname { font-weight: 500; }
     .num { color: #9a9a9a; font-variant-numeric: tabular-nums; }
@@ -547,6 +563,16 @@
     }
     .pill.flag { background: #fdeecf; color: #a5670a; }
     .pill.dot::before { content:""; width:6px; height:6px; border-radius:50%; background: currentColor; display:inline-block; flex-shrink:0; }
+
+    /* Prior-auth status: icon + label (no pill background) */
+    .pa {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600; white-space: nowrap;
+    }
+    .pa.ok { color: #0f8a45; }
+    .pa.flag { color: #a5670a; }
+    .pa-ic { width: 15px; height: 15px; flex-shrink: 0; }
+    .pa-ic.spin { animation: spin 0.9s linear infinite; }
 
     /* Jordan's resolved row highlight */
     tr.resolved td {
@@ -786,10 +812,12 @@
     PATIENTS.forEach(function (p, i) {
       var tr = document.createElement('tr');
       if (p.resolved) tr.className = 'resolved';
+      var checkIcon = '<svg class="pa-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg>';
+      var spinIcon  = '<svg class="pa-ic spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 3a9 9 0 1 0 9 9" stroke-linecap="round"/></svg>';
       var paPill = p.pa === 'Pre-filled'
-        ? '<span class="pill flag dot">PA pre-filled</span>'
+        ? '<span class="pa flag">' + spinIcon + 'PA pre-filled</span>'
         : (p.pa === 'Approved'
-            ? '<span class="pill dot">Approved</span>'
+            ? '<span class="pa ok">' + checkIcon + 'Approved</span>'
             : '<span class="num">Not required</span>');
       var nameCell = p.resolved
         ? p.n + ' <span class="rslv-note">· <span class="strike">Inactive</span>Active, re-verified</span>'
