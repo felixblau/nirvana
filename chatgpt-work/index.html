@@ -1059,12 +1059,23 @@
     }
 
     function startVideo(){
-      // Play MUTED first (always allowed → always renders a frame), then unmute for audio.
+      // Everything here must stay SYNCHRONOUS inside the click gesture, or the browser's
+      // autoplay policy will pause the video when we touch muted/volume outside the gesture.
       try { video.currentTime = 0; } catch(e) {}
-      video.muted = true;
+      video.volume = 1;
+      video.muted = false;
       var p = video.play();
-      function unmute(){ video.muted = false; video.volume = 1; }
-      if (p && p.then) { p.then(unmute).catch(unmute); } else { unmute(); }
+      if (p && p.catch) {
+        p.catch(function(){
+          // Unmuted play blocked → retry muted so the clip at least renders.
+          video.muted = true;
+          video.play().catch(function(){});
+        });
+      }
+      // Safety net: if still paused shortly after, force muted playback.
+      setTimeout(function(){
+        if (video.paused) { video.muted = true; video.play().catch(function(){}); }
+      }, 400);
     }
 
     startBtn.addEventListener('click', function(){
