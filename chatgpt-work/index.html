@@ -1043,10 +1043,8 @@
     var started = false;
     function go(){ if (started) return; started = true; sequence(); }
 
-    // Show the play button once buffered; the demo starts on click (needed for audio).
-    whenReady().then(function(){
-      startBtn.classList.add('show');
-    });
+    // Show the play button right away; clicking it starts playback (and unlocks audio).
+    startBtn.classList.add('show');
     var bgm = document.getElementById('bgm');
     var BGM_START = 47;      // begin the track at 0:47
     var BGM_VOL   = 0.18;    // quiet background level
