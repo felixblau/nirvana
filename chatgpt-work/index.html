@@ -953,58 +953,27 @@
     var startScreen = document.getElementById('start');
     var startBtn    = document.getElementById('start-btn');
 
-    // Reveal the play button once the clip is buffered.
-    function whenReady(){
-      return new Promise(function(resolve){
-        if (video.readyState >= 3) return resolve();
-        var done = false;
-        function ok(){ if (done) return; done = true; resolve(); }
-        video.addEventListener('canplay', ok, { once:true });
-        video.addEventListener('loadeddata', ok, { once:true });
-        setTimeout(ok, 15000);
-      });
-    }
-
-    // Ensure the clip is buffered enough to render a frame before we play it.
-    function ensureReady(){
-      return new Promise(function(resolve){
-        if (video.readyState >= 2) return resolve();   // HAVE_CURRENT_DATA — a frame exists
-        var done = false;
-        function ok(){ if (done) return; done = true; resolve(); }
-        video.addEventListener('loadeddata', ok, { once:true });
-        video.addEventListener('canplay', ok, { once:true });
-        try { video.load(); } catch(e) {}
-        setTimeout(ok, 8000);   // safety net
-      });
-    }
-
-    // Play the clip (with sound) and resolve when it truly ends.
-    async function playToEnd(){
-      await ensureReady();
+    // Wait for the already-playing clip to finish (playback is kicked off in the click handler).
+    function waitForEnd(){
       return new Promise(function(resolve){
         var settled = false;
         function fin(){ if (settled) return; settled = true; video.removeEventListener('ended', fin); resolve(); }
         video.addEventListener('ended', fin, { once:true });
-        try { video.currentTime = 0; } catch(e) {}
-        var p = video.play();
-        if (p && p.catch) p.catch(function(){ /* if play fails, guard/ended still resolve */ });
         var guard = setInterval(function(){
           if (isFinite(video.duration) && video.duration > 0 && video.currentTime >= video.duration - 0.15) {
             clearInterval(guard); fin();
           }
-        }, 200);
-        // absolute fallback so we never sit on black forever
-        setTimeout(function(){ clearInterval(guard); fin(); }, 20000);
+        }, 150);
+        // absolute fallback so we never sit forever
+        setTimeout(function(){ clearInterval(guard); fin(); }, 30000);
       });
     }
 
     var ASK_TEXT = "Here's tomorrow's imaging schedule — 12 patients. For each one, confirm their coverage is still active and estimate what they'll owe. One to watch: Jordan Rivera is in for a knee MRI, but the only insurance card on file is from last year — I don't know if his plan is still active, whether it needs prior auth, or what it'll cost. Verify everyone against the payer and flag anything that isn't intake-ready.";
 
     async function sequence(){
-      // 1. play the clinic clip WITH SOUND, then freeze
-      video.muted = false;
-      video.volume = 1;
-      await playToEnd();
+      // 1. clip is already playing (started in click handler) — wait for it to end, then freeze
+      await waitForEnd();
       video.pause();
 
       // 2. freeze -> dim/blur + bring in the window
@@ -1092,6 +1061,14 @@
     startBtn.addEventListener('click', function(){
       startScreen.classList.add('hidden');
       bgmStart();
+      // START PLAYBACK SYNCHRONOUSLY inside the click gesture (required for unmuted audio)
+      video.muted = false;
+      video.volume = 1;
+      try { video.currentTime = 0; } catch(e) {}
+      var p = video.play();
+      if (p && p.catch) p.catch(function(){ /* fall back to muted if unmuted blocked */
+        video.muted = true; video.play().catch(function(){});
+      });
       go();
     });
 
@@ -1111,6 +1088,11 @@
       resetComposer();
       thread.scrollTop = 0;
       bgmStart();
+      // restart video playback synchronously in this click gesture
+      video.muted = false; video.volume = 1;
+      try { video.currentTime = 0; } catch(e) {}
+      var rp = video.play();
+      if (rp && rp.catch) rp.catch(function(){ video.muted = true; video.play().catch(function(){}); });
       started = false;
       go();
     });
