@@ -620,7 +620,7 @@
 </head>
 <body>
   <div id="stage">
-    <video id="bg" src="bg.mp4" playsinline preload="auto"></video>
+    <video id="bg" src="bg.mp4" playsinline muted preload="auto"></video>
     <!-- quiet background music track; loops under the whole demo. Drop an Artlist mp3 at music.mp3 -->
     <audio id="bgm" src="music.mp3" loop preload="auto"></audio>
     <div id="scrim"></div>
@@ -1058,17 +1058,19 @@
       } catch(e) {}
     }
 
+    function startVideo(){
+      // Play MUTED first (always allowed → always renders a frame), then unmute for audio.
+      try { video.currentTime = 0; } catch(e) {}
+      video.muted = true;
+      var p = video.play();
+      function unmute(){ video.muted = false; video.volume = 1; }
+      if (p && p.then) { p.then(unmute).catch(unmute); } else { unmute(); }
+    }
+
     startBtn.addEventListener('click', function(){
       startScreen.classList.add('hidden');
       bgmStart();
-      // START PLAYBACK SYNCHRONOUSLY inside the click gesture (required for unmuted audio)
-      video.muted = false;
-      video.volume = 1;
-      try { video.currentTime = 0; } catch(e) {}
-      var p = video.play();
-      if (p && p.catch) p.catch(function(){ /* fall back to muted if unmuted blocked */
-        video.muted = true; video.play().catch(function(){});
-      });
+      startVideo();
       go();
     });
 
@@ -1088,11 +1090,7 @@
       resetComposer();
       thread.scrollTop = 0;
       bgmStart();
-      // restart video playback synchronously in this click gesture
-      video.muted = false; video.volume = 1;
-      try { video.currentTime = 0; } catch(e) {}
-      var rp = video.play();
-      if (rp && rp.catch) rp.catch(function(){ video.muted = true; video.play().catch(function(){}); });
+      startVideo();
       started = false;
       go();
     });
