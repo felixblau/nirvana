@@ -24,5 +24,8 @@ cp -r "chatpcp/dist/"* "dist/chatpcp/"
 mkdir -p "dist/nav"
 cp nav/index.html "dist/nav/index.html"
 
+mkdir -p "dist/chatgpt-work"
+cp -r chatgpt-work/* "dist/chatgpt-work/"
+
 mkdir -p "dist/pledge"
 cp -r "pledge/dist/"* "dist/pledge/"

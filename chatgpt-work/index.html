@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nirvana × ChatGPT Work</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gpt-text: #0d0d0d;
+      --gpt-muted: #8f8f8f;
+      --gpt-faint: #b4b4b4;
+      --gpt-line: #ececec;
+      --gpt-sidebar: #f9f9f9;
+      --gpt-blue: #2f6fed;
+      --gpt-user-bubble: #f4f4f4;
+      --green: #12a150;
+      --nirvana: #7c5cff;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #000;
+      overflow: hidden;
+    }
+
+    /* ---------- Frozen clinic backdrop ---------- */
+    #stage {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #bg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: filter 1.1s ease, transform 1.1s ease;
+    }
+
+    /* once frozen, we dim + blur */
+    #stage.superimposed #bg {
+      filter: blur(18px) brightness(0.42) saturate(0.9);
+      transform: scale(1.06);
+    }
+
+    #scrim {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(120% 120% at 50% 45%, rgba(10,8,20,0.30) 0%, rgba(8,6,16,0.62) 100%);
+      opacity: 0;
+      transition: opacity 1.1s ease;
+      pointer-events: none;
+    }
+    #stage.superimposed #scrim { opacity: 1; }
+
+    /* ---------- ChatGPT Work window ---------- */
+    #win {
+      position: relative;
+      z-index: 3;
+      width: min(1120px, 92vw);
+      height: min(720px, 88vh);
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 40px 120px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.3);
+      display: flex;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(26px) scale(0.985);
+      transition: opacity 0.7s cubic-bezier(0.22,0.61,0.36,1), transform 0.7s cubic-bezier(0.22,0.61,0.36,1);
+    }
+    #stage.superimposed #win { opacity: 1; transform: none; }
+
+    /* traffic-light title bar spanning sidebar top */
+    .win-chrome {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 16px;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot.r { background: #ff5f57; }
+    .dot.y { background: #febc2e; }
+    .dot.g { background: #28c840; }
+    .chrome-icons { display: flex; gap: 14px; margin-left: 8px; color: #b9b9b9; }
+    .chrome-icons svg { width: 15px; height: 15px; }
+
+    /* ---------- Sidebar ---------- */
+    .sidebar {
+      width: 262px;
+      flex-shrink: 0;
+      background: var(--gpt-sidebar);
+      border-right: 1px solid var(--gpt-line);
+      padding: 52px 12px 12px;
+      display: flex;
+      flex-direction: column;
+      font-size: 13.5px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gpt-text);
+      padding: 4px 8px 14px;
+    }
+    .brand .work { color: var(--gpt-blue); font-weight: 700; }
+    .brand .caret { color: var(--gpt-faint); font-weight: 500; margin-left: 2px; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 7px 8px;
+      border-radius: 8px;
+      color: #2c2c2c;
+      cursor: default;
+    }
+    .nav-item .plus { margin-left: auto; color: var(--gpt-faint); }
+    .nav-item svg { width: 16px; height: 16px; stroke: #4a4a4a; }
+    .nav-item:hover { background: rgba(0,0,0,0.04); }
+
+    .side-label {
+      font-size: 11.5px;
+      color: var(--gpt-faint);
+      font-weight: 500;
+      padding: 16px 8px 6px;
+    }
+    .side-link {
+      padding: 6px 8px;
+      border-radius: 8px;
+      color: #2c2c2c;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: default;
+    }
+    .side-link.folder { display: flex; align-items: center; gap: 9px; }
+    .side-link.folder svg { width: 15px; height: 15px; stroke: #4a4a4a; flex-shrink: 0; }
+    .side-link:hover { background: rgba(0,0,0,0.04); }
+
+    .side-spacer { flex: 1; }
+    .side-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      border-top: 1px solid var(--gpt-line);
+      margin-top: 8px;
+    }
+    .avatar {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--gpt-blue); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600;
+    }
+    .side-user .name { font-size: 13.5px; color: var(--gpt-text); }
+    .side-user .gift { margin-left: auto; color: var(--gpt-faint); }
+
+    /* ---------- Conversation ---------- */
+    .convo {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-top: 44px;
+      min-width: 0;
+    }
+    .convo-header {
+      padding: 12px 28px;
+      border-bottom: 1px solid var(--gpt-line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .convo-title { font-size: 15px; font-weight: 600; color: var(--gpt-text); }
+    .convo-header .compose { color: var(--gpt-faint); }
+    .convo-header .compose svg { width: 17px; height: 17px; }
+
+    .thread {
+      flex: 1;
+      overflow: hidden;
+      padding: 26px 32px 8px;
+    }
+    .thread-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* user bubble (right) */
+    .msg-user {
+      align-self: flex-end;
+      max-width: 78%;
+      background: var(--gpt-user-bubble);
+      color: var(--gpt-text);
+      padding: 12px 16px;
+      border-radius: 18px;
+      font-size: 14.5px;
+      line-height: 1.5;
+    }
+
+    /* assistant row (left, with glyph) */
+    .msg-ai {
+      display: flex;
+      gap: 13px;
+      align-items: flex-start;
+    }
+    .ai-glyph {
+      width: 26px; height: 26px; flex-shrink: 0;
+      border-radius: 50%;
+      border: 1px solid var(--gpt-line);
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+    .ai-glyph svg { width: 16px; height: 16px; }
+    .ai-body { font-size: 14.5px; line-height: 1.55; color: var(--gpt-text); flex: 1; min-width: 0; }
+    .ai-body p { margin-bottom: 8px; }
+
+    /* animation helper */
+    .reveal { opacity: 0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; }
+    .reveal.show { opacity: 1; transform: none; }
+
+    /* ---------- Nirvana tool-call panel ---------- */
+    .tool {
+      border: 1px solid #e6e2f7;
+      background: #faf9ff;
+      border-radius: 14px;
+      padding: 14px 16px;
+      max-width: 560px;
+    }
+    .tool-head {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 600; color: #3a3a3a;
+      margin-bottom: 12px;
+    }
+    .tool-head .nv { width: 15px; height: 15px; }
+    .tool-head .via { color: var(--gpt-muted); font-weight: 500; }
+
+    .pipe {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 12px;
+    }
+    .pipe-step {
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+      flex: 1;
+    }
+    .pipe-ic {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: #efeafe; color: var(--nirvana);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .3s, color .3s, transform .3s;
+    }
+    .pipe-ic svg { width: 17px; height: 17px; }
+    .pipe-ic.active { background: var(--nirvana); color: #fff; transform: scale(1.08); }
+    .pipe-ic.done { background: var(--green); color: #fff; }
+    .pipe-lbl { font-size: 10.5px; color: var(--gpt-muted); text-align: center; line-height: 1.2; }
+    .pipe-arrow { color: #cfc6f5; font-size: 13px; margin-bottom: 16px; }
+
+    .tool-counter {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 12.5px; color: #4a4a4a;
+    }
+    .bar {
+      flex: 1; height: 5px; border-radius: 3px;
+      background: #ece8fb; overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--nirvana), #9d84ff);
+      transition: width .4s ease;
+    }
+    .tool-count-num { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--nirvana); }
+
+    .powered {
+      display: flex; align-items: center; gap: 5px; justify-content: flex-end;
+      font-size: 11px; color: var(--gpt-muted);
+      margin-top: 10px;
+    }
+    .powered img { height: 11px; opacity: 0.8; }
+    .powered .nv { width: 12px; height: 12px; }
+
+    /* ---------- Summary line ---------- */
+    .summary strong { font-weight: 600; }
+    .summary .hl { color: var(--nirvana); font-weight: 600; }
+
+    /* ---------- Worksheet artifact ---------- */
+    .sheet {
+      border: 1px solid var(--gpt-line);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+      background: #fff;
+    }
+    .sheet-bar {
+      display: flex; align-items: center; gap: 9px;
+      padding: 11px 15px;
+      background: #fbfbfb;
+      border-bottom: 1px solid var(--gpt-line);
+      font-size: 13px; font-weight: 600; color: var(--gpt-text);
+    }
+    .sheet-bar .xls {
+      width: 20px; height: 20px; border-radius: 5px;
+      background: var(--green); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700;
+    }
+    .sheet-bar .ext { color: var(--gpt-muted); font-weight: 500; }
+    .sheet-bar .dl { margin-left: auto; color: var(--gpt-muted); }
+    .sheet-bar .dl svg { width: 15px; height: 15px; }
+
+    table.grid { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    table.grid th {
+      text-align: left;
+      padding: 8px 12px;
+      background: #fafafa;
+      color: var(--gpt-muted);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: .02em;
+      border-bottom: 1px solid var(--gpt-line);
+      white-space: nowrap;
+    }
+    table.grid td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #f4f4f4;
+      color: #2b2b2b;
+      white-space: nowrap;
+    }
+    table.grid tr:last-child td { border-bottom: none; }
+    table.grid .pname { font-weight: 500; }
+    .num { color: #9a9a9a; font-variant-numeric: tabular-nums; }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 9px; border-radius: 20px;
+      font-size: 11px; font-weight: 600;
+      background: #e9f7ee; color: #0f8a45;
+      white-space: nowrap;
+    }
+    .pill.flag { background: #fdeecf; color: #a5670a; }
+    .pill.dot::before { content:""; width:6px; height:6px; border-radius:50%; background: currentColor; display:inline-block; }
+
+    /* Jordan's resolved row highlight */
+    tr.resolved td {
+      background: #edfaf1;
+      border-bottom: 1px solid #d6f0de;
+    }
+    tr.resolved .pname { color: #0f8a45; }
+    .rslv-note {
+      font-size: 11px; color: #0f8a45; font-weight: 500;
+    }
+    .strike { color: #c05555; text-decoration: line-through; margin-right: 4px; }
+
+    /* rows fill in one by one */
+    table.grid tbody tr { opacity: 0; }
+    table.grid tbody tr.in { opacity: 1; transition: opacity .28s ease; }
+
+    .sheet-foot {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 15px;
+      border-top: 1px solid var(--gpt-line);
+      background: #fbfbfb;
+      font-size: 12.5px; font-weight: 600; color: var(--gpt-text);
+    }
+    .sheet-foot .ready { color: var(--green); }
+    .sheet-foot .nohuman { color: var(--nirvana); margin-left: auto; }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <video id="bg" src="bg.mp4" muted playsinline preload="auto"></video>
+    <div id="scrim"></div>
+
+    <div id="win">
+      <div class="win-chrome">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="chrome-icons">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </span>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="brand">ChatGPT&nbsp;<span class="work">Work</span><span class="caret">⌄</span></div>
+
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>New task</div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>Projects<span class="plus">+</span></div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Scheduled</div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Plugins</div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Sites</div>
+        <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>Chat</div>
+
+        <div class="side-label">Pinned</div>
+        <div class="side-link">Tomorrow — imaging prep</div>
+        <div class="side-link">Prior-auth queue review</div>
+        <div class="side-link">Weekly denials summary</div>
+
+        <div class="side-label">Projects</div>
+        <div class="side-link folder"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>Front-desk operations</div>
+
+        <div class="side-label">Chats</div>
+        <div class="side-link">Verify Aetna re-cred list</div>
+        <div class="side-link">Batch eligibility — Monday</div>
+        <div class="side-link">Estimate patient costs</div>
+        <div class="side-link">Flagged plans follow-up</div>
+        <div class="side-link">Refresh cards on file</div>
+
+        <div class="side-spacer"></div>
+        <div class="side-user">
+          <div class="avatar">MC</div>
+          <span class="name">Maya Chen</span>
+          <span class="gift">◇</span>
+        </div>
+      </aside>
+
+      <!-- Conversation -->
+      <main class="convo" id="convo">
+        <div class="convo-header">
+          <span class="convo-title">Tomorrow — imaging prep · 12 patients</span>
+          <span class="compose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
+        </div>
+
+        <div class="thread">
+          <div class="thread-inner">
+
+            <!-- 1. specialist's ask -->
+            <div class="msg-user reveal" id="m-ask">
+              Here's tomorrow's imaging schedule — 12 patients. Verify each one's coverage, check prior-auth rules, and estimate what every patient will owe. Flag anything that isn't intake-ready.
+            </div>
+
+            <!-- 2. assistant acknowledges + runs Nirvana -->
+            <div class="msg-ai reveal" id="m-run">
+              <div class="ai-glyph"><svg viewBox="0 0 24 24" fill="#0d0d0d"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3a7 7 0 110 14 7 7 0 010-14z"/></svg></div>
+              <div class="ai-body">
+                <p>On it — running all 12 through the payer systems now.</p>
+                <div class="tool">
+                  <div class="tool-head">
+                    <img class="nv" src="nirvana-glyph.png" alt="" />
+                    Coverage engine <span class="via">· via Nirvana</span>
+                  </div>
+                  <div class="pipe">
+                    <div class="pipe-step">
+                      <div class="pipe-ic" id="p-scan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg></div>
+                      <div class="pipe-lbl">Scan card<br>&amp; verify plan</div>
+                    </div>
+                    <span class="pipe-arrow">→</span>
+                    <div class="pipe-step">
+                      <div class="pipe-ic" id="p-rules"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
+                      <div class="pipe-lbl">Network &amp;<br>prior-auth rules</div>
+                    </div>
+                    <span class="pipe-arrow">→</span>
+                    <div class="pipe-step">
+                      <div class="pipe-ic" id="p-est"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+                      <div class="pipe-lbl">Estimate<br>patient cost</div>
+                    </div>
+                  </div>
+                  <div class="tool-counter">
+                    <span class="tool-count-num" id="count">0 / 12</span>
+                    <span class="bar"><span class="bar-fill" id="bar"></span></span>
+                    <span id="count-lbl">patients checked</span>
+                  </div>
+                  <div class="powered"><span>Powered by</span> <img class="nv" src="nirvana-glyph.png" alt="" /> <strong>nirvana</strong></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. summary + worksheet artifact -->
+            <div class="msg-ai reveal" id="m-out">
+              <div class="ai-glyph"><svg viewBox="0 0 24 24" fill="#0d0d0d"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3a7 7 0 110 14 7 7 0 010-14z"/></svg></div>
+              <div class="ai-body">
+                <p class="summary">All 12 verified. <strong>10 were clean.</strong> <span class="hl">Nirvana caught the hard one</span> — Jordan Rivera's card on file read <em>Inactive</em>; it found his active plan, re-verified live, and priced it. Here's the finished worksheet:</p>
+                <div class="sheet" id="sheet">
+                  <div class="sheet-bar">
+                    <span class="xls">XLS</span>
+                    imaging-coverage-tomorrow<span class="ext">.xlsx</span>
+                    <span class="dl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg></span>
+                  </div>
+                  <table class="grid">
+                    <thead>
+                      <tr><th>#</th><th>Patient</th><th>Plan</th><th>CPT</th><th>Prior auth</th><th>Status</th><th>Est. resp.</th></tr>
+                    </thead>
+                    <tbody id="rows"></tbody>
+                  </table>
+                  <div class="sheet-foot">
+                    <span class="ready">✓ 12 / 12 intake-ready</span>
+                    <span class="nohuman">No human in the loop</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // ---- Patient roster (Jordan is #10, flagged -> resolved) ----
+    var PATIENTS = [
+      { n:'Devin Stoton',   plan:'Aetna Choice POS II',   cpt:'70551', pa:'Not required', est:'$150' },
+      { n:'Lariden Manse',  plan:'BCBS PPO',              cpt:'73721', pa:'Not required', est:'$130' },
+      { n:'Starvan Rivecs', plan:'UnitedHealthcare',      cpt:'72148', pa:'Approved',     est:'$140' },
+      { n:'Avenus Seson',   plan:'Cigna Open Access',     cpt:'73221', pa:'Not required', est:'$130' },
+      { n:'Dolty Reline',   plan:'Aetna Choice POS II',   cpt:'70450', pa:'Not required', est:'$120' },
+      { n:'Morgan Rinson',  plan:'BCBS PPO',              cpt:'73721', pa:'Approved',     est:'$150' },
+      { n:'John Kites',     plan:'Humana Gold',           cpt:'72148', pa:'Not required', est:'$110' },
+      { n:'Acrian Black',   plan:'Cigna Open Access',     cpt:'70551', pa:'Approved',     est:'$135' },
+      { n:'Priya Nadan',    plan:'UnitedHealthcare',      cpt:'73221', pa:'Not required', est:'$125' },
+      { n:'Jordan Rivera',  plan:'UnitedHealthcare',      cpt:'73721', pa:'Pre-filled',   est:'$40', resolved:true },
+      { n:'Elian Wu',       plan:'Aetna Choice POS II',   cpt:'70450', pa:'Not required', est:'$115' },
+      { n:'Tomas Reyes',    plan:'BCBS PPO',              cpt:'72148', pa:'Approved',     est:'$145' }
+    ];
+
+    var rowsEl = document.getElementById('rows');
+    PATIENTS.forEach(function (p, i) {
+      var tr = document.createElement('tr');
+      if (p.resolved) tr.className = 'resolved';
+      var paPill = p.pa === 'Pre-filled'
+        ? '<span class="pill flag dot">PA pre-filled</span>'
+        : (p.pa === 'Approved'
+            ? '<span class="pill dot">Approved</span>'
+            : '<span class="num">Not required</span>');
+      var nameCell = p.resolved
+        ? p.n + ' <span class="rslv-note">· <span class="strike">Inactive</span>Active, re-verified</span>'
+        : p.n;
+      tr.innerHTML =
+        '<td class="num">' + (i+1) + '</td>' +
+        '<td class="pname">' + nameCell + '</td>' +
+        '<td>' + p.plan + '</td>' +
+        '<td class="num">' + p.cpt + '</td>' +
+        '<td>' + paPill + '</td>' +
+        '<td><span class="pill dot">Active · In-network</span></td>' +
+        '<td class="num">' + p.est + '</td>';
+      rowsEl.appendChild(tr);
+    });
+
+    // ---- Timeline helpers ----
+    var stage = document.getElementById('stage');
+    var video = document.getElementById('bg');
+    function wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+    function show(id){ document.getElementById(id).classList.add('show'); }
+
+    async function runCounter(){
+      var count = document.getElementById('count');
+      var bar   = document.getElementById('bar');
+      var scan  = document.getElementById('p-scan');
+      var rules = document.getElementById('p-rules');
+      var est   = document.getElementById('p-est');
+      // light the pipe stages
+      scan.classList.add('active');
+      await wait(500); scan.classList.add('done'); scan.classList.remove('active'); rules.classList.add('active');
+      await wait(500); rules.classList.add('done'); rules.classList.remove('active'); est.classList.add('active');
+      await wait(400); est.classList.add('done'); est.classList.remove('active');
+      // tick 0 -> 12
+      for (var i = 1; i <= 12; i++){
+        count.textContent = i + ' / 12';
+        bar.style.width = (i/12*100) + '%';
+        await wait(150);
+      }
+    }
+
+    async function buildSheet(){
+      var trs = rowsEl.querySelectorAll('tr');
+      for (var i = 0; i < trs.length; i++){
+        trs[i].classList.add('in');
+        await wait(110);
+      }
+    }
+
+    async function sequence(){
+      // 1. play the clinic clip through to its final frame
+      try {
+        video.currentTime = 0;
+        await video.play();
+      } catch(e) { /* autoplay may need the freeze fallback */ }
+
+      var dur = isFinite(video.duration) && video.duration > 0 ? video.duration : 8;
+      // hold on last frame
+      await wait(dur * 1000);
+      video.pause();
+
+      // 2. freeze -> dim/blur + bring in the window
+      stage.classList.add('superimposed');
+      await wait(900);
+
+      // 3. specialist asks
+      show('m-ask');
+      await wait(1100);
+
+      // 4. assistant + Nirvana engine
+      show('m-run');
+      await wait(650);
+      await runCounter();
+      await wait(700);
+
+      // 5. deliverable
+      show('m-out');
+      await wait(500);
+      await buildSheet();
+    }
+
+    // start once the video can play; fall back after 1.2s regardless
+    var started = false;
+    function go(){ if (started) return; started = true; sequence(); }
+    video.addEventListener('canplaythrough', go, { once:true });
+    setTimeout(go, 1200);
+
+    // click anywhere to replay
+    document.addEventListener('click', function(){
+      stage.classList.remove('superimposed');
+      document.querySelectorAll('.reveal').forEach(function(el){ el.classList.remove('show'); });
+      rowsEl.querySelectorAll('tr').forEach(function(t){ t.classList.remove('in'); });
+      ['p-scan','p-rules','p-est'].forEach(function(id){ document.getElementById(id).className='pipe-ic'; });
+      document.getElementById('count').textContent='0 / 12';
+      document.getElementById('bar').style.width='0%';
+      started = false;
+      setTimeout(go, 200);
+    });
+  </script>
+</body>
+</html>
