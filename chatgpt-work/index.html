@@ -133,11 +133,18 @@
       align-items: center;
       gap: 40px;
       text-align: center;
-      transform: translateY(10px);
       opacity: 0;
-      transition: opacity 1s ease 0.25s, transform 1s ease 0.25s;
+      transform: scale(1);
+      transition: opacity 1s ease 0.25s;
     }
-    #closing.show .cc-inner { opacity: 1; transform: none; }
+    #closing.show .cc-inner {
+      opacity: 1;
+      animation: ccPush 9s ease-out 0.25s forwards;
+    }
+    @keyframes ccPush {
+      from { transform: scale(1); }
+      to   { transform: scale(1.03); }
+    }
     .cc-line {
       color: #fff;
       font-size: 27px;
