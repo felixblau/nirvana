@@ -660,6 +660,9 @@
     <!-- replay pill -->
     <button id="replay">↻ Replay</button>
 
+    <!-- TEMP debug readout -->
+    <div id="dbg" style="position:fixed;left:8px;bottom:8px;z-index:99;background:rgba(0,0,0,.8);color:#0f0;font:11px/1.4 monospace;padding:8px 10px;border-radius:6px;max-width:60vw;white-space:pre-wrap;pointer-events:none;">dbg: init</div>
+
     <!-- Closing card -->
     <div id="closing">
       <div class="cc-inner">
@@ -878,6 +881,17 @@
     var stage = document.getElementById('stage');
     var video = document.getElementById('bg');
     var thread = document.querySelector('.thread');
+
+    // ---- TEMP debug ----
+    var _dbg = document.getElementById('dbg');
+    function dbg(msg){ if(_dbg){ _dbg.textContent = 'dbg: ' + msg + '\nreadyState=' + video.readyState + ' paused=' + video.paused + ' t=' + (video.currentTime||0).toFixed(2) + ' dur=' + (video.duration||0) + ' err=' + (video.error ? video.error.code : 'none') + ' net=' + video.networkState + ' src=' + (video.currentSrc||'').split('/').pop(); } }
+    window.addEventListener('error', function(e){ if(_dbg) _dbg.textContent = 'JS ERROR: ' + (e.message||'') + ' @ ' + (e.filename||'').split('/').pop() + ':' + e.lineno; });
+    video.addEventListener('error', function(){ dbg('video error event'); });
+    ['loadedmetadata','loadeddata','canplay','playing','pause','stalled','waiting','ended'].forEach(function(ev){
+      video.addEventListener(ev, function(){ dbg('event: ' + ev); });
+    });
+    dbg('script loaded');
+
     function wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
     function show(id){ document.getElementById(id).classList.add('show'); }
 
@@ -1059,22 +1073,21 @@
     }
 
     function startVideo(){
-      // Everything here must stay SYNCHRONOUS inside the click gesture, or the browser's
-      // autoplay policy will pause the video when we touch muted/volume outside the gesture.
+      dbg('startVideo called');
       try { video.currentTime = 0; } catch(e) {}
       video.volume = 1;
       video.muted = false;
       var p = video.play();
-      if (p && p.catch) {
-        p.catch(function(){
-          // Unmuted play blocked → retry muted so the clip at least renders.
-          video.muted = true;
-          video.play().catch(function(){});
-        });
-      }
-      // Safety net: if still paused shortly after, force muted playback.
+      if (p && p.then) {
+        p.then(function(){ dbg('play() OK (unmuted)'); })
+         .catch(function(err){
+            dbg('play() rejected: ' + (err && err.name) + ' — retrying muted');
+            video.muted = true;
+            video.play().then(function(){ dbg('play() OK (muted)'); }).catch(function(e2){ dbg('muted play FAILED: ' + (e2 && e2.name)); });
+         });
+      } else { dbg('play() returned no promise'); }
       setTimeout(function(){
-        if (video.paused) { video.muted = true; video.play().catch(function(){}); }
+        if (video.paused) { dbg('still paused @400ms — forcing muted'); video.muted = true; video.play().catch(function(){}); }
       }, 400);
     }
 
