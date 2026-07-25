@@ -62,6 +62,64 @@
     }
     #stage.superimposed #scrim { opacity: 1; }
 
+    /* ---------- Loader / play / replay ---------- */
+    #loader {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      z-index: 8;
+      transition: opacity .5s ease;
+    }
+    #loader.hidden { opacity: 0; pointer-events: none; }
+    .spinner {
+      width: 34px; height: 34px;
+      border: 3px solid rgba(255,255,255,0.18);
+      border-top-color: rgba(255,255,255,0.85);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #play-btn {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.35);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center; justify-content: center;
+      cursor: pointer;
+      z-index: 9;
+    }
+    #play-btn.show { display: flex; }
+    #play-btn svg { width: 30px; height: 30px; margin-left: 3px; }
+
+    #replay {
+      position: fixed;
+      bottom: 22px; right: 22px;
+      z-index: 6;
+      padding: 8px 15px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(20,18,30,0.55);
+      backdrop-filter: blur(8px);
+      color: rgba(255,255,255,0.82);
+      font-family: inherit;
+      font-size: 12.5px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity .4s ease, background .15s;
+    }
+    #stage.superimposed ~ #replay,
+    #replay.show { opacity: 1; }
+    #replay:hover { background: rgba(40,36,54,0.7); }
+
     /* ---------- ChatGPT Work window ---------- */
     #win {
       position: relative;
@@ -388,6 +446,17 @@
     <video id="bg" src="bg.mp4" muted playsinline preload="auto"></video>
     <div id="scrim"></div>
 
+    <!-- loading spinner shown until the clip is buffered -->
+    <div id="loader"><div class="spinner"></div></div>
+
+    <!-- manual play button if autoplay is blocked -->
+    <button id="play-btn" aria-label="Play">
+      <svg viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+
+    <!-- replay pill -->
+    <button id="replay">↻ Replay</button>
+
     <div id="win">
       <div class="win-chrome">
         <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
@@ -587,16 +656,61 @@
       }
     }
 
-    async function sequence(){
-      // 1. play the clinic clip through to its final frame
-      try {
-        video.currentTime = 0;
-        await video.play();
-      } catch(e) { /* autoplay may need the freeze fallback */ }
+    var loader = document.getElementById('loader');
+    var playBtn = document.getElementById('play-btn');
 
-      var dur = isFinite(video.duration) && video.duration > 0 ? video.duration : 8;
-      // hold on last frame
-      await wait(dur * 1000);
+    // Wait until the clip has buffered enough to play through (or timeout safety net).
+    function whenReady(){
+      return new Promise(function(resolve){
+        // readyState 4 == HAVE_ENOUGH_DATA
+        if (video.readyState >= 4) return resolve();
+        var done = false;
+        function ok(){ if (done) return; done = true; cleanup(); resolve(); }
+        function cleanup(){
+          video.removeEventListener('canplaythrough', ok);
+          video.removeEventListener('loadeddata', ok);
+        }
+        video.addEventListener('canplaythrough', ok, { once:true });
+        video.addEventListener('loadeddata', ok, { once:true });
+        // safety net: 15s max wait so it never hangs forever
+        setTimeout(ok, 15000);
+      });
+    }
+
+    // Play the clip and resolve when it truly ends.
+    function playToEnd(){
+      return new Promise(function(resolve){
+        var settled = false;
+        function fin(){ if (settled) return; settled = true; video.removeEventListener('ended', fin); resolve(); }
+        video.addEventListener('ended', fin, { once:true });
+        video.currentTime = 0;
+        var p = video.play();
+        if (p && p.catch) {
+          p.catch(function(){
+            // autoplay blocked — offer a manual play button
+            loader.classList.add('hidden');
+            playBtn.classList.add('show');
+            playBtn.onclick = function(){
+              playBtn.classList.remove('show');
+              loader.classList.add('hidden');
+              video.play();
+            };
+          });
+        }
+        // fallback: if 'ended' never fires (rare), resolve off duration
+        var guard = setInterval(function(){
+          if (isFinite(video.duration) && video.duration > 0 && video.currentTime >= video.duration - 0.15) {
+            clearInterval(guard); fin();
+          }
+        }, 200);
+      });
+    }
+
+    async function sequence(){
+      // 1. wait for the clip to be genuinely ready, THEN reveal + play it
+      await whenReady();
+      loader.classList.add('hidden');
+      await playToEnd();
       video.pause();
 
       // 2. freeze -> dim/blur + bring in the window
@@ -617,16 +731,17 @@
       show('m-out');
       await wait(500);
       await buildSheet();
+      document.getElementById('replay').classList.add('show');
     }
 
-    // start once the video can play; fall back after 1.2s regardless
     var started = false;
     function go(){ if (started) return; started = true; sequence(); }
-    video.addEventListener('canplaythrough', go, { once:true });
-    setTimeout(go, 1200);
+    go();
 
-    // click anywhere to replay
-    document.addEventListener('click', function(){
+    // replay on the replay pill (not the whole document, so scrolling the sheet is fine)
+    document.getElementById('replay').addEventListener('click', function(e){
+      e.stopPropagation();
+      this.classList.remove('show');
       stage.classList.remove('superimposed');
       document.querySelectorAll('.reveal').forEach(function(el){ el.classList.remove('show'); });
       rowsEl.querySelectorAll('tr').forEach(function(t){ t.classList.remove('in'); });
@@ -634,7 +749,7 @@
       document.getElementById('count').textContent='0 / 12';
       document.getElementById('bar').style.width='0%';
       started = false;
-      setTimeout(go, 200);
+      go();
     });
   </script>
 </body>
