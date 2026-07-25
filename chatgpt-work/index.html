@@ -852,23 +852,24 @@
       send.classList.remove('ready');
     }
 
-    // The stepper + counter progress over ~6 seconds total.
+    // The stepper + counter progress with an uneven, "working" cadence.
     async function runCounter(){
       var count = document.getElementById('count');
       var bar   = document.getElementById('bar');
       var scan  = document.getElementById('p-scan');
       var rules = document.getElementById('p-rules');
       var est   = document.getElementById('p-est');
-      // light the pipe stages, spaced out (~1.5s of the 6s)
+      // light the pipe stages, spaced out
       scan.classList.add('active');
       await wait(650); scan.classList.add('done'); scan.classList.remove('active'); rules.classList.add('active');
       await wait(650); rules.classList.add('done'); rules.classList.remove('active'); est.classList.add('active');
       await wait(550); est.classList.add('done'); est.classList.remove('active');
-      // tick 0 -> 12 over the remaining ~4.3s (≈360ms per patient)
+      // per-patient dwell (ms). Uneven cadence; Jordan (#10) hits a snag and takes longest.
+      var dwell = [320, 260, 380, 300, 240, 420, 280, 340, 300, 1500, 360, 300];
       for (var i = 1; i <= 12; i++){
         count.textContent = i + ' / 12';
         bar.style.width = (i/12*100) + '%';
-        await wait(360);
+        await wait(dwell[i-1]);
       }
     }
 
@@ -934,9 +935,9 @@
       show('m-ask');
       await wait(1200);
 
-      // 5. assistant replies + "Calling on Nirvana…" for 2s, THEN the stepper
+      // 5. assistant replies — hold so the viewer can read Maya's ask + GPT's reply
       show('m-run');
-      await wait(700);
+      await wait(2700);
       document.getElementById('calling').classList.add('show');
       await wait(2000);                                  // hold the calling state
       document.getElementById('calling').classList.remove('show');
