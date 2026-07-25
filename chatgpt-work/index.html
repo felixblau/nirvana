@@ -723,8 +723,7 @@
     var video = document.getElementById('bg');
     var thread = document.querySelector('.thread');
     function wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
-    function show(id){ document.getElementById(id).classList.add('show'); scrollDown(); }
-    function scrollDown(){ thread.scrollTop = thread.scrollHeight; }
+    function show(id){ document.getElementById(id).classList.add('show'); }
 
     // Type text into the composer, char by char.
     function typeInComposer(text){
@@ -872,14 +871,15 @@
       await runCounter();
       await wait(800);
 
-      // 6. deliverable
+      // 6. deliverable — only now do we auto-scroll, bringing the worksheet into view
       show('m-out');
+      await wait(400);
+      document.getElementById('m-out').scrollIntoView({ behavior: 'smooth', block: 'start' });
       await wait(500);
       await buildSheet();
-      await wait(600);
-
-      // 7. scroll the thread back up so the viewer can read the full result
-      thread.scrollTo({ top: 0, behavior: 'smooth' });
+      await wait(300);
+      // nudge so the full worksheet (incl. Jordan at row 10 + footer) is visible
+      thread.scrollTo({ top: thread.scrollHeight, behavior: 'smooth' });
       await wait(400);
       document.getElementById('replay').classList.add('show');
     }
