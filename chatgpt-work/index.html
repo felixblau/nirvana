@@ -339,20 +339,10 @@
       line-height: 1.5;
     }
 
-    /* assistant row (left, with glyph) */
+    /* assistant row (left, no avatar — matches current ChatGPT) */
     .msg-ai {
       display: flex;
-      gap: 13px;
-      align-items: flex-start;
     }
-    .ai-glyph {
-      width: 26px; height: 26px; flex-shrink: 0;
-      border-radius: 50%;
-      border: 1px solid var(--gpt-line);
-      display: flex; align-items: center; justify-content: center;
-      margin-top: 1px;
-    }
-    .ai-glyph svg { width: 16px; height: 16px; }
     .ai-body { font-size: 14.5px; line-height: 1.55; color: var(--gpt-text); flex: 1; min-width: 0; }
     .ai-body p { margin-bottom: 8px; }
 
@@ -754,7 +744,6 @@
 
             <!-- 2. assistant acknowledges + runs Nirvana -->
             <div class="msg-ai reveal" id="m-run">
-              <div class="ai-glyph"><svg viewBox="0 0 24 24" fill="#0d0d0d"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3a7 7 0 110 14 7 7 0 010-14z"/></svg></div>
               <div class="ai-body">
                 <p>I can't confirm any of that from your records alone — that has to come live from each payer. I'm calling <strong>Nirvana</strong> to re-verify all 12 plans directly with the insurers, apply their prior-auth rules, and price each visit.</p>
                 <div class="calling" id="calling">
@@ -794,7 +783,6 @@
 
             <!-- 3. summary + worksheet artifact -->
             <div class="msg-ai reveal wide" id="m-out">
-              <div class="ai-glyph"><svg viewBox="0 0 24 24" fill="#0d0d0d"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3a7 7 0 110 14 7 7 0 010-14z"/></svg></div>
               <div class="ai-body">
                 <p class="summary">All 12 verified. <strong>10 were clean.</strong> <span class="hl">Nirvana caught the hard one</span> — Jordan Rivera's card on file read <em>Inactive</em>; it found his active plan, re-verified live, and priced it. Here's a report file with all the imaging patients for tomorrow:</p>
                 <div class="sheet" id="sheet">
@@ -817,7 +805,6 @@
 
             <!-- 4. explicit download prompt -->
             <div class="msg-ai reveal" id="m-download">
-              <div class="ai-glyph"><svg viewBox="0 0 24 24" fill="#0d0d0d"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3a7 7 0 110 14 7 7 0 010-14z"/></svg></div>
               <div class="ai-body">
                 <p>Do you want to download this report?</p>
                 <button class="dl-btn big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>Download report</button>
