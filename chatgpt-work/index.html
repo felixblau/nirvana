@@ -1047,7 +1047,9 @@
       // 8. hold on the download button, then closing card
       await wait(4000);
       document.getElementById('closing').classList.add('show');
-      await wait(5000);
+      await wait(2500);
+      bgmFadeTo(0, 2500);   // fade the music out over the closing card
+      await wait(2500);
       document.getElementById('replay').classList.add('show');
     }
 
@@ -1059,12 +1061,35 @@
       startBtn.classList.add('show');
     });
     var bgm = document.getElementById('bgm');
+    var BGM_START = 47;      // begin the track at 0:47
+    var BGM_VOL   = 0.18;    // quiet background level
+    var bgmFadeTimer = null;
+
+    function bgmFadeTo(target, ms){
+      if (bgmFadeTimer) clearInterval(bgmFadeTimer);
+      var steps = Math.max(1, Math.round(ms / 50));
+      var start = bgm.volume;
+      var i = 0;
+      bgmFadeTimer = setInterval(function(){
+        i++;
+        bgm.volume = Math.min(1, Math.max(0, start + (target - start) * (i / steps)));
+        if (i >= steps){ clearInterval(bgmFadeTimer); bgmFadeTimer = null; if (target === 0) bgm.pause(); }
+      }, 50);
+    }
+
+    function bgmStart(){
+      try {
+        bgm.currentTime = BGM_START;
+        bgm.volume = 0;
+        var bp = bgm.play();
+        if (bp && bp.catch) bp.catch(function(){ /* no music file present — ignore */ });
+        bgmFadeTo(BGM_VOL, 1600);   // fade in
+      } catch(e) {}
+    }
+
     startBtn.addEventListener('click', function(){
       startScreen.classList.add('hidden');
-      // quiet background music for the whole demo
-      bgm.volume = 0.18;
-      var bp = bgm.play();
-      if (bp && bp.catch) bp.catch(function(){ /* no music file present — ignore */ });
+      bgmStart();
       go();
     });
 
@@ -1083,7 +1108,7 @@
       document.getElementById('bar').style.width='0%';
       resetComposer();
       thread.scrollTop = 0;
-      try { bgm.currentTime = 0; bgm.volume = 0.18; bgm.play(); } catch(e) {}
+      bgmStart();
       started = false;
       go();
     });
