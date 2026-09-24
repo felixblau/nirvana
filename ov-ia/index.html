@@ -62,7 +62,8 @@
   }
   .nav button:hover { background: var(--sunk); }
   .nav button[aria-pressed="true"] { font-weight: 600; background: var(--accent-soft); }
-  .nav .caret { font-size: 11px; margin-left: 4px; color: var(--ink-2); }
+  .nav button { display: inline-flex; align-items: center; }
+  .nav .caret { margin-left: 6px; color: var(--ink); }
   .right { display: flex; align-items: center; gap: 10px; }
   .org { font-size: 14px; padding: 6px 14px; border-radius: 999px; background: #e3ddd8; border: 1px solid var(--line); }
   .avatar {
@@ -295,7 +296,7 @@
   function make(item, parent) {
     var b = document.createElement('button');
     b.type = 'button';
-    b.innerHTML = item.name.replace('&', '&amp;') + (item.caret ? '<span class="caret">&#9662;</span>' : '') + (item.ext ? '<span class="ext">&#8599;</span>' : '');
+    b.innerHTML = item.name.replace('&', '&amp;') + (item.caret ? '<svg class="caret" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '') + (item.ext ? '<span class="ext">&#8599;</span>' : '');
     b.setAttribute('aria-pressed', 'false');
     b.addEventListener('click', function () { show(item, b); });
     parent.appendChild(b);
