@@ -25,6 +25,7 @@
     { "source": "/nehs-demo", "destination": "/nehs-demo/index.html" },
     { "source": "/pledge", "destination": "/pledge/index.html" },
     { "source": "/nav", "destination": "/nav/index.html" },
-    { "source": "/chatgpt-work", "destination": "/chatgpt-work/index.html" }
+    { "source": "/chatgpt-work", "destination": "/chatgpt-work/index.html" },
+    { "source": "/ov-ia", "destination": "/ov-ia/index.html" }
   ]
 }

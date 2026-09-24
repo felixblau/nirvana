@@ -29,3 +29,6 @@ cp -r chatgpt-work/* "dist/chatgpt-work/"
 
 mkdir -p "dist/pledge"
 cp -r "pledge/dist/"* "dist/pledge/"
+
+mkdir -p "dist/ov-ia"
+cp ov-ia/index.html "dist/ov-ia/index.html"
