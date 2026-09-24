@@ -81,11 +81,6 @@
     font-size: 14px; padding: 10px 18px; color: var(--ink-2); border-bottom: 2px solid transparent; margin-bottom: -1px;
   }
   .tabs span:first-child { color: var(--ink); font-weight: 600; border-bottom-color: var(--brand); }
-  .tabs span.new::after {
-    content: "moved"; font-size: 10px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
-    color: var(--moved-ink); background: var(--moved); border-radius: 4px; padding: 1px 5px; margin-left: 6px;
-    vertical-align: 2px;
-  }
   .menu {
     border-left: 1px solid var(--line); background: #faf7f5; padding: 14px 10px;
     display: flex; flex-direction: column; gap: 2px;
@@ -263,13 +258,13 @@
   var TOP = [
     { name: 'Checker', title: 'Coverage Checker', note: 'Run a single or bulk eligibility check.', tabs: [] },
     { name: 'Reports', caret: true, title: 'Reports', note: 'Lists of individual checks. Each report opens with a filters panel, which replaces the separate Search page.', tabs: ['General', 'Medicaid', 'Plan Year Resets', 'Overrides', 'Agentic'] },
-    { name: 'Work Queue', title: 'Work Queue', note: 'The Policy Assignment and Assigned Policies pages combined into one table. The assignment productivity export lives here too.', tabs: ['Unassigned', 'Assigned'], moved: ['Assigned'] },
+    { name: 'Work Queue', title: 'Work Queue', note: 'The Policy Assignment and Assigned Policies pages combined into one table. The assignment productivity export lives here too.', tabs: ['Unassigned', 'Assigned'] },
     { name: 'Insights', title: 'Insights', note: 'Trends across checks over time. The ERA tab gets an upload action for practices that upload remittance files by hand.', tabs: ['Overview', 'Cost Share Analysis', 'Error Analysis', 'Accuracy Insights', 'ERA Insights'] }
   ];
   var MENU = [
     { name: 'Account', title: 'Account', note: 'Your name, email, password and MFA.', tabs: [] },
-    { name: 'Organization', title: 'Organization', note: 'Who the organization is and who has access. Credits stay on Details.', tabs: ['Details', 'Users', 'Groups'], moved: ['Groups'] },
-    { name: 'Configurations', title: 'Configurations', note: 'Everything that changes how a check resolves, and the data connections set up once.', tabs: ['Payer Mappings', 'Payer Rates', 'Network Status Rules', 'Integrations'], moved: ['Network Status Rules', 'Integrations'] },
+    { name: 'Organization', title: 'Organization', note: 'Who the organization is and who has access. Credits stay on Details.', tabs: ['Details', 'Users', 'Groups'] },
+    { name: 'Configurations', title: 'Configurations', note: 'Everything that changes how a check resolves, and the data connections set up once.', tabs: ['Payer Mappings', 'Payer Rates', 'Network Status Rules', 'Integrations'] },
     { sep: true },
     { name: 'Help & Support', ext: true, title: 'Help & Support', note: 'Opens the Nirvana help center in a new tab.', tabs: [] },
     { name: 'Log out', title: 'Log out', note: '', tabs: [] }
@@ -286,8 +281,7 @@
     if (item.note) html += '<p class="note">' + item.note + '</p>';
     if (item.tabs.length) {
       html += '<div class="tabs">' + item.tabs.map(function (t) {
-        var moved = item.moved && item.moved.indexOf(t) > -1;
-        return '<span' + (moved ? ' class="new"' : '') + '>' + t + '</span>';
+        return '<span>' + t + '</span>';
       }).join('') + '</div>';
     }
     view.innerHTML = html;
