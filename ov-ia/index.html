@@ -171,7 +171,7 @@
 
   <section>
     <h2>Current and proposed</h2>
-    <p class="sub">The avatar menu goes from six items to five. The Workflows dropdown turns into a single work queue.</p>
+    <p class="sub">The avatar menu goes from six items to five. The top nav drops from five items to four, and the Workflows dropdown becomes a single work queue.</p>
     <div class="compare">
       <div class="tree">
         <h4>Current</h4>
@@ -180,7 +180,7 @@
         <div class="row"><b>Reports</b><span class="kids">General · Medicaid · Overrides · Resets · Agentic · <span class="chip out">Search</span></span></div>
         <div class="row"><b>Workflows</b><span class="kids"><span class="chip out">Policy Assignment</span><span class="chip out">Assigned Policies</span><span class="chip out">Manage Groups</span></span></div>
         <div class="row"><b>Insights</b><span class="kids">Overview · Cost Share Analysis · Error Analysis · Accuracy Insights · ERA insights</span></div>
-        <div class="row"><b>Integrations</b><span class="kids">ERA Data · EHR</span></div>
+        <div class="row"><b><span class="chip out">Integrations</span></b><span class="kids">ERA Data · EHR</span></div>
         <div class="group">Avatar menu</div>
         <div class="row"><b>Account</b><span></span></div>
         <div class="row"><b>Organization</b><span class="kids">Organization · Users · <span class="chip dup">Payer Rates</span></span></div>
@@ -195,12 +195,11 @@
         <div class="row"><b>Checker</b><span></span></div>
         <div class="row"><b>Reports</b><span class="kids">General · Medicaid · Plan Year Resets · Overrides · Agentic</span></div>
         <div class="row"><b><span class="chip in">Work Queue</span></b><span class="kids">Unassigned · Assigned</span></div>
-        <div class="row"><b>Insights</b><span class="kids">Overview · Cost Share · Errors · Accuracy · ERA</span></div>
-        <div class="row"><b>Integrations</b><span class="kids">ERA Data · EHR</span></div>
+        <div class="row"><b>Insights</b><span class="kids">Overview · Cost Share · Errors · Accuracy · ERA (with ERA upload)</span></div>
         <div class="group">Avatar menu</div>
         <div class="row"><b>Account</b><span></span></div>
         <div class="row"><b>Organization</b><span class="kids">Details · Users · <span class="chip in">Groups</span></span></div>
-        <div class="row"><b>Configurations</b><span class="kids">Payer Mappings · Payer Rates · <span class="chip in">Network Status Rules</span></span></div>
+        <div class="row"><b>Configurations</b><span class="kids">Payer Mappings · Payer Rates · <span class="chip in">Network Status Rules</span><span class="chip in">Integrations</span></span></div>
         <div class="row"><b>Help &amp; Support <span class="ext">&#8599;</span></b><span></span></div>
         <div class="row"><b>Log out</b><span></span></div>
       </div>
@@ -225,6 +224,8 @@
         <tr><td>Productivity export</td><td class="path">Organization page</td><td class="path now">Work Queue</td><td>The CSV reports on assignment activity, which is work queue data.</td></tr>
         <tr><td>Work Queue</td><td class="path">Policy Assignment, Assigned Policies</td><td class="path now">One view, Unassigned and Assigned tabs</td><td>Both pages show the same columns and differ only by assignee. Their names are close enough that people open the wrong one.</td></tr>
         <tr><td>Search</td><td class="path">Reports › Search</td><td class="path now">Filters panel on each report</td><td>It filters the same checks every report already filters.</td></tr>
+        <tr><td>Integrations</td><td class="path">Top nav</td><td class="path now">Configurations › Integrations</td><td>Connecting Candid or an EHR is set up once.</td></tr>
+        <tr><td>ERA upload</td><td class="path">Integrations › Upload ERA</td><td class="path now">Insights › ERA, plus Configurations › Integrations</td><td>Practices on manual CSV upload can do it any time they want. The upload action sits on the tab that shows ERA results, and the setup stays with the other integrations.</td></tr>
         <tr><td>Organization tab</td><td class="path">Organization › Organization</td><td class="path now">Organization › Details</td><td>The first tab repeats its parent's name.</td></tr>
         <tr><td>Help &amp; Support</td><td class="path">Avatar menu</td><td class="path now">Avatar menu, marked external</td><td>It opens the Zendesk help center outside the app.</td></tr>
       </tbody>
@@ -233,10 +234,10 @@
   </section>
 
   <section>
-    <h2>Open question</h2>
+    <h2>ERA upload</h2>
     <div class="open">
-      <p>How often is ERA uploaded? If billing staff upload it every month, Integrations stays in the top nav.</p>
-      <p>If it is set up once, Integrations becomes a fourth Configurations tab and the top nav drops to four items.</p>
+      <p>The Candid integration is a one-time setup. Manual CSV upload is on the practice's own schedule, and they can do it any time.</p>
+      <p>Setup moves to Configurations. Practices that upload manually get the upload action on Insights › ERA, next to the results it feeds.</p>
     </div>
   </section>
 </main>
@@ -246,13 +247,12 @@
     { name: 'Checker', title: 'Coverage Checker', note: 'Run a single or bulk eligibility check.', tabs: [] },
     { name: 'Reports', caret: true, title: 'Reports', note: 'Lists of individual checks. Each report opens with a filters panel, which replaces the separate Search page.', tabs: ['General', 'Medicaid', 'Plan Year Resets', 'Overrides', 'Agentic'] },
     { name: 'Work Queue', title: 'Work Queue', note: 'The Policy Assignment and Assigned Policies pages combined into one table. The assignment productivity export lives here too.', tabs: ['Unassigned', 'Assigned'], moved: ['Assigned'] },
-    { name: 'Insights', title: 'Insights', note: 'Trends across checks over time. This page is unchanged.', tabs: ['Overview', 'Cost Share Analysis', 'Error Analysis', 'Accuracy Insights', 'ERA Insights'] },
-    { name: 'Integrations', title: 'Integrations', note: 'Where ERA and EHR data comes in. It stays here if ERA upload is a recurring task.', tabs: ['ERA Data', 'EHR'] }
+    { name: 'Insights', title: 'Insights', note: 'Trends across checks over time. The ERA tab gets an upload action for practices that upload remittance files by hand.', tabs: ['Overview', 'Cost Share Analysis', 'Error Analysis', 'Accuracy Insights', 'ERA Insights'] }
   ];
   var MENU = [
     { name: 'Account', title: 'Account', note: 'Your name, email, password and MFA.', tabs: [] },
     { name: 'Organization', title: 'Organization', note: 'Who the organization is and who has access. Credits stay on Details.', tabs: ['Details', 'Users', 'Groups'], moved: ['Groups'] },
-    { name: 'Configurations', title: 'Configurations', note: 'Everything that changes how a check resolves.', tabs: ['Payer Mappings', 'Payer Rates', 'Network Status Rules'], moved: ['Network Status Rules'] },
+    { name: 'Configurations', title: 'Configurations', note: 'Everything that changes how a check resolves, and the data connections set up once.', tabs: ['Payer Mappings', 'Payer Rates', 'Network Status Rules', 'Integrations'], moved: ['Network Status Rules', 'Integrations'] },
     { sep: true },
     { name: 'Help & Support', ext: true, title: 'Help & Support', note: 'Opens the Nirvana help center in a new tab.', tabs: [] },
     { name: 'Log out', title: 'Log out', note: '', tabs: [] }
