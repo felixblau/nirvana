@@ -120,6 +120,23 @@
 
   .open { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 12px; padding: 20px 24px; font-size: 15px; max-width: 720px; }
   .open p + p { margin-top: 8px; color: var(--ink-2); }
+  /* ---------- integrations mock ---------- */
+  .conn { margin-top: 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  .conn-row { display: grid; grid-template-columns: minmax(0, 1fr) 200px 96px; gap: 20px; align-items: center; padding: 18px 20px; border-top: 1px solid var(--sunk); }
+  .conn-row:first-child { border-top: 0; }
+  .conn-row b { font-size: 15px; font-weight: 600; }
+  .conn-row p { font-size: 14px; color: var(--ink-2); margin-top: 2px; }
+  .conn-row .src { font-size: 14px; }
+  .conn-row .src small { display: block; font-size: 13px; color: var(--ink-2); }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; background: var(--line); vertical-align: 1px; }
+  .dot.on { background: #3f9b6b; }
+  .btn { font: inherit; font-size: 14px; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); justify-self: end; }
+  .btn.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .tabs span.on { color: var(--ink); font-weight: 600; border-bottom-color: var(--brand); }
+  .tabs.pick span:first-child { color: var(--ink-2); font-weight: 400; border-bottom-color: transparent; }
+  .tabs.pick span.on { color: var(--ink); font-weight: 600; border-bottom-color: var(--brand); }
+  .notes { margin-top: 20px; font-size: 15px; max-width: 720px; }
+  .notes li { margin: 0 0 8px 20px; }
 
   @media (max-width: 820px) {
     main { padding: 32px 16px 64px; }
@@ -135,6 +152,8 @@
     .row { grid-template-columns: 110px 1fr; }
     .tablewrap { overflow-x: auto; }
     table { min-width: 640px; }
+    .conn-row { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+    .btn { justify-self: start; }
   }
 </style>
 </head>
@@ -246,11 +265,32 @@
   </section>
 
   <section>
-    <h2>ERA upload</h2>
-    <div class="open">
-      <p>The Candid integration is a one-time setup. Manual CSV upload is on the practice's own schedule, and they can do it any time.</p>
-      <p>Setup moves to Configurations. Practices that upload manually get the upload action on Insights › ERA, next to the results it feeds.</p>
+    <h2>Configurations › Integrations</h2>
+    <p class="sub">Integrations becomes the fourth Configurations tab. Each row is one data connection, with its current source and one action.</p>
+    <div class="app">
+      <div class="view">
+        <h3>Configurations</h3>
+        <p class="note">Everything that changes how a check resolves, and the data connections set up once.</p>
+        <div class="tabs pick"><span>Payer Mappings</span><span>Payer Rates</span><span>Network Status Rules</span><span class="on">Integrations</span></div>
+        <div class="conn">
+          <div class="conn-row">
+            <div><b>ERA remittance</b><p>Remittance files from your clearinghouse. They feed Insights › ERA.</p></div>
+            <div class="src"><span class="dot on"></span>Candid<small>Syncs automatically</small></div>
+            <button class="btn" type="button">Manage</button>
+          </div>
+          <div class="conn-row">
+            <div><b>EHR</b><p>[WHAT THE EHR CONNECTION SENDS OR RECEIVES]</p></div>
+            <div class="src"><span class="dot"></span>Not connected</div>
+            <button class="btn primary" type="button">Connect</button>
+          </div>
+        </div>
+      </div>
     </div>
+    <ul class="notes">
+      <li>A practice without Candid sees Manual CSV upload as the ERA source, and the action links to Insights › ERA, where the upload lives.</li>
+      <li>Connecting or managing a source opens the same setup flow the current Integrations pages use, so nothing inside the flows changes.</li>
+      <li>A new connection type is a new row. The tab does not need to grow into its own page.</li>
+    </ul>
   </section>
 </main>
 
