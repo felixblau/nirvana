@@ -135,6 +135,12 @@
   .tabs span.on { color: var(--ink); font-weight: 600; border-bottom-color: var(--brand); }
   .tabs.pick span:first-child { color: var(--ink-2); font-weight: 400; border-bottom-color: transparent; }
   .tabs.pick span.on { color: var(--ink); font-weight: 600; border-bottom-color: var(--brand); }
+  .group-label { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); margin-top: 24px; }
+  .group-note { font-size: 14px; color: var(--ink-2); margin-top: 2px; }
+  .group-note + .conn { margin-top: 10px; }
+  .request { margin-top: 16px; font-size: 14px; }
+  .request a { color: var(--brand); }
+  .conn-row { grid-template-columns: minmax(0, 1fr) 150px 180px; }
   .notes { margin-top: 20px; font-size: 15px; max-width: 720px; }
   .notes li { margin: 0 0 8px 20px; }
 
@@ -266,30 +272,53 @@
 
   <section>
     <h2>Configurations › Integrations</h2>
-    <p class="sub">Integrations becomes the fourth Configurations tab. Each row is one data connection, with its current source and one action.</p>
+    <p class="sub">Integrations becomes the fourth Configurations tab. The ERA Data and EHR toggle turns into two groups on one list, so the page has no tabs inside a tab.</p>
     <div class="app">
       <div class="view">
         <h3>Configurations</h3>
         <p class="note">Everything that changes how a check resolves, and the data connections set up once.</p>
         <div class="tabs pick"><span>Payer Mappings</span><span>Payer Rates</span><span>Network Status Rules</span><span class="on">Integrations</span></div>
+        <div class="group-label">ERA data</div>
+        <p class="group-note">Remittance data that feeds Insights › ERA and improves coverage accuracy.</p>
         <div class="conn">
           <div class="conn-row">
-            <div><b>ERA remittance</b><p>Remittance files from your clearinghouse. They feed Insights › ERA.</p></div>
-            <div class="src"><span class="dot on"></span>Candid<small>Syncs automatically</small></div>
-            <button class="btn" type="button">Manage</button>
+            <div><b>Candid Health</b><p>Sends ERA remittance data from your clearinghouse.</p></div>
+            <div class="src"><span class="dot on"></span>Available</div>
+            <button class="btn" type="button">View</button>
           </div>
           <div class="conn-row">
-            <div><b>EHR</b><p>[WHAT THE EHR CONNECTION SENDS OR RECEIVES]</p></div>
-            <div class="src"><span class="dot"></span>Not connected</div>
-            <button class="btn primary" type="button">Connect</button>
+            <div><b>Manual upload</b><p>X12 835 or CSV files, uploaded whenever you have them.</p></div>
+            <div class="src"><span class="dot on"></span>Available</div>
+            <button class="btn" type="button">Go to Insights › ERA</button>
           </div>
         </div>
+        <div class="group-label">EHR</div>
+        <p class="group-note">Syncs patient and appointment data, runs checks when an appointment is created and writes coverage back to the chart.</p>
+        <div class="conn">
+          <div class="conn-row">
+            <div><b>Athenahealth</b><p>Direct integration.</p></div>
+            <div class="src"><span class="dot on"></span>Available</div>
+            <button class="btn" type="button">Contact your CSM</button>
+          </div>
+          <div class="conn-row">
+            <div><b>AdvancedMD</b><p>Direct integration.</p></div>
+            <div class="src"><span class="dot on"></span>Available</div>
+            <button class="btn" type="button">Contact your CSM</button>
+          </div>
+          <div class="conn-row">
+            <div><b>Healthie</b><p>Direct integration.</p></div>
+            <div class="src"><span class="dot"></span>Coming soon</div>
+            <span></span>
+          </div>
+        </div>
+        <p class="request"><a href="#" onclick="return false">Request an integration</a></p>
       </div>
     </div>
     <ul class="notes">
-      <li>A practice without Candid sees Manual CSV upload as the ERA source, and the action links to Insights › ERA, where the upload lives.</li>
-      <li>Connecting or managing a source opens the same setup flow the current Integrations pages use, so nothing inside the flows changes.</li>
-      <li>A new connection type is a new row. The tab does not need to grow into its own page.</li>
+      <li>Each row opens the same detail panel the current page shows under its tile, so the setup copy and CSM handoff stay as they are.</li>
+      <li>The upload drop zone and Uploaded Files list move to Insights › ERA. The Manual upload row stays here so a practice looking for ERA setup still finds it.</li>
+      <li>The current tiles say Live for an integration Nirvana offers, which reads as connected. Available avoids that. Once the app knows what an org has connected, that state belongs in this column.</li>
+      <li>Request an Integration drops from a tile to a link, since it is not an integration.</li>
     </ul>
   </section>
 </main>
