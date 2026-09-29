@@ -663,6 +663,7 @@ var page = document.getElementById('page');
 var role = 'admin';
 var current = 'Checker';
 var leaves, sections, btns;
+var last = {}; // section name -> last page visited in it
 
 function esc(t) { return t.replace(/&/g, '&amp;'); }
 function collapsed() { return app.classList.contains('collapsed') && matchMedia('(min-width: 821px)').matches; }
@@ -670,6 +671,7 @@ function collapsed() { return app.classList.contains('collapsed') && matchMedia(
 function select(path) {
   var parts = path.split('/'), crumb = parts.length > 1 ? parts[0] : '', title = parts[parts.length - 1];
   current = path;
+  if (crumb) last[crumb] = path;
   leaves.forEach(function (b) { b.removeAttribute('aria-current'); });
   if (btns[path]) btns[path].setAttribute('aria-current', 'page');
   sections.forEach(function (s) { s.btn.classList.toggle('has-current', s.name === crumb); });
@@ -784,15 +786,15 @@ function build() {
     box.appendChild(inner);
     var sec = { name: item.name, btn: head, box: box, kids: kids };
     head.addEventListener('click', function () {
-      var first = item.name + '/' + kids[0];
+      var target = btns[last[item.name]] ? last[item.name] : item.name + '/' + kids[0];
       if (collapsed()) {
-        if (current.indexOf(item.name + '/') !== 0) go(first);
+        if (current.indexOf(item.name + '/') !== 0) go(target);
         showFly(head, sec);
         return;
       }
       var open = head.getAttribute('aria-expanded') !== 'true';
       toggle(sec, open);
-      if (open) select(first);
+      if (open) select(target);
     });
     flyOn(head, sec);
     rail.appendChild(head);
