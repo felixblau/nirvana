@@ -47,8 +47,12 @@
   .rail { display: flex; flex-direction: column; min-height: 0; min-width: 0; overflow: hidden; background: #f2ede9; border-right: 1px solid var(--line); }
   .rail-top { padding: 20px 16px 12px; }
   .brand { position: relative; display: flex; align-items: center; justify-content: space-between; height: 28px; }
-  .logo svg { display: block; }
-  .logo .glyph { display: none; }
+  .logo { display: flex; align-items: center; }
+  .logo svg { display: block; flex: none; }
+  /* the flower turns half a revolution: clockwise as the rail collapses, back as it expands */
+  .logo .mark { transform-origin: 49.6% 48.4%; transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), margin-left 0.22s ease; }
+  .logo .word { transition: opacity 0.16s ease; }
+  .app.preload, .app.preload * { transition: none !important; }
   .collapse-btn {
     width: 28px; height: 28px; flex: none; display: grid; place-items: center; border-radius: 6px;
     background: none; border: 0; color: var(--ink-2); cursor: pointer;
@@ -77,14 +81,15 @@
   .kids > div { overflow: hidden; min-height: 0; }
   .kids > div::after { content: ''; display: block; height: 4px; }
   .kids.open { grid-template-rows: 1fr; opacity: 1; }
-  @media (prefers-reduced-motion: reduce) { .app, .kids, .rail button.item .chev { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .app, .logo svg, .kids, .rail button.item .chev { transition: none; } }
 
   /* collapsed rail: icons only, sections open as a flyout */
   @media (min-width: 821px) {
     .app.collapsed { grid-template-columns: 64px minmax(0, 1fr); }
-    .app.collapsed .logo .full, .app.collapsed .org, .app.collapsed .txt, .app.collapsed .chev,
+    .app.collapsed .org, .app.collapsed .txt, .app.collapsed .chev,
     .app.collapsed .ext, .app.collapsed .kids, .app.collapsed .me > span:not(.av) { display: none; }
-    .app.collapsed .logo .glyph { display: block; margin-left: 6px; }
+    .app.collapsed .logo .mark { transform: rotate(180deg); margin-left: 6px; }
+    .app.collapsed .logo .word { opacity: 0; }
     .app.collapsed .collapse-btn { position: absolute; left: 2px; top: 0; opacity: 0; background: var(--sunk); color: var(--ink); }
     .app.collapsed .brand:hover .collapse-btn, .app.collapsed .collapse-btn:focus-visible { opacity: 1; }
     .app.collapsed .label { font-size: 0; height: 0; padding: 0; margin: 12px 13px; border-top: 1px solid var(--line); }
@@ -300,10 +305,10 @@
 <main>
   <div class="head"><h1>OneVerify left rail</h1><label class="meta">Viewing as <select id="role"><option value="admin">Admin</option><option value="biller">Biller</option></select></label></div>
   <section>
-    <div class="app">
+    <div class="app preload">
       <nav class="rail" aria-label="OneVerify">
         <div class="rail-top">
-          <div class="brand"><span class="logo"><svg class="full" width="118" height="22" role="img" aria-label="Nirvana" viewBox="0 0 134 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div class="brand"><span class="logo"><svg class="mark" width="19.36" height="22" role="img" aria-label="Nirvana" viewBox="0 0 22 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M10.9039 15.1853C12.6112 15.1853 13.9953 13.8012 13.9953 12.0939C13.9953 10.3866 12.6112 9.0025 10.9039 9.0025C9.19657 9.0025 7.8125 10.3866 7.8125 12.0939C7.8125 13.8012 9.19657 15.1853 10.9039 15.1853Z" fill="#2C1F45"/>
 <path d="M15.2056 16.1846C11.5693 16.9674 9.25614 20.5515 10.039 24.1878C13.6768 23.4035 15.99 19.8209 15.2056 16.1846Z" fill="#9073F2"/>
 <path d="M12.2969 6.29639C14.7774 9.06851 19.0369 9.3049 21.809 6.82441C19.327 4.05075 15.069 3.81436 12.2969 6.29639Z" fill="#9073F2"/>
@@ -311,6 +316,7 @@
 <path d="M11.7697 0C12.5525 3.63631 10.2378 7.22043 6.60146 8.00172C5.81863 4.36542 8.13181 0.782827 11.7697 0Z" fill="#AD9D92"/>
 <path d="M0.878479 5.30176C4.41041 6.47139 6.3245 10.2827 5.15486 13.8146C1.62447 12.645 -0.291156 8.83369 0.878479 5.30176Z" fill="#9073F2"/>
 <path d="M16.6082 10.4177C20.1402 11.5874 22.0543 15.3987 20.8846 18.9306C17.3542 17.7594 15.4401 13.9497 16.6082 10.4177Z" fill="#AD9D92"/>
+</svg><svg class="word" width="98.56" height="22" aria-hidden="true" viewBox="22 0 112 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M29.7891 20.5086V3.71155C29.7891 3.64248 29.8459 3.58568 29.9149 3.58568H32.7346C32.7976 3.58568 32.8513 3.63327 32.859 3.6962L33.123 5.75457C33.1383 5.8697 33.2842 5.905 33.3502 5.80983C34.4645 4.19199 36.5214 3.07147 38.9251 3.07147C42.5599 3.07147 44.9406 5.51666 44.9406 9.34484V20.5101C44.9406 20.5792 44.8838 20.636 44.8147 20.636H41.2705C41.2014 20.636 41.1447 20.5792 41.1447 20.5101V9.53823C41.1447 7.64103 39.8906 6.38544 37.7662 6.38544C35.2888 6.38544 33.6172 8.09077 33.585 10.3103V20.5101C33.585 20.5792 33.5282 20.636 33.4591 20.636H29.9149C29.8459 20.6344 29.7891 20.5776 29.7891 20.5086Z" fill="#2C1F45"/>
 <path d="M47.0508 20.5086V3.71156C47.0508 3.64249 47.1076 3.58569 47.1766 3.58569H50.7209C50.7899 3.58569 50.8467 3.64249 50.8467 3.71156V20.5086C50.8467 20.5776 50.7899 20.6344 50.7209 20.6344H47.1766C47.1076 20.6344 47.0508 20.5776 47.0508 20.5086Z" fill="#2C1F45"/>
 <path d="M53.3739 20.5086V3.71156C53.3739 3.64249 53.4307 3.58569 53.4997 3.58569H56.3194C56.3824 3.58569 56.4361 3.63174 56.4438 3.69467L56.826 6.53127C56.8429 6.65253 57.004 6.68016 57.0608 6.57271C58.1813 4.48978 59.2527 3.61486 61.9343 3.61486H62.4593C62.5253 3.61486 62.579 3.66858 62.579 3.73458L63.9021 7.08232C63.9037 7.08692 63.9006 7.09153 63.896 7.09153H62.8C59.262 7.09153 57.1713 8.98873 57.1713 12.206V20.5086C57.1713 20.5776 57.1146 20.6344 57.0455 20.6344H53.5013C53.4307 20.6344 53.3739 20.5776 53.3739 20.5086Z" fill="#2C1F45"/>
@@ -318,14 +324,6 @@
 <path d="M81.2928 12.0141C81.2928 6.73848 84.5424 3.07147 89.0781 3.07147C91.6047 3.07147 93.7275 4.19506 94.8757 5.95105C94.9401 6.04929 95.0906 6.01398 95.1059 5.89732L95.3715 3.6962C95.3791 3.63327 95.4329 3.58568 95.4958 3.58568H98.314C98.383 3.58568 98.4398 3.64248 98.4398 3.71155V20.5086C98.4398 20.5776 98.383 20.6344 98.314 20.6344H94.802C94.7329 20.6344 94.6761 20.5776 94.6761 20.5086V18.7265C94.6761 18.6037 94.5211 18.5546 94.4489 18.6528C93.3254 20.1908 91.4911 21.1164 89.2071 21.1164C84.6053 21.1164 81.2928 17.3849 81.2928 12.0141ZM94.6746 11.9819C94.6746 8.60345 92.7451 6.2565 89.9776 6.2565C87.1472 6.2565 85.184 8.63722 85.184 12.0464C85.184 15.4877 87.1134 17.9007 89.9132 17.9007C92.7114 17.9007 94.6746 15.4555 94.6746 11.9819Z" fill="#2C1F45"/>
 <path d="M100.352 20.5086V3.71155C100.352 3.64248 100.408 3.58568 100.477 3.58568H103.297C103.36 3.58568 103.414 3.63327 103.421 3.6962L103.685 5.75457C103.701 5.8697 103.847 5.905 103.913 5.80983C105.027 4.19199 107.084 3.07147 109.488 3.07147C113.122 3.07147 115.503 5.51666 115.503 9.34484V20.5101C115.503 20.5792 115.446 20.636 115.377 20.636H111.833C111.764 20.636 111.707 20.5792 111.707 20.5101V9.53823C111.707 7.64103 110.453 6.38544 108.329 6.38544C105.851 6.38544 104.18 8.09077 104.148 10.3103V20.5101C104.148 20.5792 104.091 20.636 104.022 20.636H100.477C100.408 20.6344 100.352 20.5776 100.352 20.5086Z" fill="#2C1F45"/>
 <path d="M116.855 12.0141C116.855 6.73848 120.105 3.07147 124.641 3.07147C127.167 3.07147 129.29 4.19506 130.438 5.95105C130.503 6.04929 130.653 6.01398 130.669 5.89732L130.934 3.6962C130.942 3.63327 130.995 3.58568 131.058 3.58568H133.877C133.946 3.58568 134.002 3.64248 134.002 3.71155V20.5086C134.002 20.5776 133.946 20.6344 133.877 20.6344H130.365C130.296 20.6344 130.239 20.5776 130.239 20.5086V18.7265C130.239 18.6037 130.084 18.5546 130.012 18.6528C128.888 20.1908 127.054 21.1164 124.77 21.1164C120.169 21.1164 116.855 17.3849 116.855 12.0141ZM130.237 11.9819C130.237 8.60345 128.308 6.2565 125.54 6.2565C122.71 6.2565 120.747 8.63722 120.747 12.0464C120.747 15.4877 122.676 17.9007 125.476 17.9007C128.276 17.9007 130.237 15.4555 130.237 11.9819Z" fill="#2C1F45"/>
-</svg><svg class="glyph" width="20" height="23" role="img" aria-label="Nirvana" viewBox="0 0 22 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M10.9039 15.1853C12.6112 15.1853 13.9953 13.8012 13.9953 12.0939C13.9953 10.3866 12.6112 9.0025 10.9039 9.0025C9.19657 9.0025 7.8125 10.3866 7.8125 12.0939C7.8125 13.8012 9.19657 15.1853 10.9039 15.1853Z" fill="#2C1F45"/>
-<path d="M15.2056 16.1846C11.5693 16.9674 9.25614 20.5515 10.039 24.1878C13.6768 23.4035 15.99 19.8209 15.2056 16.1846Z" fill="#9073F2"/>
-<path d="M12.2969 6.29639C14.7774 9.06851 19.0369 9.3049 21.809 6.82441C19.327 4.05075 15.069 3.81436 12.2969 6.29639Z" fill="#9073F2"/>
-<path d="M0 17.3634C2.77213 14.8829 7.03163 15.1193 9.51211 17.893C6.73845 20.3735 2.48049 20.1355 0 17.3634Z" fill="#AD9D92"/>
-<path d="M11.7697 0C12.5525 3.63631 10.2378 7.22043 6.60146 8.00172C5.81863 4.36542 8.13181 0.782827 11.7697 0Z" fill="#AD9D92"/>
-<path d="M0.878479 5.30176C4.41041 6.47139 6.3245 10.2827 5.15486 13.8146C1.62447 12.645 -0.291156 8.83369 0.878479 5.30176Z" fill="#9073F2"/>
-<path d="M16.6082 10.4177C20.1402 11.5874 22.0543 15.3987 20.8846 18.9306C17.3542 17.7594 15.4401 13.9497 16.6082 10.4177Z" fill="#AD9D92"/>
 </svg></span><button class="collapse-btn" id="collapse" type="button" aria-label="Collapse sidebar" aria-expanded="true"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3.5" width="14" height="13" rx="2"/><path d="M8 3.5v13"/></svg></button></div>
           <button class="org" type="button">Testing SP
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -833,7 +831,7 @@ document.getElementById('role').addEventListener('change', function (e) {
 });
 
 build();
-
+requestAnimationFrame(function () { requestAnimationFrame(function () { app.classList.remove('preload'); }); });
 </script>
 </body>
 </html>
