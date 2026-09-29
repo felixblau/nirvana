@@ -32,3 +32,6 @@ cp -r "pledge/dist/"* "dist/pledge/"
 
 mkdir -p "dist/ov-ia"
 cp ov-ia/index.html "dist/ov-ia/index.html"
+
+mkdir -p "dist/ov-ia/rail"
+cp ov-ia/rail/index.html "dist/ov-ia/rail/index.html"
