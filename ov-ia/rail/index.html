@@ -190,7 +190,9 @@
 
   /* ---------- insights ---------- */
   .embed { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 0 20px 20px; }
-  .embed .under { margin: 0 -20px; padding: 0 20px; }
+  .tabstrip { flex: none; padding: 0 32px; background: #faf7f5; }
+  .scrollpad { flex: 1; min-height: 0; overflow: auto; padding: 20px 32px 40px; }
+  .stat, .chart { background: var(--panel); }
   .pills { display: flex; gap: 8px; margin: 14px 0; }
   .pill { font-size: 13px; border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px; }
   .stat { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
@@ -237,6 +239,8 @@
     .body { padding: 16px 16px 28px; overflow: visible; }
     .body.flush { display: block; overflow: visible; }
     .tscroll { max-height: 520px; }
+    .tabstrip { padding: 0 16px; overflow-x: auto; }
+    .scrollpad { padding: 16px; }
     .strip, .pager { padding-left: 16px; padding-right: 16px; }
     .md, .overview, .checker { grid-template-columns: minmax(0, 1fr); }
     .md-list { border-right: 0; border-bottom: 1px solid var(--line); }
@@ -449,10 +453,11 @@ PAGES['Work Queue/Groups'] = {
 };
 
 PAGES['Insights'] = {
+  flush: true,
   body: function () {
     var bars = [2100, 620, 20, 5, 30, 40, 1700, 1550, 180, 984, 160, 190, 124, 20, 190, 216, 60, 160, 30, 50];
-    return '<div class="embed"><div class="under"><span class="on">Overview</span><span>Cost Share Analysis</span><span>Error Analysis</span><span>Accuracy Insights</span><span>ERA insights</span></div>' +
-      '<div class="pills"><span class="pill">Date: <b>Previous 30 days or today</b></span><span class="pill">Payer ID &#8964;</span><span class="pill">Check Type &#8964;</span></div>' +
+    return '<div class="under tabstrip"><span class="on">Overview</span><span>Cost Share Analysis</span><span>Error Analysis</span><span>Accuracy Insights</span><span>ERA insights</span></div>' +
+      '<div class="scrollpad"><div class="pills" style="margin-top:0"><span class="pill">Date: <b>Previous 30 days or today</b></span><span class="pill">Payer ID &#8964;</span><span class="pill">Check Type &#8964;</span></div>' +
       '<p style="font-size:18px;font-weight:600">Overview</p>' +
       '<div class="grid2 gap" style="grid-template-columns:1fr 1.4fr"><div style="display:grid;gap:12px"><div class="stat small">Billable Checks<b>9,065</b></div><div class="stat small">Nirvana Credits Used<b>15,636</b></div></div>' +
       '<div class="chart small">Total checks over time<div class="bars">' + bars.map(function (v) { return '<i style="height:' + Math.max(2, v / 21) + '%"></i>'; }).join('') + '</div></div></div></div>';
