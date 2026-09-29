@@ -50,7 +50,7 @@
   .logo { display: flex; align-items: center; }
   .logo svg { display: block; flex: none; }
   /* the flower turns half a revolution: clockwise as the rail collapses, back as it expands */
-  .logo .mark { transform-origin: 49.6% 48.4%; transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), margin-left 0.22s ease; }
+  .logo .mark { margin-left: 6px; transform-origin: 49.6% 48.4%; transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1); }
   .logo .word { transition: opacity 0.16s ease; }
   .app.preload, .app.preload * { transition: none !important; }
   .collapse-btn {
@@ -88,7 +88,7 @@
     .app.collapsed { grid-template-columns: 64px minmax(0, 1fr); }
     .app.collapsed .org, .app.collapsed .txt, .app.collapsed .chev,
     .app.collapsed .ext, .app.collapsed .kids, .app.collapsed .me > span:not(.av) { display: none; }
-    .app.collapsed .logo .mark { transform: rotate(180deg); margin-left: 6px; }
+    .app.collapsed .logo .mark { transform: rotate(180deg); }
     .app.collapsed .logo .word { opacity: 0; }
     .app.collapsed .collapse-btn { position: absolute; left: 2px; top: 0; opacity: 0; background: var(--sunk); color: var(--ink); }
     .app.collapsed .brand:hover .collapse-btn, .app.collapsed .collapse-btn:focus-visible { opacity: 1; }
