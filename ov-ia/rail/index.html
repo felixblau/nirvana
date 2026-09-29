@@ -480,7 +480,7 @@ var GROUPS = [
 function initials(n) { return n.split(' ').map(function (w) { return w[0]; }).join(''); }
 function groupDetail(i) {
   var g = GROUPS[i];
-  return '<div class="dhead"><h4>' + g[0] + '</h4><span class="dim">&#9998;</span><span class="icons del"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-label="Delete"><path d="M2.5 4h9M5.5 4V2.5h3V4M3.75 4l.6 7.5h5.3l.6-7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>' +
+  return '<div class="dhead"><h4>' + g[0] + '</h4><span class="dim"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-label="Edit"><path d="M9.25 2.75l2 2L5 11l-2.75.75L3 9zM8 4l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="icons del"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-label="Delete"><path d="M2.5 4h9M5.5 4V2.5h3V4M3.75 4l.6 7.5h5.3l.6-7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>' +
     '<div class="addrow"><div class="input">Add team member(s)</div><button class="btn muted">Add</button></div>' +
     g[1].map(function (m) { return '<div class="member"><span class="av">' + initials(m[0]) + '</span>' + m[0] + '<small>In ' + m[1] + ' group' + (m[1] > 1 ? 's' : '') + ' &rsaquo;</small></div>'; }).join('');
 }
@@ -540,7 +540,7 @@ PAGES['Organization/Users'] = {
 PAGES['Configurations/Payer Mappings'] = {
   body: function () {
     var r = [];
-    for (var i = 0; i < 9; i++) r.push(['Example Payer ' + (5000 - i), 15000 - i, [32004, 31625, 31141, 31118, 31114, 31053, 29076, 26337, 25463][i], '<span class="icons"><span class="del"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-label="Delete"><path d="M2.5 4h9M5.5 4V2.5h3V4M3.75 4l.6 7.5h5.3l.6-7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span> &#9998;</span>']);
+    for (var i = 0; i < 9; i++) r.push(['Example Payer ' + (5000 - i), 15000 - i, [32004, 31625, 31141, 31118, 31114, 31053, 29076, 26337, 25463][i], '<span class="icons"><span class="del"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-label="Delete"><path d="M2.5 4h9M5.5 4V2.5h3V4M3.75 4l.6 7.5h5.3l.6-7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-label="Edit"><path d="M9.25 2.75l2 2L5 11l-2.75.75L3 9zM8 4l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>']);
     return '<div class="narrow" style="max-width:760px"><div class="well row" style="justify-content:space-between;align-items:flex-start"><div><p style="font-weight:600">Payer Mappings Mode</p>' +
       '<p class="small dim" style="max-width:380px">Managed means that checks for this practice will be mapped to Nirvana payer IDs via provided payer mappings.</p></div>' +
       '<span class="seg"><span>Passthrough</span><span class="on">Managed</span></span></div>' +
@@ -553,7 +553,7 @@ PAGES['Configurations/Payer Rates'] = {
     function rate(c, v) { return '<span class="rate"><b>' + c + '</b> · ' + v + '</span>'; }
     var r = [['Aetna', 'OON', rate(90837, '$250') + rate(90834, '$200')], ['Aetna', 'INN', rate(90834, '$124.43')], ['Blue Cross Blue Shield of Kansas', 'INN', rate(90834, '$124.43')],
       ['UnitedHealthcare', 'OON', rate(90837, '$200')], ['CIGNA', 'INN', rate(90834, '$165')], ['Aetna', 'INN', rate(90837, '$120')]]
-      .map(function (x) { return x.concat('<span class="icons"><span class="del"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-label="Delete"><path d="M2.5 4h9M5.5 4V2.5h3V4M3.75 4l.6 7.5h5.3l.6-7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span> &#9998;</span>'); });
+      .map(function (x) { return x.concat('<span class="icons"><span class="del"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-label="Delete"><path d="M2.5 4h9M5.5 4V2.5h3V4M3.75 4l.6 7.5h5.3l.6-7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-label="Edit"><path d="M9.25 2.75l2 2L5 11l-2.75.75L3 9zM8 4l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>'); });
     return '<div class="narrow" style="max-width:760px"><div class="row"><p class="h">Payers</p><button class="btn">+ Add Payer</button><div class="input" style="margin-left:auto;width:200px">Search by Name</div></div>' +
       '<div class="tcard gap">' + table(['Payer', 'Default Check', 'CPT Code(s) + Session Rate(s)', ''], r) + '</div></div>';
   }
@@ -620,7 +620,7 @@ PAGES['Account'] = {
   body: function () {
     return '<div class="narrow" style="max-width:640px"><p class="h">General</p><dl class="kv gap"><dt>Name</dt><dd>Felix Lau</dd><dt>Email Address</dt><dd>felix@example.com</dd><dt>Password</dt><dd>************</dd><dt>Nirvana Member Since</dt><dd>09/08/2026</dd></dl>' +
       '<p class="small gap">To edit, please contact <a href="#" onclick="return false" style="color:var(--accent)">help@meetnirvana.com</a></p>' +
-      '<p class="h" style="margin-top:32px">Security</p><div class="row gap" style="justify-content:space-between;align-items:flex-start"><div><p style="font-size:17px">Multi-Factor Authentication</p><p class="small dim">For enhanced security, we require enabling at least one method.</p></div><button class="btn">Auth App Enabled &#9998;</button></div></div>';
+      '<p class="h" style="margin-top:32px">Security</p><div class="row gap" style="justify-content:space-between;align-items:flex-start"><div><p style="font-size:17px">Multi-Factor Authentication</p><p class="small dim">For enhanced security, we require enabling at least one method.</p></div><button class="btn">Auth App Enabled <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-label="Edit"><path d="M9.25 2.75l2 2L5 11l-2.75.75L3 9zM8 4l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div>';
   }
 };
 
