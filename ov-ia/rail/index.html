@@ -258,20 +258,41 @@
   .member small { margin-left: auto; font-size: 12px; color: var(--ink-2); }
 
   /* ---------- checker ---------- */
-  .credits { display: flex; justify-content: space-between; align-items: center; background: #d6cdc3; border-radius: 8px; padding: 13px 16px; font-size: 17px; max-width: 660px; }
+  .credits { background: #d6cdc3; border-radius: 8px; color: var(--ink); }
+  .chead { all: unset; box-sizing: border-box; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 13px 16px; font-size: 17px; cursor: pointer; }
+  .chead b { font-weight: 600; }
+  .chead:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+  .cchev { flex: none; transition: transform .15s; }
+  .credits.open .cchev { transform: rotate(180deg); }
+  .cbody { display: none; padding: 0 16px 18px; }
+  .credits.open .cbody { display: block; }
+  .cbody p { margin: 0; font-size: 14px; }
+  .ctrack { display: flex; height: 17px; margin-top: 18px; border-radius: 99px; background: #b9aca1; border: 1px solid #a89b90; overflow: hidden; }
+  .ctrack i { display: block; height: 100%; }
+  .cbody h4 { margin: 20px 0 16px; font-size: 13px; font-weight: 700; }
+  .cbrk { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px 20px; }
+  .cbrk > div { display: flex; gap: 8px; align-items: flex-start; }
+  .cbrk > div > div { flex: 1; min-width: 0; }
+  .csw { flex: none; width: 12px; height: 12px; border-radius: 3px; margin-top: 5px; }
+  .cname { display: flex; align-items: flex-start; gap: 6px; font-size: 17px; line-height: 1.35; }
+  .cname b { font-weight: 600; }
+  .cname > span:last-child { margin-left: auto; font-variant-numeric: tabular-nums; }
+  .cinfo { flex: none; width: 13px; height: 13px; border-radius: 50%; background: var(--ink); color: #fff; font: italic 700 9px/13px Georgia, serif; text-align: center; margin-top: 5px; }
+  .cbrk small { display: block; font-size: 13px; margin-top: 4px; }
+  .sechead { font-size: 18px; font-weight: 600; margin: 28px 0 12px; color: var(--ink); }
   .checker { display: grid; grid-template-columns: 186px minmax(0, 1fr); border-radius: 8px; overflow: hidden; background: #e8e3df; }
   .types { background: linear-gradient(#d9d0c7, #e3dcd6 70%, #ebe6e1); padding: 16px 0 24px; font-size: 16px; }
   .types .small { padding: 0 14px 12px; font-size: 11px; }
   .types div { padding: 11px 24px; }
-  .checker.bulk { grid-template-columns: 186px minmax(0, 1fr) 260px; max-width: 880px; }
+  .checker.bulk { grid-template-columns: 186px minmax(0, 1fr) 260px; }
   .req { padding: 16px 14px; display: flex; flex-direction: column; }
   .req h3 { font-size: 17px; font-weight: 700; margin: 0 0 16px; }
-  .req ul { list-style: none; margin: 0; padding: 0 0 0 14px; display: grid; grid-template-columns: 1fr 1fr; font-size: 15.5px; line-height: 22px; }
+  .req ul { list-style: none; margin: 0; padding: 0 0 0 14px; display: grid; grid-template-columns: 196px minmax(0, 1fr); font-size: 15.5px; line-height: 22px; }
   .req li.opt { color: #bdb4ae; }
   .req .row { margin-top: auto; padding-top: 22px; justify-content: space-between; }
   .req .btn { font-size: 15.5px; padding: 8px 15px; border-color: var(--brand); }
   .dropzone { margin: 14px; border: 1px solid #a69c95; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; font-size: 16px; min-height: 224px; cursor: pointer; }
-  .runbar { width: 120px; height: 5px; border-radius: 3px; background: var(--sunk); overflow: hidden; margin-top: 6px; }
+  .runbar { width: 120px; height: 5px; border-radius: 3px; background: rgba(0, 0, 0, .1); overflow: hidden; margin-top: 6px; }
   .runbar i { display: block; height: 100%; background: var(--brand); }
   .filters { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
   .chips { flex-wrap: wrap; gap: 8px; }
@@ -355,6 +376,10 @@
     .scrollpad { padding: 16px; }
     .strip, .pager { padding-left: 16px; padding-right: 16px; }
     .md, .overview, .checker, .checker.bulk { grid-template-columns: minmax(0, 1fr); }
+    .cbrk { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .req ul { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding-left: 0; font-size: 15px; }
+    .filters > .row:last-child { width: 100%; flex-wrap: wrap; }
+    .input.search { flex: 1 1 100%; }
     .md-list { border-right: 0; border-bottom: 1px solid var(--line); }
     .overview .alerts, .grid2, .grid3 { grid-template-columns: minmax(0, 1fr); }
     .tcard { overflow-x: auto; }
@@ -543,7 +568,27 @@ PAGES['Work Queue/My Queue'] = {
   }
 };
 function inp(l, ph) { return '<div class="field"><label>' + l + '</label><div class="input">' + (ph || '') + '</div></div>'; }
-var CREDITS = '<div class="credits"><span>OneVerify Monthly Credits: <b>2,057 / 20,000</b> Used</span><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7.5l5 5 5-5"/></svg></div>';
+// credits by check type: name, credits used, credits per check, swatch, has info tip
+var CREDIT_TYPES = [
+  ['Standard', 1693, 1, '#2a2140'], ['Discover', 4, 2, '#7d62ea', 1], ['Smart Scan', 360, 4, '#ffffff', 1],
+  ['Agentic Portal', 0, 1, '#a99be8'], ['Agentic Phone', 0, 8, '#dcefe5']
+];
+var CHEVRON = '<svg class="cchev" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7.5l5 5 5-5"/></svg>';
+var INFO = '<span class="cinfo" title="More about this check type">i</span>';
+var CREDITS = '<div class="credits"><button type="button" class="chead" aria-expanded="false"><span>OneVerify Monthly Credits: <b>2,057 / 20,000</b> Used</span>' + CHEVRON + '</button>' +
+  '<div class="cbody"><p>Quota refers to checks made in OneVerify only &ndash; API checks are not included</p>' +
+  '<div class="ctrack">' + CREDIT_TYPES.map(function (t) { return t[1] ? '<i style="width:' + (t[1] / 200) + '%;background:' + t[3] + '"></i>' : ''; }).join('') + '</div>' +
+  '<h4>Credits Used Breakdown</h4><div class="cbrk">' + CREDIT_TYPES.map(function (t) {
+    return '<div><span class="csw" style="background:' + t[3] + '"></span><div><div class="cname"><b>' + t[0] + '</b>' + (t[4] ? INFO : '') + '<span>' + t[1].toLocaleString('en-US') + '</span></div>' +
+      '<small>' + t[2] + ' credit' + (t[2] > 1 ? 's' : '') + ' per check</small></div></div>';
+  }).join('') + '</div></div></div>';
+document.addEventListener('click', function (e) {
+  var h = e.target.closest && e.target.closest('.chead');
+  if (!h) return;
+  var open = h.getAttribute('aria-expanded') !== 'true';
+  h.setAttribute('aria-expanded', open ? 'true' : 'false');
+  h.parentNode.classList.toggle('open', open);
+});
 
 var TYPES = '<div class="types"><p class="small">Check Types</p><div class="on">Standard</div><div>Discover</div><div>Smart Scan</div><div>Medicaid</div></div>';
 
@@ -584,12 +629,13 @@ function badge(k) { return '<span class="runstate ' + BADGE[k][0] + '">' + BADGE
 PAGES['Checker/Bulk Check'] = {
   body: function () {
     return '<div class="narrow" style="max-width:1100px">' + CREDITS +
-      '<div class="checker bulk gap">' + TYPES +
+      '<h3 class="sechead">New Bulk Check</h3>' +
+      '<div class="checker bulk">' + TYPES +
       '<div class="req"><h3>Required Fields</h3><ul>' +
       [['Service'], ['Member First Name'], ['Member Last Name'], ['Date of Birth'], ['Payer ID'], ['Provider NPI'], ['Member ID'], ['Member Gender', 1], ['Member State', 1], ['Member ZIP', 1], ['CPT Code', 1], ['Session Rate']].map(function (f) { return '<li' + (f[1] ? ' class="opt"' : '') + '>' + f[0] + '</li>'; }).join('') +
       '</ul><div class="row"><button class="btn">See Supported Payers</button><button class="btn dark">Download CSV</button></div></div>' +
       '<div class="dropzone"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICON.queue + '</svg>Drag &amp; drop or click to upload</div></div>' +
-      '<h3 class="gap" style="font-size:16px;font-weight:600;margin-bottom:8px">Bulk checks</h3>' +
+      '<h3 class="sechead">Bulk Check History</h3>' +
       '<div class="notice"><b>Bulk checks are kept for [X] days</b><p>After that the run leaves this list, and every check in it stays in Reports. <a href="#" onclick="go(\'Reports/General\');return false">Go to Reports</a></p></div>' +
       '<div class="filters"><div class="row chips">' +
       [['', 'All · 5'], ['running', 'Running · 1'], ['ready', 'Results ready · 1'], ['action', 'Needs action · 1']].map(function (f, i) {
