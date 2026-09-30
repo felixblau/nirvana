@@ -442,7 +442,12 @@
 <dialog class="log" id="log" aria-labelledby="log-title">
   <div class="log-head"><h2 id="log-title">Changes from staging</h2><button type="button" id="log-close" aria-label="Close">&times;</button></div>
   <ul>
-    <li>Checker splits into Single Check and Bulk Check. Bulk Check lists every run under the uploader, so a run can be reopened after leaving it<small>Follows Michele's bulk check recovery work</small></li>
+    <li>Checker splits into Single Check and Bulk Check, and both pages keep the credits tracker at the top<small>Follows Michele's bulk check recovery work</small></li>
+    <li>Bulk Check lists past runs under the uploader, with outcomes and status, so a run can be reopened after leaving it<small>Table from Michele's 2a</small></li>
+    <li>Hovering a run's outcomes bar shows how many patients fell in each outcome<small>Outcome names and colors from the results page</small></li>
+    <li>Bulk checks are kept for 90 days, and a notice above the table says so<small>90 days is a placeholder until Alex confirms the limit</small></li>
+    <li>The credits track fills by check type<small>Staging draws the track empty</small></li>
+    <li>The selected page in the rail is dark purple with white text, and the other pages are solid purple<small>The lighter purple failed contrast</small></li>
     <li>Groups moves to Organization<small>IA-03 &middot; reopened since the review, after Michele's comment</small></li>
     <li>Productivity export moves to Work Queue<small>IA-04 &middot; agreed</small></li>
     <li>The two assignment pages are renamed Assignment Management and My Queue, and both stay<small>IA-05</small></li>
