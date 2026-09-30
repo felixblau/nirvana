@@ -509,7 +509,7 @@ function groupDetail(i) {
     '<div class="addrow"><div class="input">Add team member(s)</div><button class="btn muted">Add</button></div>' +
     g[1].map(function (m) { return '<div class="member"><span class="av">' + initials(m[0]) + '</span>' + m[0] + '<small>In ' + m[1] + ' group' + (m[1] > 1 ? 's' : '') + ' &rsaquo;</small></div>'; }).join('');
 }
-PAGES['Work Queue/Groups'] = {
+PAGES['Organization/Groups'] = {
   flush: true,
   body: function () {
     return '<div class="md"><div class="md-list"><div class="md-head">' + GROUPS.length + ' Groups <button class="plus" type="button" aria-label="New group">+</button></div>' +
@@ -666,10 +666,10 @@ function ico(k) { return '<svg class="ico" width="18" height="18" viewBox="0 0 2
 var RAIL = [
   { name: 'Checker', icon: 'check' },
   { name: 'Reports', icon: 'reports', kids: ['General', 'Medicaid', 'Plan Year Resets', 'Overrides', 'Agentic', 'Search'] },
-  { name: 'Work Queue', icon: 'queue', kids: ['Assignment Management', 'My Queue', 'Groups'] },
+  { name: 'Work Queue', icon: 'queue', kids: ['Assignment Management', 'My Queue'] },
   { name: 'Insights', icon: 'insights' },
   { label: 'Settings' },
-  { name: 'Organization', icon: 'org', kids: ['Details', 'Users'] },
+  { name: 'Organization', icon: 'org', kids: ['Details', 'Users', 'Groups'] },
   { name: 'Configurations', icon: 'config', kids: ['Payer Mappings', 'Payer Rates', 'Network Status Rules'] },
   { name: 'Integrations', icon: 'plug', kids: ['ERA Data', 'EHR'] },
   { name: 'Help & Support', icon: 'help', ext: true }
