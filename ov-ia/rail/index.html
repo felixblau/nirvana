@@ -271,6 +271,27 @@
   .dropzone { margin: 12px; border: 1px solid #b9ada3; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; font-size: 15px; min-height: 200px; cursor: pointer; }
   .runbar { width: 120px; height: 5px; border-radius: 3px; background: var(--sunk); overflow: hidden; margin-top: 6px; }
   .runbar i { display: block; height: 100%; background: var(--brand); }
+  .filters { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .chips { flex-wrap: wrap; gap: 8px; }
+  .chipbtn { font: inherit; font-size: 14px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+  .chipbtn[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .input.search { width: 240px; color: var(--ink-2); }
+  .runs td { vertical-align: middle; }
+  .runs td:nth-child(5), .runs th:nth-child(5) { text-align: right; font-variant-numeric: tabular-nums; }
+  .runs td:nth-child(6) { width: 22%; min-width: 180px; }
+  .runs tr.live td { background: var(--accent-soft); }
+  .runs tbody tr { cursor: pointer; }
+  .obar { display: flex; height: 8px; border-radius: 99px; overflow: hidden; }
+  .obar i { display: block; height: 100%; }
+  .runs .runbar { width: 100%; margin: 0 0 4px; }
+  .unread { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-right: 8px; vertical-align: 1px; }
+  .runstate { display: inline-block; white-space: nowrap; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: var(--well); color: var(--ink-2); }
+  .runstate.run { background: none; color: var(--brand); padding-left: 0; }
+  .runstate.ok { background: #e1f1e7; color: var(--green); }
+  .runstate.warn { background: #fbefd6; color: var(--amber); }
+  .runstate.bad { background: #f8e1de; color: var(--red); }
+  .runfoot { display: flex; justify-content: space-between; padding: 12px 12px; font-size: 13px; color: var(--ink-2); }
+  .runfoot a { color: var(--brand); font-weight: 600; }
   .types div.on { background: var(--panel); margin: 0 10px; padding-left: 16px; border-left: 2px solid var(--brand); border-radius: 4px; }
 
   /* ---------- insights ---------- */
@@ -333,6 +354,8 @@
     .overview .alerts, .grid2, .grid3 { grid-template-columns: minmax(0, 1fr); }
     .tcard { overflow-x: auto; }
     .tcard table { min-width: 560px; }
+    .runs table { min-width: 900px; }
+    .input.search { width: 100%; }
     .detail ul { columns: 1; }
   }
 
@@ -529,21 +552,29 @@ PAGES['Checker/Single Check'] = {
   }
 };
 
-// file, check type, started by, started, checks, status
+// file, check type, started by, started, checks, outcome split (%), status, filter group
 var RUNS = [
-  ['medicaid_sept_intake.csv', 'Medicaid', 'Felix Lau', 'Today, 2:14 PM', '98', 'run'],
-  ['standard_week38.csv', 'Standard', 'Nadia Brooks', 'Today, 10:41 AM', '214', 'Results ready'],
-  ['intake_sept_22.csv', 'Discover', 'Felix Lau', 'Sep 29, 4:05 PM', '61', '18 need action'],
-  ['pt_referrals_q3.csv', 'Smart Scan', 'Priya Raman', 'Sep 26, 9:12 AM', '340', 'Completed'],
-  ['medicaid_aug_batch.csv', 'Medicaid', 'Felix Lau', 'Sep 24, 1:30 PM', '12', 'Stopped at 5 of 12 · credits ran out']
+  ['medicaid_sept_intake.csv', 'Medicaid', 'FL', 'Today, 2:14 PM', '48/98', null, 'run', 'running'],
+  ['standard_week38.csv', 'Standard', 'NB', 'Today, 10:41 AM', '214', [84, 6, 4, 6], 'ready', 'ready'],
+  ['intake_sept_22.csv', 'Discover', 'FL', 'Sep 29, 4:05 PM', '61', [70, 10, 8, 12], 'action', 'action'],
+  ['pt_referrals_q3.csv', 'Smart Scan', 'PR', 'Sep 26, 9:12 AM', '340', [91, 4, 2, 3], 'done', ''],
+  ['medicaid_aug_batch.csv', 'Medicaid', 'FL', 'Sep 24, 1:30 PM', '12', 'Stopped at 5 of 12 · credits ran out', 'stopped', '']
 ];
-function runStatus(r) {
-  if (r[5] === 'run') return '<b>Running</b> · 48 of 98<div class="runbar"><i style="width:49%"></i></div>';
-  if (r[5] === 'Results ready') return '<span class="alert ok"><i></i>Results ready</span>';
-  if (r[5].indexOf('need action') > 0) return '<span class="alert warn"><i></i>' + r[5] + '</span>';
-  if (r[5].indexOf('Stopped') === 0) return '<span class="alert"><i></i>' + r[5] + '</span>';
-  return '<span class="dim">' + r[5] + '</span>';
+// same outcome colors as the Preview Checks results page
+var OUTCOME = ['#7f8ae6', '#ae9aea', '#ab9a90', '#fcd865'];
+var BADGE = {
+  run: ['run', 'Running'],
+  ready: ['ok', '&#10003; Results ready'],
+  action: ['warn', '&#9432; 18 need action'],
+  done: ['', 'Completed'],
+  stopped: ['bad', '&times; Stopped']
+};
+function outcomes(r) {
+  if (r[6] === 'run') return '<div class="runbar"><i style="width:49%"></i></div><span class="small dim">49% · updating live</span>';
+  if (typeof r[5] === 'string') return '<span class="small dim" style="white-space:normal">' + r[5] + '</span>';
+  return '<div class="obar">' + r[5].map(function (w, i) { return '<i style="width:' + w + '%;background:' + OUTCOME[i] + '"></i>'; }).join('') + '</div>';
 }
+function badge(k) { return '<span class="runstate ' + BADGE[k][0] + '">' + BADGE[k][1] + '</span>'; }
 
 PAGES['Checker/Bulk Check'] = {
   body: function () {
@@ -555,10 +586,27 @@ PAGES['Checker/Bulk Check'] = {
       '</ul><div class="row"><button class="btn">See Supported Payers</button><button class="btn dark">Download CSV</button></div></div>' +
       '<div class="dropzone"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICON.queue + '</svg>Drag &amp; drop or click to upload</div></div>' +
       '<h3 class="gap" style="font-size:16px;font-weight:600;margin-bottom:4px">Bulk checks</h3>' +
-      '<p class="small dim" style="margin:0 0 12px">Every upload is a run. Open one to see its results, live while it is still running. Runs are kept here for [X] days, and their results stay in Reports after that.</p>' +
-      '<div class="tcard">' + table(['File', 'Check Type', 'Started By', 'Started', 'Checks', 'Status'],
-        RUNS.map(function (r) { return ['<b>' + r[0] + '</b>', r[1], r[2], r[3], r[4], runStatus(r)]; })) + '</div>' +
-      '<div class="pager" style="border:0;background:none;padding:12px 0"><span>5 of 14 runs</span><span>Load more</span></div></div>';
+      '<p class="small dim" style="margin:0 0 14px">Bulk checks are kept here for [X] days. After that, final results stay available in Reports.</p>' +
+      '<div class="filters"><div class="row chips">' +
+      [['', 'All · 14'], ['running', 'Running · 1'], ['ready', 'Results ready · 1'], ['action', 'Needs action · 4']].map(function (f, i) {
+        return '<button type="button" class="chipbtn" data-f="' + f[0] + '"' + (i ? '' : ' aria-pressed="true"') + '>' + f[1] + '</button>';
+      }).join('') +
+      '</div><div class="row"><div class="input search">Search file name</div><button class="btn">All check types &#9662;</button><button class="btn">Anyone &#9662;</button></div></div>' +
+      '<div class="tcard runs">' + table(['File', 'Check Type', 'Started By', 'Started', 'Checks', 'Outcomes', 'Status', ''],
+        RUNS.map(function (r) {
+          return [(r[6] === 'ready' ? '<span class="unread" title="Not opened yet"></span>' : '') + '<b>' + r[0] + '</b>', r[1], r[2], r[3], r[4], outcomes(r), badge(r[6]), '<span class="dim">&rsaquo;</span>'];
+        })) +
+      '<div class="runfoot"><span>Showing 5 of 14 · runs older than [X] days are removed</span><a href="#" onclick="return false">Load more</a></div></div></div>';
+  },
+  after: function (root) {
+    var trs = root.querySelectorAll('.runs tbody tr');
+    trs.forEach(function (tr, i) { tr.dataset.g = RUNS[i][7]; if (RUNS[i][6] === 'run') tr.className = 'live'; });
+    root.querySelectorAll('.chipbtn').forEach(function (c) {
+      c.addEventListener('click', function () {
+        root.querySelectorAll('.chipbtn').forEach(function (x) { x.setAttribute('aria-pressed', x === c ? 'true' : 'false'); });
+        trs.forEach(function (tr) { tr.hidden = !!c.dataset.f && tr.dataset.g !== c.dataset.f; });
+      });
+    });
   }
 };
 
