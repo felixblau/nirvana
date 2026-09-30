@@ -114,7 +114,7 @@
   }
   .island.dragging { transition: none; cursor: grabbing; }
   .island.collapsed { width: 44px; height: 44px; padding: 0; gap: 0; justify-content: center; }
-  .isl-body { display: flex; align-items: center; gap: 8px; overflow: hidden; white-space: nowrap; max-width: 400px; opacity: 1; transition: max-width 0.3s ease-out, opacity 0.3s ease-out, gap 0.3s ease-out; }
+  .isl-body { display: flex; align-items: center; gap: 8px; overflow: hidden; white-space: nowrap; max-width: 480px; opacity: 1; transition: max-width 0.3s ease-out, opacity 0.3s ease-out, gap 0.3s ease-out; }
   .island.collapsed .isl-body { max-width: 0; opacity: 0; gap: 0; }
   .grip { width: 20px; height: 20px; flex: none; display: flex; align-items: center; justify-content: center; border-radius: 4px; color: rgba(255,255,255,0.25); cursor: grab; }
   .grip:hover { color: rgba(255,255,255,0.6); }
@@ -131,6 +131,17 @@
   .isl-toggle:hover { background: rgba(255,255,255,0.1); color: #fff; }
   .island.collapsed .isl-toggle { width: 44px; height: 44px; color: rgba(255,255,255,0.6); cursor: grab; }
   .island.collapsed .isl-toggle:hover { background: none; color: #fff; }
+  .isl-link { border: 0; background: rgba(255,255,255,0.06); border-radius: 999px; padding: 6px 12px; font-size: 12px; color: rgba(255,255,255,0.7); cursor: pointer; }
+  .isl-link:hover { background: rgba(255,255,255,0.15); color: #fff; }
+  .log { width: min(560px, calc(100vw - 32px)); max-height: calc(100dvh - 64px); margin: auto; border: 0; border-radius: 12px; padding: 0; background: var(--panel); color: var(--ink); box-shadow: 0 20px 40px -12px rgba(0,0,0,0.3); }
+  .log::backdrop { background: rgba(10,10,10,0.4); }
+  .log-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid var(--line); }
+  .log-head h2 { font-size: 18px; font-weight: 600; }
+  .log-head button { border: 0; background: none; font-size: 20px; line-height: 1; color: var(--ink-2); cursor: pointer; padding: 4px; }
+  .log ul { list-style: none; padding: 8px 24px 20px; }
+  .log li { padding: 12px 0; border-bottom: 1px solid var(--sunk); font-size: 15px; }
+  .log li:last-child { border-bottom: 0; }
+  .log li small { display: block; font-size: 13px; color: var(--ink-2); margin-top: 2px; }
   @media (prefers-reduced-motion: reduce) { .island, .isl-body, .isl-toggle { transition: none; } }
   .ext { color: var(--ink-2); font-size: 12px; margin-left: 6px; }
   .rail-foot { border-top: 1px solid var(--line); padding: 10px; }
@@ -353,11 +364,23 @@
     </div>
   </section>
 </main>
+<dialog class="log" id="log" aria-labelledby="log-title">
+  <div class="log-head"><h2 id="log-title">Changes from staging</h2><button type="button" id="log-close" aria-label="Close">&times;</button></div>
+  <ul>
+    <li>Groups moves to Organization<small>IA-03 &middot; reopened since the review, after Michele's comment</small></li>
+    <li>Productivity export moves to Work Queue<small>IA-04 &middot; agreed</small></li>
+    <li>The two assignment pages are renamed Assignment Management and My Queue, and both stay<small>IA-05</small></li>
+    <li>Search stays under Reports<small>IA-06</small></li>
+    <li>Integrations gets its own section, which solves the stacked tabs<small>IA-07</small></li>
+    <li>The left rail itself<small>Suggested in section 2 of the review</small></li>
+  </ul>
+</dialog>
 <div class="island" id="island">
   <span class="isl-body">
     <span class="grip" data-drag="true" title="Drag to another side"><svg width="14" height="14" viewBox="0 0 320 512" fill="currentColor" aria-hidden="true"><path d="M40 40l0 48 48 0 0-48-48 0zM0 40C0 17.9 17.9 0 40 0L88 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0C17.9 128 0 110.1 0 88L0 40zM40 232l0 48 48 0 0-48-48 0zM0 232c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48zM88 424l-48 0 0 48 48 0 0-48zM40 384l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40zM232 40l0 48 48 0 0-48-48 0zm-40 0c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48zm88 192l-48 0 0 48 48 0 0-48zm-48-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40zm0 232l0 48 48 0 0-48-48 0zm-40 0c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48z"/></svg></span>
     <span class="isl-label">Viewing as</span>
     <span class="isl-seg" role="group" aria-label="Viewing as"><button type="button" data-role="admin" aria-pressed="true">Admin</button><button type="button" data-role="biller" aria-pressed="false">Biller</button></span>
+    <button class="isl-link" id="log-open" type="button">Changes</button>
   </span>
   <button class="isl-toggle" id="isl-toggle" type="button" aria-expanded="true" aria-label="Collapse the mockup controls" title="Collapse the mockup controls"></button>
 </div>
@@ -949,6 +972,10 @@ islToggle.addEventListener('click', function () {
 islPlace();
 islRender();
 
+var logDlg = document.getElementById('log');
+document.getElementById('log-open').addEventListener('click', function () { logDlg.showModal(); });
+document.getElementById('log-close').addEventListener('click', function () { logDlg.close(); });
+logDlg.addEventListener('click', function (e) { if (e.target === logDlg) logDlg.close(); });
 build();
 requestAnimationFrame(function () { requestAnimationFrame(function () { app.classList.remove('preload'); }); });
 </script>
