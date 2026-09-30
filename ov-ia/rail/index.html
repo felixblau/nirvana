@@ -258,7 +258,7 @@
   .member small { margin-left: auto; font-size: 12px; color: var(--ink-2); }
 
   /* ---------- checker ---------- */
-  .credits { background: #dcd2c8; border-radius: 8px; color: var(--ink); }
+  .credits { background: #dcd2c8; border-radius: 8px; color: var(--ink); max-width: 780px; }
   .chead { all: unset; box-sizing: border-box; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 13px 16px; font-size: 17px; cursor: pointer; }
   .chead b { font-weight: 600; }
   .chead:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
@@ -284,14 +284,14 @@
   .types { background: linear-gradient(#d9d0c7, #e3dcd6 70%, #ebe6e1); padding: 16px 0 24px; font-size: 16px; }
   .types .small { padding: 0 14px 12px; font-size: 11px; }
   .types div { padding: 11px 24px; }
-  .checker.bulk { grid-template-columns: 186px minmax(0, 1fr) 260px; }
+  .checker.bulk { grid-template-columns: 170px minmax(0, 1fr) 210px; max-width: 780px; }
   .req { padding: 16px 14px; display: flex; flex-direction: column; }
   .req h3 { font-size: 17px; font-weight: 700; margin: 0 0 16px; }
-  .req ul { list-style: none; margin: 0; padding: 0 0 0 14px; display: grid; grid-template-columns: 196px minmax(0, 1fr); font-size: 15.5px; line-height: 22px; }
+  .req ul { list-style: none; margin: 0; padding: 0 0 0 14px; display: grid; grid-template-columns: 172px minmax(0, 1fr); font-size: 15.5px; line-height: 22px; }
   .req li.opt { color: #bdb4ae; }
   .req .row { margin-top: auto; padding-top: 22px; justify-content: space-between; }
   .req .btn { font-size: 15.5px; padding: 8px 15px; border-color: var(--brand); }
-  .dropzone { margin: 14px; border: 1px solid #a69c95; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; font-size: 16px; min-height: 224px; cursor: pointer; }
+  .dropzone { margin: 14px; border: 1px solid #a69c95; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; font-size: 16px; min-height: 224px; cursor: pointer; text-align: center; padding: 0 16px; }
   .runbar { width: 120px; height: 5px; border-radius: 3px; background: rgba(0, 0, 0, .1); overflow: hidden; margin-top: 6px; }
   .runbar i { display: block; height: 100%; background: var(--brand); }
   .filters { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
