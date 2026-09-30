@@ -68,12 +68,13 @@
   }
   .rail button.item { font-size: 15px; padding: 7px 13px; font-weight: 500; gap: 12px; }
   .rail .ico { flex: none; color: var(--ink-2); }
-  .rail button[aria-current="page"] .ico, .rail button.item.has-current .ico { color: var(--brand); }
+  .rail button.item.has-current .ico { color: var(--brand); }
+  .rail button[aria-current="page"] .ico { color: #fff; }
   .rail button.item .chev { margin-left: auto; flex: none; color: var(--ink-2); transition: transform 0.2s ease; }
   .rail button.item[aria-expanded="true"] .chev { transform: rotate(90deg); }
   .rail button.child { font-size: 14px; padding: 5px 10px 5px 43px; color: var(--ink-2); }
   .rail button:hover { background: var(--sunk); }
-  .rail button[aria-current="page"] { background: var(--accent-soft); color: var(--brand); font-weight: 600; }
+  .rail button[aria-current="page"] { background: var(--brand); color: #fff; font-weight: 600; }
   .kids { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.24s ease, opacity 0.18s ease; }
   .kids > div { overflow: hidden; min-height: 0; }
   .kids > div::after { content: ''; display: block; height: 4px; }
@@ -101,7 +102,7 @@
   .fly-h { font-size: 12px; font-weight: 600; color: var(--ink-2); padding: 6px 10px 4px; }
   .fly button { display: block; width: 100%; text-align: left; border: 0; background: none; font-size: 14px; padding: 6px 10px; border-radius: 6px; cursor: pointer; }
   .fly button:hover { background: var(--sunk); }
-  .fly button[aria-current="page"] { background: var(--accent-soft); color: var(--brand); font-weight: 600; }
+  .fly button[aria-current="page"] { background: var(--brand); color: #fff; font-weight: 600; }
   .fly.tip { min-width: 0; padding: 5px 10px; font-size: 13px; background: var(--ink); color: #fff; border-color: var(--ink); }
 
   /* mockup controls: a dark island pinned to an edge of the window, not part of OneVerify */
