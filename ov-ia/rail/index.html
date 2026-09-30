@@ -293,7 +293,10 @@
   .runstate.warn { background: #fbefd6; color: var(--amber); }
   .runstate.bad { background: #f8e1de; color: var(--red); }
   .runfoot { display: flex; justify-content: space-between; padding: 12px 12px; font-size: 13px; color: var(--ink-2); }
-  .runfoot a { color: var(--brand); font-weight: 600; }
+  .notice { border: 1px solid var(--line); background: var(--panel); border-radius: 10px; padding: 14px 16px; margin: 4px 0 16px; font-size: 14px; }
+  .notice b { font-weight: 600; font-size: 15px; }
+  .notice p { margin: 4px 0 0; color: var(--ink-2); }
+  .notice a { color: var(--brand); font-weight: 600; }
   .types div.on { background: var(--panel); margin: 0 14px; padding-left: 10px; border-left: 2px solid var(--brand); border-radius: 2px; font-weight: 600; }
 
   /* ---------- insights ---------- */
@@ -586,10 +589,10 @@ PAGES['Checker/Bulk Check'] = {
       [['Service'], ['Member First Name'], ['Member Last Name'], ['Date of Birth'], ['Payer ID'], ['Provider NPI'], ['Member ID'], ['Member Gender', 1], ['Member State', 1], ['Member ZIP', 1], ['CPT Code', 1], ['Session Rate']].map(function (f) { return '<li' + (f[1] ? ' class="opt"' : '') + '>' + f[0] + '</li>'; }).join('') +
       '</ul><div class="row"><button class="btn">See Supported Payers</button><button class="btn dark">Download CSV</button></div></div>' +
       '<div class="dropzone"><svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICON.queue + '</svg>Drag &amp; drop or click to upload</div></div>' +
-      '<h3 class="gap" style="font-size:16px;font-weight:600;margin-bottom:4px">Bulk checks</h3>' +
-      '<p class="small dim" style="margin:0 0 14px">Bulk checks are kept here for [X] days. After that, final results stay available in Reports.</p>' +
+      '<h3 class="gap" style="font-size:16px;font-weight:600;margin-bottom:8px">Bulk checks</h3>' +
+      '<div class="notice"><b>Bulk checks are kept for [X] days</b><p>After that the run leaves this list, and every check in it stays in Reports. <a href="#" onclick="go(\'Reports/General\');return false">Go to Reports</a></p></div>' +
       '<div class="filters"><div class="row chips">' +
-      [['', 'All · 14'], ['running', 'Running · 1'], ['ready', 'Results ready · 1'], ['action', 'Needs action · 4']].map(function (f, i) {
+      [['', 'All · 5'], ['running', 'Running · 1'], ['ready', 'Results ready · 1'], ['action', 'Needs action · 1']].map(function (f, i) {
         return '<button type="button" class="chipbtn" data-f="' + f[0] + '"' + (i ? '' : ' aria-pressed="true"') + '>' + f[1] + '</button>';
       }).join('') +
       '</div><div class="row"><div class="input search">Search file name</div><button class="btn">All check types &#9662;</button><button class="btn">Anyone &#9662;</button></div></div>' +
@@ -597,7 +600,7 @@ PAGES['Checker/Bulk Check'] = {
         RUNS.map(function (r) {
           return [(r[6] === 'ready' ? '<span class="unread" title="Not opened yet"></span>' : '') + '<b>' + r[0] + '</b>', r[1], r[2], r[3], r[4], outcomes(r), badge(r[6]), '<span class="dim">&rsaquo;</span>'];
         })) +
-      '<div class="runfoot"><span>Showing 5 of 14 · runs older than [X] days are removed</span><a href="#" onclick="return false">Load more</a></div></div></div>';
+      '<div class="runfoot"><span>1–5 of 5</span><span>20 results per page</span></div></div></div>';
   },
   after: function (root) {
     var trs = root.querySelectorAll('.runs tbody tr');
