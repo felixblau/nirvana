@@ -115,7 +115,7 @@
   }
   .island.dragging { transition: none; cursor: grabbing; }
   .island.collapsed { width: 44px; height: 44px; padding: 0; gap: 0; justify-content: center; }
-  .isl-body { display: flex; align-items: center; gap: 8px; overflow: hidden; white-space: nowrap; max-width: 480px; opacity: 1; transition: max-width 0.3s ease-out, opacity 0.3s ease-out, gap 0.3s ease-out; }
+  .isl-body { display: flex; align-items: center; gap: 8px; overflow: hidden; white-space: nowrap; max-width: 600px; opacity: 1; transition: max-width 0.3s ease-out, opacity 0.3s ease-out, gap 0.3s ease-out; }
   .island.collapsed .isl-body { max-width: 0; opacity: 0; gap: 0; }
   .grip { width: 20px; height: 20px; flex: none; display: flex; align-items: center; justify-content: center; border-radius: 4px; color: rgba(255,255,255,0.25); cursor: grab; }
   .grip:hover { color: rgba(255,255,255,0.6); }
@@ -154,6 +154,24 @@
   }
   .me small { display: block; font-size: 12px; color: var(--ink-2); line-height: 1.3; font-weight: 400; }
   .me span { line-height: 1.3; }
+  .rail-foot .label { padding: 4px 13px 6px; }
+  .rail button.item .val { margin-left: auto; font-size: 12px; font-weight: 400; color: var(--ink-2); }
+  .av.ghost { background: var(--accent-soft); color: var(--brand); box-shadow: inset 0 0 0 1.5px var(--accent); }
+  .as-bar { flex: none; display: flex; align-items: center; gap: 12px; padding: 8px 24px 8px 32px; background: var(--accent-soft); color: var(--brand); font-size: 14px; border-bottom: 1px solid #d6cbfa; }
+  .as-bar .ico { color: var(--brand); }
+  .as-bar button { margin-left: auto; border: 1px solid var(--brand); background: none; color: var(--brand); border-radius: 999px; font-size: 13px; padding: 4px 12px; cursor: pointer; }
+  .as-bar button:hover { background: var(--brand); color: #fff; }
+  .tool { width: min(480px, calc(100vw - 32px)); }
+  .tool form { padding: 20px 24px 24px; display: grid; gap: 16px; }
+  .tool label { display: block; font-size: 12px; margin-bottom: 6px; }
+  .tool input, .tool select { width: 100%; height: 38px; border: 1px solid #c9bfc6; border-radius: 6px; background: var(--panel); font: inherit; font-size: 14px; color: var(--ink); padding: 0 12px; }
+  .tool .hint { font-size: 13px; color: var(--ink-2); margin-top: 6px; }
+  .tool .go { justify-self: end; font-size: 14px; padding: 8px 18px; border-radius: 999px; border: 0; background: var(--brand); color: #fff; cursor: pointer; }
+  .tool .go:disabled { opacity: 0.4; cursor: default; }
+  .tool .opt { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; cursor: pointer; }
+  .tool .opt input { width: auto; height: auto; margin-top: 3px; accent-color: var(--brand); }
+  .tool .opt small { display: block; font-size: 13px; color: var(--ink-2); }
+  .tool .opt:has(input:checked) { border-color: var(--brand); background: #faf7ff; }
 
   /* ---------- page ---------- */
   .page { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--bg); }
@@ -442,6 +460,7 @@
 <dialog class="log" id="log" aria-labelledby="log-title">
   <div class="log-head"><h2 id="log-title">Changes from staging</h2><button type="button" id="log-close" aria-label="Close">&times;</button></div>
   <ul>
+    <li>Nirvana staff get View as user and API version above their name in the rail, and nobody else sees either<small>Michele's Eagle Eye and API versioning, labeled so the icons explain themselves</small></li>
     <li>Checker splits into Single Check and Bulk Check, and both pages keep the credits tracker at the top<small>Follows Michele's bulk check recovery work</small></li>
     <li>Bulk Check lists past runs under the uploader, with outcomes and status, so a run can be reopened after leaving it<small>Table from Michele's 2a</small></li>
     <li>Hovering a run's outcomes bar shows how many patients fell in each outcome<small>Outcome names and colors from the results page</small></li>
@@ -456,11 +475,28 @@
     <li>The left rail itself<small>Suggested in section 2 of the review</small></li>
   </ul>
 </dialog>
+<dialog class="log tool" id="as-dlg" aria-labelledby="as-title">
+  <div class="log-head"><h2 id="as-title">View as user</h2><button type="button" data-close aria-label="Close">&times;</button></div>
+  <form method="dialog" id="as-form">
+    <div><label for="as-practice">Practice</label><input id="as-practice" list="as-practices" placeholder="Search practice by id, name, or group NPI" autocomplete="off"><datalist id="as-practices"></datalist></div>
+    <div><label for="as-user">User</label><select id="as-user" disabled><option value="">Choose a practice first</option></select>
+      <p class="hint">You see OneVerify with this user's role and data until you stop.</p></div>
+    <button class="go" id="as-go" type="submit" disabled>View as</button>
+  </form>
+</dialog>
+<dialog class="log tool" id="api-dlg" aria-labelledby="api-title">
+  <div class="log-head"><h2 id="api-title">API version</h2><button type="button" data-close aria-label="Close">&times;</button></div>
+  <form method="dialog" id="api-form">
+    <label class="opt"><input type="radio" name="api" value="Current" checked><span>Current<small>What every practice is on</small></span></label>
+    <label class="opt"><input type="radio" name="api" value="[VERSION]"><span>[VERSION]<small>[WHAT CHANGES IN THIS VERSION]</small></span></label>
+    <button class="go" type="submit">Use this version</button>
+  </form>
+</dialog>
 <div class="island" id="island">
   <span class="isl-body">
     <span class="grip" data-drag="true" title="Drag to another side"><svg width="14" height="14" viewBox="0 0 320 512" fill="currentColor" aria-hidden="true"><path d="M40 40l0 48 48 0 0-48-48 0zM0 40C0 17.9 17.9 0 40 0L88 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0C17.9 128 0 110.1 0 88L0 40zM40 232l0 48 48 0 0-48-48 0zM0 232c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48zM88 424l-48 0 0 48 48 0 0-48zM40 384l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40zM232 40l0 48 48 0 0-48-48 0zm-40 0c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48zm88 192l-48 0 0 48 48 0 0-48zm-48-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48c0-22.1 17.9-40 40-40zm0 232l0 48 48 0 0-48-48 0zm-40 0c0-22.1 17.9-40 40-40l48 0c22.1 0 40 17.9 40 40l0 48c0 22.1-17.9 40-40 40l-48 0c-22.1 0-40-17.9-40-40l0-48z"/></svg></span>
     <span class="isl-label">Viewing as</span>
-    <span class="isl-seg" role="group" aria-label="Viewing as"><button type="button" data-role="admin" aria-pressed="true">Admin</button><button type="button" data-role="biller" aria-pressed="false">Biller</button></span>
+    <span class="isl-seg" role="group" aria-label="Viewing as"><button type="button" data-role="admin" aria-pressed="true">Admin</button><button type="button" data-role="biller" aria-pressed="false">Biller</button><button type="button" data-role="nirvana" aria-pressed="false">Nirvana staff</button></span>
     <button class="isl-link" id="log-open" type="button">Changes</button>
   </span>
   <button class="isl-toggle" id="isl-toggle" type="button" aria-expanded="true" aria-label="Collapse the mockup controls" title="Collapse the mockup controls"></button>
@@ -870,7 +906,9 @@ var ICON = {
   config: '<path d="M4 6h5M13 6h3M4 14h2M10 14h6"/><circle cx="11" cy="6" r="2"/><circle cx="8" cy="14" r="2"/>',
   plug: '<path d="M7.5 3v3.5M12.5 3v3.5M5.5 6.5h9v3a4.5 4.5 0 0 1-9 0zM10 14v3"/>',
   help: '<circle cx="10" cy="10" r="7.25"/><path d="M8 8a2 2 0 1 1 2.9 1.8c-.6.3-.9.8-.9 1.4v.3"/><circle cx="10" cy="13.9" r=".6" fill="currentColor" stroke="none"/>',
-  out: '<path d="M8 3.5H5A1.5 1.5 0 0 0 3.5 5v10A1.5 1.5 0 0 0 5 16.5h3M12.5 6.5L16 10l-3.5 3.5M16 10H8"/>'
+  out: '<path d="M8 3.5H5A1.5 1.5 0 0 0 3.5 5v10A1.5 1.5 0 0 0 5 16.5h3M12.5 6.5L16 10l-3.5 3.5M16 10H8"/>',
+  ghost: '<path d="M4.75 16.75V9a5.25 5.25 0 0 1 10.5 0v7.75l-1.75-1.25-1.75 1.25L10 15.5l-1.75 1.25-1.75-1.25z"/><circle cx="8" cy="9" r=".9" fill="currentColor" stroke="none"/><circle cx="12" cy="9" r=".9" fill="currentColor" stroke="none"/>',
+  branch: '<circle cx="6" cy="4.75" r="1.75"/><circle cx="6" cy="15.25" r="1.75"/><circle cx="14" cy="6.25" r="1.75"/><path d="M6 6.5v7M14 8v.5a4 4 0 0 1-4 4H6"/>'
 };
 function ico(k) { return '<svg class="ico" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICON[k] + '</svg>'; }
 
@@ -888,8 +926,10 @@ var RAIL = [
 // Admin sees every page. A biller sees their own queue and the pages with no role gate;
 // a section shows when at least one of its pages does.
 var BILLER = ['Checker', 'Reports', 'Work Queue/My Queue', 'Help & Support', 'Account'];
+// Nirvana staff see every page, and while viewing as a user they see what that user sees.
 function can(path) {
-  return role === 'admin' || BILLER.indexOf(path) >= 0 || BILLER.indexOf(path.split('/')[0]) >= 0;
+  var r = viewAs ? viewAs.role : role;
+  return r !== 'biller' || BILLER.indexOf(path) >= 0 || BILLER.indexOf(path.split('/')[0]) >= 0;
 }
 
 var app = document.querySelector('.app');
@@ -897,6 +937,8 @@ var rail = document.getElementById('rail');
 var foot = document.getElementById('foot');
 var page = document.getElementById('page');
 var role = 'admin';
+var viewAs = null; // { name, practice, role } while Nirvana staff view as a user
+var apiVersion = 'Current';
 var current = 'Checker/Single Check';
 var leaves, sections, btns;
 var last = {}; // section name -> last page visited in it
@@ -913,9 +955,12 @@ function select(path) {
   sections.forEach(function (s) { s.btn.classList.toggle('has-current', s.name === crumb); });
   var p = PAGES[path] || {};
   var bar = crumb ? '<span class="up">' + esc(crumb) + '</span><span class="sep">/</span>' : '';
-  page.innerHTML = '<div class="topbar">' + bar + '<b>' + esc(title) + '</b>' + (p.actions ? '<div class="actions">' + p.actions + '</div>' : '') + '</div>' +
+  var asBar = viewAs ? '<div class="as-bar">' + ico('ghost') + '<span>Viewing as <b>' + esc(viewAs.name) + '</b> at ' + esc(viewAs.practice) + '</span><button type="button" id="as-stop">Stop viewing</button></div>' : '';
+  page.innerHTML = asBar + '<div class="topbar">' + bar + '<b>' + esc(title) + '</b>' + (p.actions ? '<div class="actions">' + p.actions + '</div>' : '') + '</div>' +
     '<div class="body' + (p.flush ? ' flush' : '') + '">' + (p.body ? p.body() : '') + '</div>';
   if (p.after) p.after(page);
+  var stop = document.getElementById('as-stop');
+  if (stop) stop.addEventListener('click', function () { viewAs = null; build(); });
 }
 function go(path) {
   var sec = null;
@@ -1042,7 +1087,21 @@ function build() {
     });
   });
 
-  btns['Account'] = leaf(foot, 'item me', '<span class="av">FL</span><span>Felix Lau<small>' + (role === 'admin' ? 'Admin' : 'Biller') + '</small></span>', function () { go('Account'); });
+  // internal tools sit above the user they act on, for Nirvana staff only
+  if (role === 'nirvana') {
+    var il = document.createElement('div');
+    il.className = 'label';
+    il.textContent = 'Nirvana only';
+    foot.appendChild(il);
+    var va = leaf(foot, 'item', ico('ghost') + '<span class="txt">View as user</span>', function () { openViewAs(); });
+    flyOn(va, null, 'View as user');
+    var av = leaf(foot, 'item', ico('branch') + '<span class="txt">API version</span><span class="val txt">' + esc(apiVersion) + '</span>', function () { apiDlg.showModal(); });
+    flyOn(av, null, 'API version: ' + apiVersion);
+  }
+  var who = viewAs
+    ? '<span class="av ghost">' + viewAs.name.split(' ').map(function (w) { return w[0]; }).join('') + '</span><span>' + esc(viewAs.name) + '<small>Viewing as &middot; ' + (viewAs.role === 'admin' ? 'Admin' : 'Biller') + '</small></span>'
+    : '<span class="av">FL</span><span>Felix Lau<small>' + ({ admin: 'Admin', biller: 'Biller', nirvana: 'Nirvana staff' })[role] + '</small></span>';
+  btns['Account'] = leaf(foot, 'item me', who, function () { go('Account'); });
   flyOn(btns['Account'], null, 'Account');
   var out = leaf(foot, 'item', ico('out') + '<span class="txt">Log out</span>', function () {});
   flyOn(out, null, 'Log out');
@@ -1066,6 +1125,7 @@ var roleBtns = document.querySelectorAll('.isl-seg button');
 roleBtns.forEach(function (b) {
   b.addEventListener('click', function () {
     role = b.dataset.role;
+    viewAs = null;
     roleBtns.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
     hideFly();
     build();
@@ -1164,6 +1224,38 @@ var logDlg = document.getElementById('log');
 document.getElementById('log-open').addEventListener('click', function () { logDlg.showModal(); });
 document.getElementById('log-close').addEventListener('click', function () { logDlg.close(); });
 logDlg.addEventListener('click', function (e) { if (e.target === logDlg) logDlg.close(); });
+
+/* ---------- Nirvana staff tools: view as user, API version ---------- */
+var asDlg = document.getElementById('as-dlg'), apiDlg = document.getElementById('api-dlg');
+[asDlg, apiDlg].forEach(function (d) {
+  d.querySelector('[data-close]').addEventListener('click', function () { d.close(); });
+  d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+});
+var PRACTICES = {
+  'Example Practice North (id 1042)': [['Jonah Weiss', 'admin'], ['Priya Raman', 'biller'], ['Omar Lindgren', 'biller']],
+  'Example Practice South (id 2177)': [['Maya Patel', 'admin'], ['Nadia Brooks', 'biller']]
+};
+var asPractice = document.getElementById('as-practice'), asUser = document.getElementById('as-user'), asGo = document.getElementById('as-go');
+document.getElementById('as-practices').innerHTML = Object.keys(PRACTICES).map(function (k) { return '<option value="' + k + '">'; }).join('');
+function fillUsers() {
+  var us = PRACTICES[asPractice.value];
+  asUser.disabled = !us;
+  asUser.innerHTML = us ? '<option value="">Choose a user</option>' + us.map(function (u, i) { return '<option value="' + i + '">' + u[0] + ' (' + (u[1] === 'admin' ? 'Admin' : 'Biller') + ')</option>'; }).join('')
+    : '<option value="">Choose a practice first</option>';
+  asGo.disabled = true;
+}
+function openViewAs() { asPractice.value = ''; fillUsers(); asDlg.showModal(); }
+asPractice.addEventListener('input', fillUsers);
+asUser.addEventListener('change', function () { asGo.disabled = asUser.value === ''; });
+document.getElementById('as-form').addEventListener('submit', function () {
+  var u = PRACTICES[asPractice.value][+asUser.value];
+  viewAs = { name: u[0], practice: asPractice.value.replace(/ \(id \d+\)$/, ''), role: u[1] };
+  build();
+});
+document.getElementById('api-form').addEventListener('submit', function () {
+  apiVersion = document.querySelector('#api-form input:checked').value;
+  build();
+});
 build();
 requestAnimationFrame(function () { requestAnimationFrame(function () { app.classList.remove('preload'); }); });
 </script>
